@@ -30,12 +30,18 @@ type templateData struct {
 
 func main() {
 
-	// Discover GitHub releases from all related repositories
-	// versionsFound := discoverVersions()
-	// log.Printf("Found %d versions of the GitOps Runtime\n", len(versionsFound))
+	// Get current working directory
+	currentDir, err := os.Getwd()
+	if err != nil {
+		log.Fatal("Failed to get current directory: ", err)
+	}
+
+	// Find Argo CD files
+	argoCDYamlFiles := discoverYamlFiles(currentDir)
+	log.Printf("Found %d Argo CD file(s) in %s\n", len(argoCDYamlFiles), currentDir)
 
 	log.Println("Creating output directory at ./" + outputDirectory)
-	err := os.MkdirAll(outputDirectory, 0755)
+	err = os.MkdirAll(outputDirectory, 0755)
 	if err != nil {
 		log.Fatal(err)
 	}

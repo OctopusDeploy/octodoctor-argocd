@@ -1,0 +1,26 @@
+## R01 - No automated sync
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: demo
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/codefresh-contrib/not-important.git
+    targetRevision: HEAD
+    path: ./not-important
+   
+    # directory
+    directory:
+      recurse: false
+  # Destination cluster and namespace to deploy the application
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+
+
+  
