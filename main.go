@@ -20,12 +20,18 @@ type Rule struct {
 	FilesTriggered []string
 }
 
-// Final template that contains all information. Rendered with web/index.html.tpl
-type templateData struct {
-	Now           time.Time //when the page was generated
+type ArgoCDAnalysis struct {
+	YamlFiles []string
+
 	RulesFailed   []Rule
 	RulesPassed   []Rule
 	RulesInactive []Rule
+}
+
+// Final template that contains all information. Rendered with report-template/html/index.html.tpl
+type templateData struct {
+	Now      time.Time //when was the report was generated
+	analysis ArgoCDAnalysis
 }
 
 func main() {
@@ -36,9 +42,10 @@ func main() {
 		log.Fatal("Failed to get current directory: ", err)
 	}
 
+	analysis := ArgoCDAnalysis{}
 	// Find Argo CD files
-	argoCDYamlFiles := discoverYamlFiles(currentDir)
-	log.Printf("Found %d Argo CD file(s) in %s\n", len(argoCDYamlFiles), currentDir)
+	analysis.discoverYamlFiles(currentDir)
+	log.Printf("Found %d Argo CD file(s) in %s\n", len(analysis.YamlFiles), currentDir)
 
 	log.Println("Creating output directory at ./" + outputDirectory)
 	err = os.MkdirAll(outputDirectory, 0755)

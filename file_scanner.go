@@ -9,7 +9,7 @@ import (
 )
 
 // discoverYamlFiles recursively scans a folder and returns a list of files with yaml or yml extensions
-func discoverYamlFiles(folderPath string) []string {
+func (analysis *ArgoCDAnalysis) discoverYamlFiles(folderPath string) {
 	log.Printf("Scanning for YAML files under %s", folderPath)
 
 	var yamlFiles []string
@@ -41,7 +41,8 @@ func discoverYamlFiles(folderPath string) []string {
 	if err != nil {
 		// Log error but don't fail completely
 		log.Printf("Scanner -> Error scanning for YAML files: %v", err)
-		return yamlFiles
+		analysis.YamlFiles = yamlFiles
+		return
 	}
 
 	// Print folder information for folders that contain YAML files in alphabetical order
@@ -72,5 +73,6 @@ func discoverYamlFiles(folderPath string) []string {
 	}
 
 	log.Printf("Scanner -> Found %d YAML file(s) in %s", len(yamlFiles), folderPath)
-	return yamlFiles
+	analysis.YamlFiles = yamlFiles
+
 }
