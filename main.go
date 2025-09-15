@@ -9,7 +9,8 @@ import (
 )
 
 const (
-	outputDirectory = "argocd-doctor-output"
+	templateDirectory = "report-template/html"
+	outputDirectory   = "argocd-doctor-output"
 )
 
 type Rule struct {
@@ -39,12 +40,12 @@ func main() {
 		log.Fatal(err)
 	}
 
-	copy("report-template/html-mockup/style.css", outputDirectory+"/style.css")
-	copy("report-template/html-mockup/favicon.png", outputDirectory+"/favicon.png")
+	copy(templateDirectory+"/style.css", outputDirectory+"/style.css")
+	copy(templateDirectory+"/favicon.png", outputDirectory+"/favicon.png")
 
 	log.Println("Rendering HTML report at ./" + outputDirectory + "/index.html")
 
-	tmpl, err := template.ParseFiles("report-template/html-mockup/index.html")
+	tmpl, err := template.ParseFiles(templateDirectory + "/index.html.tpl")
 	if err != nil {
 		log.Fatal(err)
 	}
