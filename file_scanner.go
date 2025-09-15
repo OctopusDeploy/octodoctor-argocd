@@ -6,6 +6,8 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
+
+	"gopkg.in/yaml.v3"
 )
 
 // discoverYamlFiles recursively scans a folder and returns a list of files with yaml or yml extensions
@@ -75,4 +77,50 @@ func (analysis *ArgoCDAnalysis) discoverYamlFiles(folderPath string) {
 	log.Printf("Scanner -> Found %d YAML file(s) in %s", len(yamlFiles), folderPath)
 	analysis.YamlFiles = yamlFiles
 
+}
+
+// filterArgoCDFiles filters YAML files to keep only ArgoCD Application and ApplicationSet resources
+func (analysis *ArgoCDAnalysis) filterArgoCDFiles() {
+	log.Printf("Filtering %d YAML files for ArgoCD resources", len(analysis.YamlFiles))
+
+	var argoCDFiles []string
+
+	for _, filePath := range analysis.YamlFiles {
+		// Read file contents
+		fileData, err := os.ReadFile(filePath)
+		if err != nil {
+			log.Printf("Scanner -> Error reading file %s: %v", filePath, err)
+			continue
+		}
+
+		// Parse YAML into a map
+		var yamlContent map[string]interface{}
+		err = yaml.Unmarshal(fileData, &yamlContent)
+		if err != nil {
+			log.Printf("Scanner -> Error parsing YAML file %s: %v", filePath, err)
+			continue
+		}
+
+		// Extract apiVersion and kind
+		apiVersion, ok := yamlContent["apiVersion"].(string)
+		if !ok {
+			// apiVersion not found or not a string, skip this file
+			continue
+		}
+
+		kind, ok := yamlContent["kind"].(string)
+		if !ok {
+			// kind not found or not a string, skip this file
+			continue
+		}
+
+		// Filter for ArgoCD resources
+		if apiVersion == "argoproj.io/v1alpha1" && (kind == "Application" || kind == "ApplicationSet") {
+			argoCDFiles = append(argoCDFiles, filePath)
+			log.Printf("Scanner -> Found ArgoCD %s: %s", kind, filePath)
+		}
+	}
+
+	log.Printf("Scanner -> Filtered to %d ArgoCD resource(s)", len(argoCDFiles))
+	analysis.ArgoCDFiles = argoCDFiles
 }

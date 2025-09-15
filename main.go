@@ -21,7 +21,8 @@ type Rule struct {
 }
 
 type ArgoCDAnalysis struct {
-	YamlFiles []string
+	YamlFiles   []string //These are all YAML files detected
+	ArgoCDFiles []string //These are Argo CD applications, application sets and configmaps
 
 	RulesFailed   []Rule
 	RulesPassed   []Rule
@@ -31,7 +32,7 @@ type ArgoCDAnalysis struct {
 // Final template that contains all information. Rendered with report-template/html/index.html.tpl
 type templateData struct {
 	Now      time.Time //when was the report was generated
-	analysis ArgoCDAnalysis
+	Analysis ArgoCDAnalysis
 }
 
 func main() {
@@ -43,9 +44,10 @@ func main() {
 	}
 
 	analysis := ArgoCDAnalysis{}
-	// Find Argo CD files
+	// Find All YAML files (regardless of their contents)
 	analysis.discoverYamlFiles(currentDir)
-	log.Printf("Found %d Argo CD file(s) in %s\n", len(analysis.YamlFiles), currentDir)
+	analysis.filterArgoCDFiles()
+	// log.Printf("Found %d Argo CD file(s) in %s\n", len(analysis.YamlFiles), currentDir)
 
 	log.Println("Creating output directory at ./" + outputDirectory)
 	err = os.MkdirAll(outputDirectory, 0755)
@@ -74,8 +76,8 @@ func main() {
 	}()
 
 	tData := templateData{
-		Now: time.Now(),
-		// VersionsFound: versionsFound,
+		Now:      time.Now(),
+		Analysis: analysis,
 	}
 
 	err = tmpl.Execute(f, tData)
