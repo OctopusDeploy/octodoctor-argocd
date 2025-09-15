@@ -30,3 +30,9 @@ go.work.sum
 # Editor/IDE
 # .idea/
 # .vscode/
+
+## output folder
+argocd-doctor-output/
+
+## binary
+argocd-doctor
