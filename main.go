@@ -13,7 +13,7 @@ const (
 	outputDirectory   = "argocd-doctor-output"
 )
 
-type Rule struct {
+type RuleExecution struct {
 	ID             string
 	Name           string
 	Description    string
@@ -35,9 +35,9 @@ type ArgoCDAnalysis struct {
 	AppProjects     []ArgoCDFile
 	ConfigMaps      []ArgoCDFile
 
-	RulesFailed   []Rule
-	RulesPassed   []Rule
-	RulesInactive []Rule
+	RulesFailed   []RuleExecution
+	RulesPassed   []RuleExecution
+	RulesInactive []RuleExecution
 }
 
 // Final template that contains all information. Rendered with report-template/html/index.html.tpl
