@@ -131,6 +131,10 @@ func (analysis *ArgoCDAnalysis) filterArgoCDFiles() {
 			analysis.ApplicationSets = append(analysis.ApplicationSets, argoCDFile)
 			argoCDFiles = append(argoCDFiles, filePath)
 			log.Printf("Scanner -> Found ArgoCD ApplicationSet: %s", filePath)
+		} else if apiVersion == "argoproj.io/v1alpha1" && kind == "AppProject" {
+			analysis.AppProjects = append(analysis.AppProjects, argoCDFile)
+			argoCDFiles = append(argoCDFiles, filePath)
+			log.Printf("Scanner -> Found ArgoCD AppProject: %s", filePath)
 		} else if apiVersion == "v1" && kind == "ConfigMap" {
 			analysis.ConfigMaps = append(analysis.ConfigMaps, argoCDFile)
 			argoCDFiles = append(argoCDFiles, filePath)

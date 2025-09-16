@@ -32,6 +32,7 @@ type ArgoCDAnalysis struct {
 
 	Applications    []ArgoCDFile
 	ApplicationSets []ArgoCDFile
+	AppProjects     []ArgoCDFile
 	ConfigMaps      []ArgoCDFile
 
 	RulesFailed   []Rule
@@ -57,8 +58,8 @@ func main() {
 	// Find All YAML files (regardless of their contents)
 	analysis.discoverYamlFiles(currentDir)
 	analysis.filterArgoCDFiles()
-	log.Printf("Found %d Applications, %d ApplicationSets, %d ConfigMaps",
-		len(analysis.Applications), len(analysis.ApplicationSets), len(analysis.ConfigMaps))
+	log.Printf("Found %d Applications, %d ApplicationSets, %d AppProjects, %d ConfigMaps",
+		len(analysis.Applications), len(analysis.ApplicationSets), len(analysis.AppProjects), len(analysis.ConfigMaps))
 
 	log.Println("Creating output directory at ./" + outputDirectory)
 	err = os.MkdirAll(outputDirectory, 0755)
