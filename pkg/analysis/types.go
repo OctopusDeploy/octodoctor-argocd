@@ -27,10 +27,12 @@ type ArgoCDAnalysis struct {
 	RulesInactive []RuleExecution
 }
 
-type GlobalRule interface {
-	Execute(analysis *ArgoCDAnalysis) error
-}
-
+// File rules look at at specific file. They run multiple times (one for each file detected)
 type FileRule interface {
 	Execute(analysis *ArgoCDAnalysis, file ArgoCDFile) error
+}
+
+// Global rules look at the entire analysis. They run only once.
+type GlobalRule interface {
+	Execute(analysis *ArgoCDAnalysis) error
 }
