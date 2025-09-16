@@ -136,12 +136,51 @@ func (analysis *ArgoCDAnalysis) filterArgoCDFiles() {
 			argoCDFiles = append(argoCDFiles, filePath)
 			log.Printf("Scanner -> Found ArgoCD AppProject: %s", filePath)
 		} else if apiVersion == "v1" && kind == "ConfigMap" {
-			analysis.ConfigMaps = append(analysis.ConfigMaps, argoCDFile)
-			argoCDFiles = append(argoCDFiles, filePath)
-			log.Printf("Scanner -> Found ConfigMap: %s", filePath)
+			isArgoCD, name := isArgoCDConfigMap(yamlContent)
+
+			if isArgoCD {
+				analysis.ConfigMaps = append(analysis.ConfigMaps, argoCDFile)
+				argoCDFiles = append(argoCDFiles, filePath)
+				log.Printf("Scanner -> Found allowed ConfigMap: %s (name: %s)", filePath, name)
+			}
 		}
 	}
 
 	log.Printf("Scanner -> Filtered to %d total ArgoCD resource(s) and ConfigMaps", len(argoCDFiles))
 	analysis.AnalyzedFiles = argoCDFiles
+}
+
+// isArgoCDConfigMap checks if a ConfigMap belong to Argo CD configuration
+func isArgoCDConfigMap(yamlContent map[string]interface{}) (bool, string) {
+
+	// Allowed ArgoCD ConfigMap names
+	var allowedArgoCDConfigMaps = []string{
+		"argocd-cm",
+		"argocd-cmd-params-cm",
+		"argocd-rbac-cm",
+		"argocd-tls-certs-cm",
+		"argocd-ssh-known-hosts-cm",
+	}
+
+	// Read metadata.name
+	metadata, ok := yamlContent["metadata"].(map[string]interface{})
+	if !ok {
+		// metadata not found or not a map
+		return false, ""
+	}
+
+	name, ok := metadata["name"].(string)
+	if !ok {
+		// name not found or not a string
+		return false, ""
+	}
+
+	// Check if the ConfigMap name is in the allowed list
+	for _, allowedName := range allowedArgoCDConfigMaps {
+		if name == allowedName {
+			return true, name
+		}
+	}
+
+	return false, name
 }
