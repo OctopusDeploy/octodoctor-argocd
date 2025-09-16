@@ -37,18 +37,8 @@ func main() {
 	log.Printf("Found %d Applications, %d ApplicationSets, %d AppProjects, %d ConfigMaps",
 		len(file_analysis.Applications), len(file_analysis.ApplicationSets), len(file_analysis.AppProjects), len(file_analysis.ConfigMaps))
 
-	// Create an array with the rule interface
-	globalRules := []analysis.GlobalRule{
-		&rules.Rule99{},
-	}
-
-	// Execute all rules using the file_analysis as argument
-	for _, rule := range globalRules {
-		err := rule.Execute(&file_analysis)
-		if err != nil {
-			log.Printf("Error executing rule: %v", err)
-		}
-	}
+	registry := rules.NewRegistry()
+	registry.ExecuteAll(&file_analysis)
 
 	log.Printf("Found %d rules failed, %d rules passed", len(file_analysis.RulesFailed), len(file_analysis.RulesPassed))
 
