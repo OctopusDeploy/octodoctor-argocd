@@ -50,6 +50,8 @@ func main() {
 		}
 	}
 
+	log.Printf("Found %d rules failed, %d rules passed", len(file_analysis.RulesFailed), len(file_analysis.RulesPassed))
+
 	log.Println("Creating output directory at ./" + outputDirectory)
 	err = os.MkdirAll(outputDirectory, 0755)
 	if err != nil {
