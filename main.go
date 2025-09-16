@@ -13,33 +13,6 @@ const (
 	outputDirectory   = "argocd-doctor-output"
 )
 
-type RuleExecution struct {
-	ID             string
-	Name           string
-	Description    string
-	FilesTriggered []string
-}
-
-type ArgoCDFile struct {
-	FullPath string
-	Name     string
-	Content  string
-}
-
-type ArgoCDAnalysis struct {
-	YamlFiles     []string //These are all YAML files detected
-	AnalyzedFiles []string //These are Argo CD applications, application sets and configmaps
-
-	Applications    []ArgoCDFile
-	ApplicationSets []ArgoCDFile
-	AppProjects     []ArgoCDFile
-	ConfigMaps      []ArgoCDFile
-
-	RulesFailed   []RuleExecution
-	RulesPassed   []RuleExecution
-	RulesInactive []RuleExecution
-}
-
 // Final template that contains all information. Rendered with report-template/html/index.html.tpl
 type templateData struct {
 	Now      time.Time //when was the report was generated
