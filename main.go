@@ -6,6 +6,8 @@ import (
 	"log"
 	"os"
 	"time"
+
+	"github.com/codefresh-contrib/argocd-doctor/pkg/analysis"
 )
 
 const (
@@ -16,7 +18,7 @@ const (
 // Final template that contains all information. Rendered with report-template/html/index.html.tpl
 type templateData struct {
 	Now      time.Time //when was the report was generated
-	Analysis ArgoCDAnalysis
+	Analysis analysis.ArgoCDAnalysis
 }
 
 func main() {
@@ -27,12 +29,12 @@ func main() {
 		log.Fatal("Failed to get current directory: ", err)
 	}
 
-	analysis := ArgoCDAnalysis{}
+	file_analysis := analysis.ArgoCDAnalysis{}
 	// Find All YAML files (regardless of their contents)
-	analysis.discoverYamlFiles(currentDir)
-	analysis.filterArgoCDFiles()
+	file_analysis.DiscoverYamlFiles(currentDir)
+	file_analysis.FilterArgoCDFiles()
 	log.Printf("Found %d Applications, %d ApplicationSets, %d AppProjects, %d ConfigMaps",
-		len(analysis.Applications), len(analysis.ApplicationSets), len(analysis.AppProjects), len(analysis.ConfigMaps))
+		len(file_analysis.Applications), len(file_analysis.ApplicationSets), len(file_analysis.AppProjects), len(file_analysis.ConfigMaps))
 
 	log.Println("Creating output directory at ./" + outputDirectory)
 	err = os.MkdirAll(outputDirectory, 0755)
@@ -62,7 +64,7 @@ func main() {
 
 	tData := templateData{
 		Now:      time.Now(),
-		Analysis: analysis,
+		Analysis: file_analysis,
 	}
 
 	err = tmpl.Execute(f, tData)

@@ -1,4 +1,4 @@
-package main
+package analysis
 
 import (
 	"log"
@@ -11,7 +11,7 @@ import (
 )
 
 // discoverYamlFiles recursively scans a folder and returns a list of files with yaml or yml extensions
-func (analysis *ArgoCDAnalysis) discoverYamlFiles(folderPath string) {
+func (analysis *ArgoCDAnalysis) DiscoverYamlFiles(folderPath string) {
 	log.Printf("Scanning for YAML files under %s", folderPath)
 
 	var yamlFiles []string
@@ -80,7 +80,7 @@ func (analysis *ArgoCDAnalysis) discoverYamlFiles(folderPath string) {
 }
 
 // filterArgoCDFiles filters YAML files to keep only ArgoCD Application, ApplicationSet resources and ConfigMaps
-func (analysis *ArgoCDAnalysis) filterArgoCDFiles() {
+func (analysis *ArgoCDAnalysis) FilterArgoCDFiles() {
 	log.Printf("Filtering %d YAML files for ArgoCD resources and ConfigMaps", len(analysis.YamlFiles))
 
 	var argoCDFiles []string

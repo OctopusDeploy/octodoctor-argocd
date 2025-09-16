@@ -1,4 +1,4 @@
-package main
+package analysis
 
 type RuleExecution struct {
 	ID             string
