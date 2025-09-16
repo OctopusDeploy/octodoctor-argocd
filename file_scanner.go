@@ -79,9 +79,9 @@ func (analysis *ArgoCDAnalysis) discoverYamlFiles(folderPath string) {
 
 }
 
-// filterArgoCDFiles filters YAML files to keep only ArgoCD Application and ApplicationSet resources
+// filterArgoCDFiles filters YAML files to keep only ArgoCD Application, ApplicationSet resources and ConfigMaps
 func (analysis *ArgoCDAnalysis) filterArgoCDFiles() {
-	log.Printf("Filtering %d YAML files for ArgoCD resources", len(analysis.YamlFiles))
+	log.Printf("Filtering %d YAML files for ArgoCD resources and ConfigMaps", len(analysis.YamlFiles))
 
 	var argoCDFiles []string
 
@@ -114,13 +114,30 @@ func (analysis *ArgoCDAnalysis) filterArgoCDFiles() {
 			continue
 		}
 
-		// Filter for ArgoCD resources
-		if apiVersion == "argoproj.io/v1alpha1" && (kind == "Application" || kind == "ApplicationSet") {
+		// Create ArgoCDFile entry with file details
+		fileName := filepath.Base(filePath)
+		argoCDFile := ArgoCDFile{
+			FullPath: filePath,
+			Name:     fileName,
+			Content:  string(fileData),
+		}
+
+		// Categorize and store the file based on its type
+		if apiVersion == "argoproj.io/v1alpha1" && kind == "Application" {
+			analysis.Applications = append(analysis.Applications, argoCDFile)
 			argoCDFiles = append(argoCDFiles, filePath)
-			log.Printf("Scanner -> Found ArgoCD %s: %s", kind, filePath)
+			log.Printf("Scanner -> Found ArgoCD Application: %s", filePath)
+		} else if apiVersion == "argoproj.io/v1alpha1" && kind == "ApplicationSet" {
+			analysis.ApplicationSets = append(analysis.ApplicationSets, argoCDFile)
+			argoCDFiles = append(argoCDFiles, filePath)
+			log.Printf("Scanner -> Found ArgoCD ApplicationSet: %s", filePath)
+		} else if apiVersion == "v1" && kind == "ConfigMap" {
+			analysis.ConfigMaps = append(analysis.ConfigMaps, argoCDFile)
+			argoCDFiles = append(argoCDFiles, filePath)
+			log.Printf("Scanner -> Found ConfigMap: %s", filePath)
 		}
 	}
 
-	log.Printf("Scanner -> Filtered to %d ArgoCD resource(s)", len(argoCDFiles))
-	analysis.ArgoCDFiles = argoCDFiles
+	log.Printf("Scanner -> Filtered to %d total ArgoCD resource(s) and ConfigMaps", len(argoCDFiles))
+	analysis.AnalyzedFiles = argoCDFiles
 }

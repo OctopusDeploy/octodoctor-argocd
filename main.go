@@ -20,9 +20,19 @@ type Rule struct {
 	FilesTriggered []string
 }
 
+type ArgoCDFile struct {
+	FullPath string
+	Name     string
+	Content  string
+}
+
 type ArgoCDAnalysis struct {
-	YamlFiles   []string //These are all YAML files detected
-	ArgoCDFiles []string //These are Argo CD applications, application sets and configmaps
+	YamlFiles     []string //These are all YAML files detected
+	AnalyzedFiles []string //These are Argo CD applications, application sets and configmaps
+
+	Applications    []ArgoCDFile
+	ApplicationSets []ArgoCDFile
+	ConfigMaps      []ArgoCDFile
 
 	RulesFailed   []Rule
 	RulesPassed   []Rule
@@ -47,7 +57,8 @@ func main() {
 	// Find All YAML files (regardless of their contents)
 	analysis.discoverYamlFiles(currentDir)
 	analysis.filterArgoCDFiles()
-	// log.Printf("Found %d Argo CD file(s) in %s\n", len(analysis.YamlFiles), currentDir)
+	log.Printf("Found %d Applications, %d ApplicationSets, %d ConfigMaps",
+		len(analysis.Applications), len(analysis.ApplicationSets), len(analysis.ConfigMaps))
 
 	log.Println("Creating output directory at ./" + outputDirectory)
 	err = os.MkdirAll(outputDirectory, 0755)

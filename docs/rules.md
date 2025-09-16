@@ -21,7 +21,7 @@ The tool will look at the extracted contents of a Codefresh support package and 
 1. Found Application Sets with 3 levels of generators
 1. Having only a single Application Set
 1. Found Applications with auto-sync off
-1. Found Applications with auto-sync on but self-heal of
+1. Found Applications with auto-sync on but self-heal off
 1. Found Applications with prune = true
 1. Found Application CRDs with hardcoded values in helm: property
 1. Found Application CRDs with hardcoded values in kustomize: property
