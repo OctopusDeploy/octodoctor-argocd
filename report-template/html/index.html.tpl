@@ -9,7 +9,7 @@
 </head>
 <body>
   <h1>Argo CD Doctor Analysis Report</h1>
-  <p class="report-info">Generated at Generated at {{.Now.Format "02 Jan 2006 15:04 MST"}}</p>
+  <p class="report-info">Generated at {{.Now.Format "02 Jan 2006 15:04 MST"}}</p>
 
   <section class="scan-results">
     <h2>Issues found that need attention</h2>
@@ -22,47 +22,17 @@
         </tr>
       </thead>
       <tbody>
+        {{range .Analysis.RulesFailed}}
         <tr class="severity-high">
-          <td class="rule-id">R01</td>
-          <td class="rule-description">JWT token exposed in configuration</td>
+          <td class="rule-id">{{.ID}}</td>
+          <td class="rule-description">{{.Description}}</td>
           <td class="affected-files">
-            <div class="file-item">config/auth.yaml</div>
-            <div class="file-item">manifests/secret.yaml</div>
-            <div class="file-item">deploy/values.yaml</div>
+            {{range .FilesTriggered}}
+            <div class="file-item">{{.}}</div>
+            {{end}}
           </td>
         </tr>
-        <tr class="severity-medium">
-          <td class="rule-id">R03</td>
-          <td class="rule-description">Insecure HTTP endpoint detected</td>
-          <td class="affected-files">
-            <div class="file-item">ingress/web.yaml</div>
-            <div class="file-item">service/api.yaml</div>
-          </td>
-        </tr>
-        <tr class="severity-high">
-          <td class="rule-id">R05</td>
-          <td class="rule-description">Default credentials found. You should always use a strong password and avoid using default credentials.</td>
-          <td class="affected-files">
-            <div class="file-item">config/database.yaml</div>
-          </td>
-        </tr>
-        <tr class="severity-low">
-          <td class="rule-id">R07</td>
-          <td class="rule-description">Weak encryption algorithm used</td>
-          <td class="affected-files">
-            <div class="file-item">crypto/tls.yaml</div>
-            <div class="file-item">security/cert.yaml</div>
-            <div class="file-item">config/encryption.yaml</div>
-          </td>
-        </tr>
-        <tr class="severity-medium">
-          <td class="rule-id">R12</td>
-          <td class="rule-description">Privileged container configuration</td>
-          <td class="affected-files">
-            <div class="file-item">deploy/worker.yaml</div>
-            <div class="file-item">pods/admin.yaml</div>
-          </td>
-        </tr>
+        {{end}}
       </tbody>
     </table>
 
@@ -75,34 +45,12 @@
         </tr>
       </thead>
       <tbody>
+        {{range .Analysis.RulesPassed}}
         <tr>
-          <td class="rule-id">R02</td>
-          <td class="rule-description">API keys stored in plain text</td>
+          <td class="rule-id">{{.ID}}</td>
+          <td class="rule-description">{{.Description}}</td>
         </tr>
-        <tr>
-          <td class="rule-id">R04</td>
-          <td class="rule-description">Missing RBAC configuration</td>
-        </tr>
-        <tr>
-          <td class="rule-id">R06</td>
-          <td class="rule-description">Unencrypted secrets in manifests</td>
-        </tr>
-        <tr>
-          <td class="rule-id">R08</td>
-          <td class="rule-description">Missing network policies</td>
-        </tr>
-        <tr>
-          <td class="rule-id">R09</td>
-          <td class="rule-description">Outdated base images detected</td>
-        </tr>
-        <tr>
-          <td class="rule-id">R10</td>
-          <td class="rule-description">Root user in container</td>
-        </tr>
-        <tr>
-          <td class="rule-id">R11</td>
-          <td class="rule-description">Missing security context</td>
-        </tr>
+        {{end}}
       </tbody>
     </table>
 
@@ -115,30 +63,12 @@
         </tr>
       </thead>
       <tbody>
+        {{range .Analysis.RulesInactive}}
         <tr>
-          <td class="rule-id">R13</td>
-          <td class="rule-description">Hardcoded passwords in source code</td>
+          <td class="rule-id">{{.ID}}</td>
+          <td class="rule-description">{{.Description}}</td>
         </tr>
-        <tr>
-          <td class="rule-id">R14</td>
-          <td class="rule-description">Insecure TLS configuration</td>
-        </tr>
-        <tr>
-          <td class="rule-id">R15</td>
-          <td class="rule-description">Missing input validation</td>
-        </tr>
-        <tr>
-          <td class="rule-id">R16</td>
-          <td class="rule-description">Excessive file permissions</td>
-        </tr>
-        <tr>
-          <td class="rule-id">R17</td>
-          <td class="rule-description">Deprecated Kubernetes API versions</td>
-        </tr>
-        <tr>
-          <td class="rule-id">R18</td>
-          <td class="rule-description">Missing pod security standards</td>
-        </tr>
+        {{end}}
       </tbody>
     </table>
   </section>
