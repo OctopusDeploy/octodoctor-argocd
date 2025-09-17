@@ -8,6 +8,7 @@ import (
 
 type RuleResult struct {
 	Passed    bool
+	Active    bool
 	Execution analysis.RuleExecution
 }
 
@@ -44,7 +45,9 @@ func (r *Registry) ExecuteAll(file_analysis *analysis.ArgoCDAnalysis) error {
 		if err != nil {
 			log.Printf("Error executing rule: %v", err)
 		}
-		if result.Passed {
+		if !result.Active {
+			file_analysis.RulesInactive = append(file_analysis.RulesInactive, result.Execution)
+		} else if result.Passed {
 			file_analysis.RulesPassed = append(file_analysis.RulesPassed, result.Execution)
 		} else {
 			file_analysis.RulesFailed = append(file_analysis.RulesFailed, result.Execution)

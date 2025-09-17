@@ -73,6 +73,7 @@ func (r *Rule01) Execute(file_analysis *analysis.ArgoCDAnalysis) (RuleResult, er
 			FilesTriggered: failedFiles,
 		}
 		return RuleResult{
+			Active:    true,
 			Passed:    false,
 			Execution: result,
 		}, nil
@@ -83,12 +84,13 @@ func (r *Rule01) Execute(file_analysis *analysis.ArgoCDAnalysis) (RuleResult, er
 		result := analysis.RuleExecution{
 			ID:             r.Metadata().ID,
 			Name:           r.Metadata().Name,
-			Description:    "No applications have automated sync policy configured.",
-			FilesTriggered: inactiveFiles,
+			Description:    r.Metadata().PassDescription,
+			FilesTriggered: nil,
 		}
 		// Note: The registry doesn't handle inactive rules yet, so we'll return as passed
 		// but this could be extended to support RulesInactive
 		return RuleResult{
+			Active:    false,
 			Passed:    true,
 			Execution: result,
 		}, nil
@@ -103,6 +105,7 @@ func (r *Rule01) Execute(file_analysis *analysis.ArgoCDAnalysis) (RuleResult, er
 		FilesTriggered: allFiles,
 	}
 	return RuleResult{
+		Active:    true,
 		Passed:    true,
 		Execution: result,
 	}, nil

@@ -28,6 +28,7 @@ func (r *Rule98) Execute(file_analysis *analysis.ArgoCDAnalysis) (RuleResult, er
 			FilesTriggered: []string{},
 		}
 		return RuleResult{
+			Active:    true,
 			Passed:    false,
 			Execution: result,
 		}, nil
@@ -40,6 +41,7 @@ func (r *Rule98) Execute(file_analysis *analysis.ArgoCDAnalysis) (RuleResult, er
 		FilesTriggered: []string{},
 	}
 	return RuleResult{
+		Active:    true,
 		Passed:    true,
 		Execution: result,
 	}, nil
