@@ -1,6 +1,7 @@
 package report
 
 import (
+	"fmt"
 	"html/template"
 	"io"
 	"log"
@@ -60,6 +61,9 @@ func GenerateHTMLReport(analysis *analysis.ArgoCDAnalysis, templateDirectory, ou
 
 	log.Println("Rendering HTML report at ./" + outputDirectory + "/index.html")
 
+	// Beautify the analysis data for HTML display
+	beautifyHTMLreport(analysis)
+
 	// Parse the HTML template
 	tmpl, err := template.ParseFiles(templateDirectory + "/index.html.tpl")
 	if err != nil {
@@ -87,5 +91,23 @@ func GenerateHTMLReport(analysis *analysis.ArgoCDAnalysis, templateDirectory, ou
 	err = tmpl.Execute(f, tData)
 	if err != nil {
 		log.Fatal("Could not render HTML template: ", err)
+	}
+}
+
+// beautifyHTMLreport truncates FilesTriggered arrays in RulesFailed to maximum 4 entries
+// If more than 4 files exist, the 4th entry becomes "+X more files" where X is the count of extra files
+func beautifyHTMLreport(analysis *analysis.ArgoCDAnalysis) {
+	for i := range analysis.RulesFailed {
+		rule := &analysis.RulesFailed[i]
+		filesCount := len(rule.FilesTriggered)
+
+		if filesCount > 4 {
+			// Calculate how many extra files there are
+			extraFiles := filesCount - 3 // We keep 3 original files + 1 summary entry
+
+			// Truncate to first 3 files and add summary
+			rule.FilesTriggered = rule.FilesTriggered[:3]
+			rule.FilesTriggered = append(rule.FilesTriggered, fmt.Sprintf("+%d more files", extraFiles))
+		}
 	}
 }
