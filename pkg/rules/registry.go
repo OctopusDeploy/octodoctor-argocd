@@ -30,6 +30,7 @@ type Registry struct {
 func NewRegistry() *Registry {
 	return &Registry{
 		Rules: []Rule{
+			&Rule01{},
 			&Rule98{},
 			&Rule99{},
 		},
