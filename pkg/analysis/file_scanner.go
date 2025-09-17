@@ -130,31 +130,40 @@ func (analysis *ArgoCDAnalysis) FilterArgoCDFiles() {
 		}
 
 		// Categorize and store the file based on its type
-		if apiVersion == "argoproj.io/v1alpha1" && kind == "Application" {
-			analysis.Applications = append(analysis.Applications, argoCDFile)
+		if analysis.categorizeAndStoreFile(apiVersion, kind, argoCDFile, yamlContent) {
 			argoCDFiles = append(argoCDFiles, filePath)
-			log.Printf("Scanner -> Found ArgoCD Application: %s", filePath)
-		} else if apiVersion == "argoproj.io/v1alpha1" && kind == "ApplicationSet" {
-			analysis.ApplicationSets = append(analysis.ApplicationSets, argoCDFile)
-			argoCDFiles = append(argoCDFiles, filePath)
-			log.Printf("Scanner -> Found ArgoCD ApplicationSet: %s", filePath)
-		} else if apiVersion == "argoproj.io/v1alpha1" && kind == "AppProject" {
-			analysis.AppProjects = append(analysis.AppProjects, argoCDFile)
-			argoCDFiles = append(argoCDFiles, filePath)
-			log.Printf("Scanner -> Found ArgoCD AppProject: %s", filePath)
-		} else if apiVersion == "v1" && kind == "ConfigMap" {
-			isArgoCD, name := isArgoCDConfigMap(yamlContent)
-
-			if isArgoCD {
-				analysis.ConfigMaps = append(analysis.ConfigMaps, argoCDFile)
-				argoCDFiles = append(argoCDFiles, filePath)
-				log.Printf("Scanner -> Found allowed ConfigMap: %s (name: %s)", filePath, name)
-			}
 		}
 	}
 
 	log.Printf("Scanner -> Filtered to %d total ArgoCD resource(s) and ConfigMaps", len(argoCDFiles))
 	analysis.AnalyzedFiles = argoCDFiles
+}
+
+// categorizeAndStoreFile categorizes and stores files according to their type
+// Returns true if the file was categorized and stored, false otherwise
+func (analysis *ArgoCDAnalysis) categorizeAndStoreFile(apiVersion, kind string, argoCDFile ArgoCDFile, yamlContent map[string]interface{}) bool {
+	if apiVersion == "argoproj.io/v1alpha1" && kind == "Application" {
+		analysis.Applications = append(analysis.Applications, argoCDFile)
+		log.Printf("Scanner -> Found ArgoCD Application: %s", argoCDFile.FullPath)
+		return true
+	} else if apiVersion == "argoproj.io/v1alpha1" && kind == "ApplicationSet" {
+		analysis.ApplicationSets = append(analysis.ApplicationSets, argoCDFile)
+		log.Printf("Scanner -> Found ArgoCD ApplicationSet: %s", argoCDFile.FullPath)
+		return true
+	} else if apiVersion == "argoproj.io/v1alpha1" && kind == "AppProject" {
+		analysis.AppProjects = append(analysis.AppProjects, argoCDFile)
+		log.Printf("Scanner -> Found ArgoCD AppProject: %s", argoCDFile.FullPath)
+		return true
+	} else if apiVersion == "v1" && kind == "ConfigMap" {
+		isArgoCD, name := isArgoCDConfigMap(yamlContent)
+
+		if isArgoCD {
+			analysis.ConfigMaps = append(analysis.ConfigMaps, argoCDFile)
+			log.Printf("Scanner -> Found allowed ConfigMap: %s (name: %s)", argoCDFile.FullPath, name)
+			return true
+		}
+	}
+	return false
 }
 
 // isArgoCDConfigMap checks if a ConfigMap belong to Argo CD configuration
