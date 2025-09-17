@@ -1,4 +1,4 @@
-# R05 - Example where sourceRepos is set to '*'
+# R05 - Example where sourceRepos is not set to '*'
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
@@ -13,4 +13,4 @@ spec:
 
   # Allow manifests to deploy from any Git repos
   sourceRepos:
-  - '*'
+  - "https://github.com/acme/revenue/*"
