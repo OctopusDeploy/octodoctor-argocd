@@ -64,49 +64,5 @@ func (r *Rule01) Execute(file_analysis *analysis.ArgoCDAnalysis) (RuleResult, er
 	}
 
 	// Determine overall rule result
-	if len(failedFiles) > 0 {
-		// Rule fails if any application has the dangerous combination
-		result := analysis.RuleExecution{
-			ID:             r.Metadata().ID,
-			Name:           r.Metadata().Name,
-			Description:    r.Metadata().FailDescription,
-			FilesTriggered: failedFiles,
-		}
-		return RuleResult{
-			Active:    true,
-			Passed:    false,
-			Execution: result,
-		}, nil
-	}
-
-	// If we have inactive files but no failed files, mark as inactive
-	if len(inactiveFiles) > 0 && len(passedFiles) == 0 {
-		result := analysis.RuleExecution{
-			ID:             r.Metadata().ID,
-			Name:           r.Metadata().Name,
-			Description:    r.Metadata().PassDescription,
-			FilesTriggered: nil,
-		}
-		// Note: The registry doesn't handle inactive rules yet, so we'll return as passed
-		// but this could be extended to support RulesInactive
-		return RuleResult{
-			Active:    false,
-			Passed:    true,
-			Execution: result,
-		}, nil
-	}
-
-	// Rule passes
-	allFiles := append(passedFiles, inactiveFiles...)
-	result := analysis.RuleExecution{
-		ID:             r.Metadata().ID,
-		Name:           r.Metadata().Name,
-		Description:    r.Metadata().PassDescription,
-		FilesTriggered: allFiles,
-	}
-	return RuleResult{
-		Active:    true,
-		Passed:    true,
-		Execution: result,
-	}, nil
+	return determineRuleResult(r.Metadata(), failedFiles, passedFiles, inactiveFiles)
 }

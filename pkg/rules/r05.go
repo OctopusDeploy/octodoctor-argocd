@@ -71,47 +71,5 @@ func (r *Rule05) Execute(file_analysis *analysis.ArgoCDAnalysis) (RuleResult, er
 	}
 
 	// Determine overall rule result
-	if len(failedFiles) > 0 {
-		// Rule fails if any AppProject has wildcard in sourceRepos
-		result := analysis.RuleExecution{
-			ID:             r.Metadata().ID,
-			Name:           r.Metadata().Name,
-			Description:    r.Metadata().FailDescription,
-			FilesTriggered: failedFiles,
-		}
-		return RuleResult{
-			Active:    true,
-			Passed:    false,
-			Execution: result,
-		}, nil
-	}
-
-	// If we have inactive files but no failed files, mark as inactive
-	if len(inactiveFiles) > 0 && len(passedFiles) == 0 {
-		result := analysis.RuleExecution{
-			ID:             r.Metadata().ID,
-			Name:           r.Metadata().Name,
-			Description:    r.Metadata().PassDescription,
-			FilesTriggered: nil,
-		}
-		return RuleResult{
-			Active:    false,
-			Passed:    true,
-			Execution: result,
-		}, nil
-	}
-
-	// Rule passes
-	allFiles := append(passedFiles, inactiveFiles...)
-	result := analysis.RuleExecution{
-		ID:             r.Metadata().ID,
-		Name:           r.Metadata().Name,
-		Description:    r.Metadata().PassDescription,
-		FilesTriggered: allFiles,
-	}
-	return RuleResult{
-		Active:    true,
-		Passed:    true,
-		Execution: result,
-	}, nil
+	return determineRuleResult(r.Metadata(), failedFiles, passedFiles, inactiveFiles)
 }

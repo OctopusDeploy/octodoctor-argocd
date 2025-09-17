@@ -3,6 +3,7 @@ package rules
 import (
 	"strings"
 
+	"github.com/codefresh-contrib/argocd-doctor/pkg/analysis"
 	"gopkg.in/yaml.v3"
 )
 
@@ -52,4 +53,54 @@ func getBoolValue(node *yaml.Node) (bool, bool) {
 	}
 
 	return value, true
+}
+
+// determineRuleResult analyzes the collected file lists and determines the overall rule result
+// This is a common function used by multiple rules to avoid code duplication
+func determineRuleResult(metadata RuleMetadata, failedFiles, passedFiles, inactiveFiles []string) (RuleResult, error) {
+	if len(failedFiles) > 0 {
+		// Rule fails if any file has violations
+		result := analysis.RuleExecution{
+			ID:             metadata.ID,
+			Name:           metadata.Name,
+			Description:    metadata.FailDescription,
+			FilesTriggered: failedFiles,
+		}
+		return RuleResult{
+			Active:    true,
+			Passed:    false,
+			Execution: result,
+		}, nil
+	}
+
+	// If we have inactive files but no failed files, mark as inactive
+	if len(inactiveFiles) > 0 && len(passedFiles) == 0 {
+		result := analysis.RuleExecution{
+			ID:             metadata.ID,
+			Name:           metadata.Name,
+			Description:    metadata.PassDescription,
+			FilesTriggered: nil,
+		}
+		// Note: The registry doesn't handle inactive rules yet, so we'll return as passed
+		// but this could be extended to support RulesInactive
+		return RuleResult{
+			Active:    false,
+			Passed:    true,
+			Execution: result,
+		}, nil
+	}
+
+	// Rule passes
+	allFiles := append(passedFiles, inactiveFiles...)
+	result := analysis.RuleExecution{
+		ID:             metadata.ID,
+		Name:           metadata.Name,
+		Description:    metadata.PassDescription,
+		FilesTriggered: allFiles,
+	}
+	return RuleResult{
+		Active:    true,
+		Passed:    true,
+		Execution: result,
+	}, nil
 }
