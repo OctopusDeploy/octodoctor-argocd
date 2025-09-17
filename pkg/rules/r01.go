@@ -40,7 +40,7 @@ func (r *Rule01) Execute(file_analysis *analysis.ArgoCDAnalysis) (RuleResult, er
 		_, hasAutomated := getYAMLValue(&yamlDoc, "spec.syncPolicy.automated")
 		if !hasAutomated {
 			// syncPolicy is not automated, mark as inactive
-			inactiveFiles = append(inactiveFiles, app.FullPath)
+			inactiveFiles = append(inactiveFiles, app.Name)
 			continue
 		}
 
@@ -56,10 +56,10 @@ func (r *Rule01) Execute(file_analysis *analysis.ArgoCDAnalysis) (RuleResult, er
 		// PASS: if prune=false OR allowEmpty=true (or missing values)
 		if hasPrune && hasAllowEmpty && pruneValid && allowEmptyValid && prune && !allowEmpty {
 			// Dangerous combination: prune=true and allowEmpty=false
-			failedFiles = append(failedFiles, app.FullPath)
+			failedFiles = append(failedFiles, app.Name)
 		} else {
 			// Safe combination: either prune=false or allowEmpty=true (or missing values)
-			passedFiles = append(passedFiles, app.FullPath)
+			passedFiles = append(passedFiles, app.Name)
 		}
 	}
 

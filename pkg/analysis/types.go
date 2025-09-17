@@ -14,6 +14,7 @@ type ArgoCDFile struct {
 }
 
 type ArgoCDAnalysis struct {
+	BaseDirectory string   //Base directory for calculating relative paths
 	YamlFiles     []string //These are all YAML files detected
 	AnalyzedFiles []string //These are Argo CD applications, application sets and configmaps
 

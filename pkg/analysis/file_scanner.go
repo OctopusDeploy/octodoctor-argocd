@@ -12,6 +12,8 @@ import (
 
 // discoverYamlFiles recursively scans a folder and returns a list of files with yaml or yml extensions
 func (analysis *ArgoCDAnalysis) DiscoverYamlFiles(folderPath string) {
+	// Store base directory for relative path calculations
+	analysis.BaseDirectory = folderPath
 	log.Printf("Scanning for YAML files under %s", folderPath)
 
 	var yamlFiles []string
@@ -115,10 +117,15 @@ func (analysis *ArgoCDAnalysis) FilterArgoCDFiles() {
 		}
 
 		// Create ArgoCDFile entry with file details
-		fileName := filepath.Base(filePath)
+		// Calculate relative path from base directory
+		relativePath, err := filepath.Rel(analysis.BaseDirectory, filePath)
+		if err != nil {
+			// If we can't get relative path, use the full path as fallback
+			relativePath = filePath
+		}
 		argoCDFile := ArgoCDFile{
 			FullPath: filePath,
-			Name:     fileName,
+			Name:     relativePath,
 			Content:  string(fileData),
 		}
 
