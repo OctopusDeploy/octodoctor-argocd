@@ -32,6 +32,7 @@ func NewRegistry() *Registry {
 	return &Registry{
 		Rules: []Rule{
 			&Rule01{},
+			&Rule02{},
 			&Rule05{},
 			&Rule97{},
 			&Rule98{},
