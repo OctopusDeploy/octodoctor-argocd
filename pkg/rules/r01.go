@@ -52,10 +52,10 @@ func (r *Rule01) Execute(file_analysis *analysis.ArgoCDAnalysis) (RuleResult, er
 		allowEmpty, allowEmptyValid := getBoolValue(allowEmptyNode)
 
 		// Rule logic:
-		// FAIL: if prune=true AND allowEmpty=false
-		// PASS: if prune=false OR allowEmpty=true (or missing values)
-		if hasPrune && hasAllowEmpty && pruneValid && allowEmptyValid && prune && !allowEmpty {
-			// Dangerous combination: prune=true and allowEmpty=false
+		// FAIL: if prune=true AND allowEmpty=true
+		// PASS: if prune=false OR allowEmpty=false (or missing values)
+		if hasPrune && hasAllowEmpty && pruneValid && allowEmptyValid && prune && allowEmpty {
+			// Dangerous combination: prune=true and allowEmpty=true
 			failedFiles = append(failedFiles, app.Name)
 		} else {
 			// Safe combination: either prune=false or allowEmpty=true (or missing values)
