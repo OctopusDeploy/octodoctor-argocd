@@ -13,8 +13,8 @@ const (
 	appSetLimit = 10
 )
 
-func (r *Rule99) Metadata() analysis.RuleMetadata {
-	return analysis.RuleMetadata{
+func (r *Rule99) Metadata() RuleMetadata {
+	return RuleMetadata{
 		ID:              "R99",
 		Name:            "Check number of application sets",
 		PassDescription: "You have a reasonable number of application sets.",
@@ -23,7 +23,7 @@ func (r *Rule99) Metadata() analysis.RuleMetadata {
 	}
 }
 
-func (r *Rule99) Execute(file_analysis *analysis.ArgoCDAnalysis) (analysis.RuleResult, error) {
+func (r *Rule99) Execute(file_analysis *analysis.ArgoCDAnalysis) (RuleResult, error) {
 	if len(file_analysis.ApplicationSets) > appSetLimit {
 		result := analysis.RuleExecution{
 			ID:             r.Metadata().ID,
@@ -31,7 +31,7 @@ func (r *Rule99) Execute(file_analysis *analysis.ArgoCDAnalysis) (analysis.RuleR
 			Description:    r.Metadata().FailDescription,
 			FilesTriggered: []string{},
 		}
-		return analysis.RuleResult{
+		return RuleResult{
 			Passed:    false,
 			Execution: result,
 		}, nil
@@ -43,7 +43,7 @@ func (r *Rule99) Execute(file_analysis *analysis.ArgoCDAnalysis) (analysis.RuleR
 		Description:    r.Metadata().PassDescription,
 		FilesTriggered: []string{},
 	}
-	return analysis.RuleResult{
+	return RuleResult{
 		Passed:    true,
 		Execution: result,
 	}, nil

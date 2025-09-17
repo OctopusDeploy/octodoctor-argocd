@@ -6,26 +6,39 @@ import (
 	"github.com/codefresh-contrib/argocd-doctor/pkg/analysis"
 )
 
+type RuleResult struct {
+	Passed    bool
+	Execution analysis.RuleExecution
+}
+
+type RuleMetadata struct {
+	ID              string
+	Name            string
+	PassDescription string
+	FailDescription string
+	Severity        string // High, Medium
+}
+
+type Rule interface {
+	Execute(analysis *analysis.ArgoCDAnalysis) (RuleResult, error)
+}
+
 type Registry struct {
-	globalRules []analysis.GlobalRule
-	fileRules   []analysis.FileRule
+	Rules []Rule
 }
 
 func NewRegistry() *Registry {
 	return &Registry{
-		globalRules: []analysis.GlobalRule{
+		Rules: []Rule{
 			&Rule98{},
 			&Rule99{},
-		},
-		fileRules: []analysis.FileRule{
-			// Add file rules here
 		},
 	}
 }
 
 func (r *Registry) ExecuteAll(file_analysis *analysis.ArgoCDAnalysis) error {
 	// Execute all global rules at the end
-	for _, rule := range r.globalRules {
+	for _, rule := range r.Rules {
 		result, err := rule.Execute(file_analysis)
 		if err != nil {
 			log.Printf("Error executing rule: %v", err)

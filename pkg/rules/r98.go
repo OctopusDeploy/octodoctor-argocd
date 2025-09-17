@@ -9,8 +9,8 @@ import (
 type Rule98 struct {
 }
 
-func (r *Rule98) Metadata() analysis.RuleMetadata {
-	return analysis.RuleMetadata{
+func (r *Rule98) Metadata() RuleMetadata {
+	return RuleMetadata{
 		ID:              "R98",
 		Name:            "Check number of application sets",
 		PassDescription: "You are using application sets.",
@@ -19,7 +19,7 @@ func (r *Rule98) Metadata() analysis.RuleMetadata {
 	}
 }
 
-func (r *Rule98) Execute(file_analysis *analysis.ArgoCDAnalysis) (analysis.RuleResult, error) {
+func (r *Rule98) Execute(file_analysis *analysis.ArgoCDAnalysis) (RuleResult, error) {
 	if len(file_analysis.ApplicationSets) == 0 {
 		result := analysis.RuleExecution{
 			ID:             r.Metadata().ID,
@@ -27,7 +27,7 @@ func (r *Rule98) Execute(file_analysis *analysis.ArgoCDAnalysis) (analysis.RuleR
 			Description:    r.Metadata().FailDescription,
 			FilesTriggered: []string{},
 		}
-		return analysis.RuleResult{
+		return RuleResult{
 			Passed:    false,
 			Execution: result,
 		}, nil
@@ -39,7 +39,7 @@ func (r *Rule98) Execute(file_analysis *analysis.ArgoCDAnalysis) (analysis.RuleR
 		Description:    r.Metadata().PassDescription,
 		FilesTriggered: []string{},
 	}
-	return analysis.RuleResult{
+	return RuleResult{
 		Passed:    true,
 		Execution: result,
 	}, nil
