@@ -17,6 +17,33 @@ const (
 )
 
 func main() {
+	// Parse command line flags and get target directory
+	targetDir := parseDirectoryFlag()
+
+	//Step 1 - Read all YAML files
+	file_analysis := analysis.ArgoCDAnalysis{}
+	// Find All YAML files (regardless of their contents)
+	file_analysis.DiscoverYamlFiles(targetDir)
+	file_analysis.FilterArgoCDFiles()
+	log.Printf("Found %d Applications, %d ApplicationSets, %d AppProjects, %d ConfigMaps",
+		len(file_analysis.Applications), len(file_analysis.ApplicationSets), len(file_analysis.AppProjects), len(file_analysis.ConfigMaps))
+
+	//Step 2 - Execute all rules and get the results
+	registry := rules.NewRegistry()
+	log.Println("Checking all Argo CD files for best practices...")
+	registry.ExecuteAll(&file_analysis)
+
+	log.Printf("Analysis complete. %d rule(s) failed, %d rule(s) passed", len(file_analysis.RulesFailed), len(file_analysis.RulesPassed))
+
+	// Step 3 - Generate a nice HTML report
+	// Create output directory path relative to the target directory
+	outputPath := filepath.Join(targetDir, outputDirectory)
+	report.GenerateHTMLReport(&file_analysis, templateDirectory, outputPath)
+
+}
+
+// parseDirectoryFlag parses command line flags and returns the target directory to scan
+func parseDirectoryFlag() string {
 	// Define command line flags
 	var directory = flag.String("d", ".", "Directory to scan for ArgoCD files (default: current directory)")
 	flag.StringVar(directory, "directory", ".", "Directory to scan for ArgoCD files (default: current directory)")
@@ -40,24 +67,5 @@ func main() {
 		log.Fatalf("Directory does not exist: %s", targetDir)
 	}
 
-	//Step 1 - Read all YAML files
-	file_analysis := analysis.ArgoCDAnalysis{}
-	// Find All YAML files (regardless of their contents)
-	file_analysis.DiscoverYamlFiles(targetDir)
-	file_analysis.FilterArgoCDFiles()
-	log.Printf("Found %d Applications, %d ApplicationSets, %d AppProjects, %d ConfigMaps",
-		len(file_analysis.Applications), len(file_analysis.ApplicationSets), len(file_analysis.AppProjects), len(file_analysis.ConfigMaps))
-
-	//Step 2 - Execute all rules and get the results
-	registry := rules.NewRegistry()
-	log.Println("Checking all Argo CD files for best practices...")
-	registry.ExecuteAll(&file_analysis)
-
-	log.Printf("Analysis complete. %d rule(s) failed, %d rule(s) passed", len(file_analysis.RulesFailed), len(file_analysis.RulesPassed))
-
-	// Step 3 - Generate a nice HTML report
-	// Create output directory path relative to the target directory
-	outputPath := filepath.Join(targetDir, outputDirectory)
-	report.GenerateHTMLReport(&file_analysis, templateDirectory, outputPath)
-
+	return targetDir
 }
