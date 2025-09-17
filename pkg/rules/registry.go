@@ -12,6 +12,13 @@ type RuleResult struct {
 	Execution analysis.RuleExecution
 }
 
+// Severity constants for rule metadata
+const (
+	SeverityHigh   = "high"
+	SeverityMedium = "medium"
+	SeverityLow    = "low"
+)
+
 type RuleMetadata struct {
 	ID              string
 	Name            string
