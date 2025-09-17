@@ -15,7 +15,7 @@ func (r *Rule98) Metadata() RuleMetadata {
 		Name:            "Check number of application sets",
 		PassDescription: "You are using application sets.",
 		FailDescription: "You are not using application sets. Application Sets are a powerful feature of Argo CD that allows you to deploy applications to multiple clusters and namespaces.",
-		Severity:        "Medium",
+		Severity:        "medium",
 	}
 }
 
@@ -25,6 +25,7 @@ func (r *Rule98) Execute(file_analysis *analysis.ArgoCDAnalysis) (RuleResult, er
 			ID:             r.Metadata().ID,
 			Name:           r.Metadata().Name,
 			Description:    r.Metadata().FailDescription,
+			Severity:       r.Metadata().Severity,
 			FilesTriggered: []string{},
 		}
 		return RuleResult{
@@ -38,6 +39,7 @@ func (r *Rule98) Execute(file_analysis *analysis.ArgoCDAnalysis) (RuleResult, er
 		ID:             r.Metadata().ID,
 		Name:           r.Metadata().Name,
 		Description:    r.Metadata().PassDescription,
+		Severity:       r.Metadata().Severity,
 		FilesTriggered: []string{},
 	}
 	return RuleResult{

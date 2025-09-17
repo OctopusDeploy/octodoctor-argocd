@@ -17,7 +17,7 @@ func (r *Rule05) Metadata() RuleMetadata {
 		Name:            "Check AppProject sourceRepos settings",
 		PassDescription: "AppProjects have restricted sourceRepos settings (not using wildcard '*').",
 		FailDescription: "AppProjects have overly permissive sourceRepos settings (using wildcard '*'). This allows applications to deploy from any Git repository, which poses a security risk.",
-		Severity:        "High",
+		Severity:        "high",
 	}
 }
 

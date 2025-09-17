@@ -64,6 +64,7 @@ func determineRuleResult(metadata RuleMetadata, failedFiles, passedFiles, inacti
 			ID:             metadata.ID,
 			Name:           metadata.Name,
 			Description:    metadata.FailDescription,
+			Severity:       metadata.Severity,
 			FilesTriggered: failedFiles,
 		}
 		return RuleResult{
@@ -79,6 +80,7 @@ func determineRuleResult(metadata RuleMetadata, failedFiles, passedFiles, inacti
 			ID:             metadata.ID,
 			Name:           metadata.Name,
 			Description:    metadata.PassDescription,
+			Severity:       metadata.Severity,
 			FilesTriggered: nil,
 		}
 		// Note: The registry doesn't handle inactive rules yet, so we'll return as passed
@@ -96,6 +98,7 @@ func determineRuleResult(metadata RuleMetadata, failedFiles, passedFiles, inacti
 		ID:             metadata.ID,
 		Name:           metadata.Name,
 		Description:    metadata.PassDescription,
+		Severity:       metadata.Severity,
 		FilesTriggered: allFiles,
 	}
 	return RuleResult{

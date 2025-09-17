@@ -23,7 +23,7 @@
       </thead>
       <tbody>
         {{range .Analysis.RulesFailed}}
-        <tr class="severity-high">
+        <tr class="severity-{{.Severity}}">
           <td class="rule-id">{{.ID}}</td>
           <td class="rule-description">{{.Description}}</td>
           <td class="affected-files">

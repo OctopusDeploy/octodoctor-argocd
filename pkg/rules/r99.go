@@ -29,6 +29,7 @@ func (r *Rule99) Execute(file_analysis *analysis.ArgoCDAnalysis) (RuleResult, er
 			ID:             r.Metadata().ID,
 			Name:           r.Metadata().Name,
 			Description:    r.Metadata().FailDescription,
+			Severity:       r.Metadata().Severity,
 			FilesTriggered: []string{},
 		}
 		return RuleResult{
@@ -42,6 +43,7 @@ func (r *Rule99) Execute(file_analysis *analysis.ArgoCDAnalysis) (RuleResult, er
 		ID:             r.Metadata().ID,
 		Name:           r.Metadata().Name,
 		Description:    r.Metadata().PassDescription,
+		Severity:       r.Metadata().Severity,
 		FilesTriggered: []string{},
 	}
 	return RuleResult{

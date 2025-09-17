@@ -15,7 +15,7 @@ func (r *Rule97) Metadata() RuleMetadata {
 		Name:            "Check for exactly one application set",
 		PassDescription: "You have a reasonable number of application sets.",
 		FailDescription: "You have exactly one application set. This usually results in a very complex YAML file.Consider using multiple application sets",
-		Severity:        "Medium",
+		Severity:        "medium",
 	}
 }
 
@@ -28,6 +28,7 @@ func (r *Rule97) Execute(file_analysis *analysis.ArgoCDAnalysis) (RuleResult, er
 			ID:             r.Metadata().ID,
 			Name:           r.Metadata().Name,
 			Description:    r.Metadata().PassDescription,
+			Severity:       r.Metadata().Severity,
 			FilesTriggered: []string{},
 		}
 		return RuleResult{
@@ -42,6 +43,7 @@ func (r *Rule97) Execute(file_analysis *analysis.ArgoCDAnalysis) (RuleResult, er
 		ID:             r.Metadata().ID,
 		Name:           r.Metadata().Name,
 		Description:    r.Metadata().FailDescription,
+		Severity:       r.Metadata().Severity,
 		FilesTriggered: []string{},
 	}
 	return RuleResult{

@@ -4,6 +4,7 @@ type RuleExecution struct {
 	ID             string
 	Name           string
 	Description    string
+	Severity       string
 	FilesTriggered []string
 }
 
