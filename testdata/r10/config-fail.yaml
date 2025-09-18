@@ -1,0 +1,29 @@
+# R10 example where sync timeout is 0 seconds (default but inefficient)
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cmd-params-cm
+  labels:
+    app.kubernetes.io/name: argocd-cmd-params-cm
+    app.kubernetes.io/part-of: argocd
+data:
+  # Argo CD's externally facing base URL (optional). Required when configuring SSO
+  url: https://argo-cd-demo.argoproj.io
+
+  # Additional externally facing base URLs (optional)
+  additionalUrls: |
+    - https://argo-cd-demo2.argoproj.io
+
+  # Enables application status badge feature
+  statusbadge.enabled: "true"
+
+  # Override the Argo CD hostname root URL for both the project and the application status badges.
+  # Here is an example of the application status badge for the app `myapp` to see what is replaced.
+  #    <statusbadge.url>api/badge?name=myapp&revision=true
+  # Provide custom URL to override. You must include the trailing forward slash:
+  statusbadge.url: "https://cd-status.apps.argoproj.io/"
+
+  # Specifies a sync timeout for applications. "0" means no timeout (default "0")
+  controller.sync.timeout.seconds: "0"
+
+ 

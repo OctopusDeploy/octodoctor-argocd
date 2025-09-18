@@ -1,4 +1,4 @@
-# R04 - Example where anonymous user access is disabled
+# R11 - Example where anonymous user access is disabled
 apiVersion: v1
 kind: ConfigMap
 metadata:

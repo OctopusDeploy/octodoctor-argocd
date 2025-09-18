@@ -1,11 +1,11 @@
-# R04 - Example where anonymous user access is enabled
+# R10 unrelated configmap with wrong name
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-cm
+  name: unrelated-configmap
   namespace: argocd
   labels:
-    app.kubernetes.io/name: argocd-cm
+    app.kubernetes.io/name: unrelated-configmap
     app.kubernetes.io/part-of: argocd
 data:
   # Argo CD's externally facing base URL (optional). Required when configuring SSO
@@ -25,7 +25,7 @@ data:
   statusbadge.url: "https://cd-status.apps.argoproj.io/"
 
   # Enables anonymous user access. The anonymous users get default role permissions specified argocd-rbac-cm.yaml.
-  users.anonymous.enabled: "true"
+  users.anonymous.enabled: "false"
   # Specifies token expiration duration
   users.session.duration: "24h"
 

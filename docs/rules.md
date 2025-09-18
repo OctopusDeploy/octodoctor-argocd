@@ -29,3 +29,4 @@ The tool will look at the extracted contents of a Codefresh support package and 
 1. Found an Application Set that combines SMC generator and Pull Request generator
 1. Using Git hashes or branch names in Target Revision (anything else other than `HEAD`)
 1. Having more than 2 connected clusters and applicationsets don't use the cluster generator
+1. Setting timeouts on sync duration, cause they are infinite by default
