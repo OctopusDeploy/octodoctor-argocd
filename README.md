@@ -5,15 +5,10 @@ A comprehensive static analysis tool for Argo CD configurations that helps you i
 See available [rules](docs/rules.md).
 
 
-## Main Purpose
+## Example report
 
-The primary goal of Argo CD Doctor is to:
+![Argo CD docktor report](docs/example-report.png)
 
-- **🔍 Detect Configuration Issues**: Automatically identify misconfigurations in Applications, ApplicationSets, AppProjects, and ConfigMaps
-- **⚡ Prevent Common Pitfalls**: Catch anti-patterns and problematic settings before they cause issues in production
-- **📊 Provide Actionable Insights**: Generate a detailed HTML report with clear explanations of detected issues
-- **🛡️ Enhance Security**: Identify security-related misconfigurations and potential vulnerabilities
-- **📈 Improve Performance**: Detect settings that could impact Argo CD performance or scalability
 
 The tool analyzes various Argo CD resource types including:
 - **Applications** (`argoproj.io/v1alpha1/Application`)
