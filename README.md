@@ -7,7 +7,7 @@ See available [rules](docs/rules.md).
 
 ## Example report
 
-![Argo CD docktor report](docs/example-report.png)
+![Argo CD doctor report](docs/example-report.png)
 
 
 The tool analyzes various Argo CD resource types including:
