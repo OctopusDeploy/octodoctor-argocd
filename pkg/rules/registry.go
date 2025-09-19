@@ -40,6 +40,7 @@ func NewRegistry() *Registry {
 		Rules: []Rule{
 			&Rule01{},
 			&Rule02{},
+			&Rule04{},
 			&Rule05{},
 			&Rule06{},
 			&Rule10{},
