@@ -11,7 +11,7 @@ The primary goal of Argo CD Doctor is to:
 
 - **🔍 Detect Configuration Issues**: Automatically identify misconfigurations in Applications, ApplicationSets, AppProjects, and ConfigMaps
 - **⚡ Prevent Common Pitfalls**: Catch anti-patterns and problematic settings before they cause issues in production
-- **📊 Provide Actionable Insights**: Generate detailed HTML reports with clear explanations of detected issues
+- **📊 Provide Actionable Insights**: Generate a detailed HTML report with clear explanations of detected issues
 - **🛡️ Enhance Security**: Identify security-related misconfigurations and potential vulnerabilities
 - **📈 Improve Performance**: Detect settings that could impact Argo CD performance or scalability
 
@@ -28,7 +28,7 @@ The tool analyzes various Argo CD resource types including:
 - Go 1.23.0 or later (for building from source)
 - A directory containing Argo CD YAML configuration files
 
-### Running the Tool
+### Running 
 
 The tool accepts a single parameter specifying the directory to scan:
 
@@ -41,7 +41,6 @@ The tool accepts a single parameter specifying the directory to scan:
 ./argocd-doctor --directory /path/to/argocd/configs
 ```
 
-### What the Tool Produces
 
 When you run Argo CD Doctor, it will:
 
@@ -51,8 +50,7 @@ When you run Argo CD Doctor, it will:
 4. **📊 Generate HTML Report**: Creates a comprehensive report in the `argocd-doctor-output` directory
 
 
-## 🛠️ How to Modify This Tool as a Developer
-
+## 🛠️ How to contribute
 
 
 ### Prerequisites for Development
@@ -99,7 +97,6 @@ make lint
 golangci-lint run --fix
 ```
 
-
 ### Adding New Rules
 
 To add a new validation rule:
@@ -110,14 +107,3 @@ To add a new validation rule:
 4. Create test data in `testdata/rXX/`
 5. Update documentation as needed
 
-### Development Workflow
-
-1. **Make Changes**: Edit code in the `pkg/` directory
-2. **Test Changes**: Run `make test` to ensure tests pass
-3. **Lint Code**: Run `make lint` to fix style issues
-4. **Build**: Run `make argocd-doctor-build` to create a binary
-5. **Test Binary**: Run the binary against test data to verify functionality
-
----
-
-*Built with ❤️ for the Argo CD community*
