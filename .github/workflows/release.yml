@@ -1,0 +1,126 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch: # Allow manual triggering for testing
+
+permissions:
+  contents: write # Required for creating releases
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+
+      - name: Verify tag is from main branch
+        run: |
+          # Get the commit hash of the tag
+          TAG_COMMIT=$(git rev-list -n 1 ${{ github.ref }})
+          # Check if this commit exists in main branch
+          if ! git merge-base --is-ancestor $TAG_COMMIT origin/main; then
+            echo "Error: Tag ${{ github.ref_name }} is not from main branch"
+            exit 1
+          fi
+          echo "Tag ${{ github.ref_name }} is from main branch ✓"
+
+      - name: Build release binaries
+        run: make release
+
+      - name: List generated binaries
+        run: |
+          echo "Generated binaries:"
+          ls -la argocd-doctor-*
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: Release ${{ github.ref_name }}
+          body: |
+            ## Argo CD Doctor ${{ github.ref_name }}
+            
+            This release contains pre-built binaries for multiple platforms.
+            
+            ### Download the appropriate binary for your system:
+            - **macOS Intel**: `argocd-doctor-darwin-amd64`
+            - **macOS Apple Silicon**: `argocd-doctor-darwin-arm64`  
+            - **Linux x86_64**: `argocd-doctor-linux-amd64`
+            - **Linux ARM64**: `argocd-doctor-linux-arm64`
+            - **Windows x86_64**: `argocd-doctor-windows-amd64.exe`
+            
+            ### Usage
+            ```bash
+            # Make the binary executable (Linux/macOS)
+            chmod +x argocd-doctor-*
+            
+            # Run the tool
+            ./argocd-doctor-* --directory /path/to/argocd/configs
+            ```
+            
+            See the [README](https://github.com/${{ github.repository }}/blob/main/README.md) for detailed usage instructions.
+          draft: false
+          prerelease: false
+
+      - name: Upload macOS AMD64 binary
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./argocd-doctor-darwin-amd64
+          asset_name: argocd-doctor-darwin-amd64
+          asset_content_type: application/octet-stream
+
+      - name: Upload macOS ARM64 binary
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./argocd-doctor-darwin-arm64
+          asset_name: argocd-doctor-darwin-arm64
+          asset_content_type: application/octet-stream
+
+      - name: Upload Linux AMD64 binary
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./argocd-doctor-linux-amd64
+          asset_name: argocd-doctor-linux-amd64
+          asset_content_type: application/octet-stream
+
+      - name: Upload Linux ARM64 binary
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./argocd-doctor-linux-arm64
+          asset_name: argocd-doctor-linux-arm64
+          asset_content_type: application/octet-stream
+
+      - name: Upload Windows AMD64 binary
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./argocd-doctor-windows-amd64.exe
+          asset_name: argocd-doctor-windows-amd64.exe
+          asset_content_type: application/octet-stream
