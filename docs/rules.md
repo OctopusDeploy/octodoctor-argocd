@@ -16,7 +16,6 @@ The tool will look at the extracted contents of a Codefresh support package and 
 | R10 | ArgoCD controller sync timeout set to 0 seconds | Medium | ✅ |
 | R11 | ArgoCD anonymous user access is enabled | High ⚠️ | ✅ |
 | R12 | Found Application Sets with 3 levels of generators | Medium | ❌ |
-| R13 | Found Applications with auto-sync off | Medium | ❌ |
 | R14 | Found Applications with prune = true | Medium | ❌ |
 | R15 | Found Application CRDs with hardcoded values in helm: property | Medium | ❌ |
 | R16 | Found Application CRDs with hardcoded values in kustomize: property | Medium | ❌ |
