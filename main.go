@@ -12,8 +12,7 @@ import (
 )
 
 const (
-	templateDirectory = "report-template/html"
-	outputDirectory   = "argocd-doctor-output"
+	outputDirectory = "argocd-doctor-output"
 )
 
 func main() {
@@ -38,7 +37,7 @@ func main() {
 	// Step 3 - Generate a nice HTML report
 	// Create output directory path relative to the target directory
 	outputPath := filepath.Join(targetDir, outputDirectory)
-	report.GenerateHTMLReport(&file_analysis, templateDirectory, outputPath)
+	report.GenerateHTMLReport(&file_analysis, outputPath)
 
 }
 

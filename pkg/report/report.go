@@ -1,15 +1,18 @@
 package report
 
 import (
+	"embed"
 	"fmt"
 	"html/template"
-	"io"
 	"log"
 	"os"
 	"time"
 
 	"github.com/codefresh-contrib/argocd-doctor/pkg/analysis"
 )
+
+//go:embed templates/*
+var templateFS embed.FS
 
 // templateData contains all information for the HTML report template
 type templateData struct {
@@ -23,15 +26,11 @@ func checkErr(err error) {
 	}
 }
 
-func Copy(src string, dst string) {
-	// Open the source file
-	srcFile, err := os.Open(src)
+// copyEmbeddedFile copies a file from the embedded filesystem to the destination path
+func copyEmbeddedFile(embeddedPath string, dst string) {
+	// Read the embedded file
+	data, err := templateFS.ReadFile(embeddedPath)
 	checkErr(err)
-	defer func() {
-		if cerr := srcFile.Close(); cerr != nil {
-			log.Fatal("close src file: ", cerr)
-		}
-	}()
 
 	// Create the destination file
 	dstFile, err := os.Create(dst)
@@ -42,30 +41,30 @@ func Copy(src string, dst string) {
 		}
 	}()
 
-	// Copy the contents from src to dst
-	_, err = io.Copy(dstFile, srcFile)
+	// Write the data to the destination file
+	_, err = dstFile.Write(data)
 	checkErr(err)
 }
 
 // GenerateHTMLReport creates an HTML report from the analysis results
-func GenerateHTMLReport(analysis *analysis.ArgoCDAnalysis, templateDirectory, outputDirectory string) {
+func GenerateHTMLReport(analysis *analysis.ArgoCDAnalysis, outputDirectory string) {
 	log.Println("Creating output directory at ./" + outputDirectory)
 	err := os.MkdirAll(outputDirectory, 0755)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Copy static assets
-	Copy(templateDirectory+"/style.css", outputDirectory+"/style.css")
-	Copy(templateDirectory+"/favicon.png", outputDirectory+"/favicon.png")
+	// Copy static assets from embedded files
+	copyEmbeddedFile("templates/style.css", outputDirectory+"/style.css")
+	copyEmbeddedFile("templates/favicon.png", outputDirectory+"/favicon.png")
 
 	log.Println("Rendering HTML report at ./" + outputDirectory + "/index.html")
 
 	// Beautify the analysis data for HTML display
 	beautifyHTMLreport(analysis)
 
-	// Parse the HTML template
-	tmpl, err := template.ParseFiles(templateDirectory + "/index.html.tpl")
+	// Parse the HTML template from embedded files
+	tmpl, err := template.ParseFS(templateFS, "templates/index.html.tpl")
 	if err != nil {
 		log.Fatal(err)
 	}
