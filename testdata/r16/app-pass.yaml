@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: my-proper-kustomize-app
+  namespace: argocd
+spec:
+  source:
+    repoURL: https://github.com/example-org/example-repo.git  
+    targetRevision: HEAD  
+    ## DO THIS. Save all values in the Kustomize Overlay itself
+    path: my-app/overlays/prod  
+
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: my-app

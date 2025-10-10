@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: my-kustomize-override
+  namespace: argocd
+spec:
+  source:
+    repoURL: https://github.com/example-org/example-repo.git  
+    targetRevision: HEAD  
+    path: my-app  
+
+
+   
+    # DONT DO THIS
+    kustomize:
+      namePrefix: prod-
+      images:
+      - docker.io/example/my-app:0.2
+      namespace: custom-namespace
+
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: my-app
