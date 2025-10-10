@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: my-helm-override
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/example-org/example-repo.git  
+    targetRevision: HEAD  
+    path: my-chart  
+
+    helm:
+      # DONT DO THIS
+      parameters:
+      - name: "my-example-setting-1"
+        value: my-value1
+      - name: "my-example-setting-2"
+        value: "my-value2"
+        forceString: true # ensures that value is treated as a string
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: my-app
