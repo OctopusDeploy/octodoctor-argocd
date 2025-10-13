@@ -36,25 +36,65 @@ func (r *Rule17) Execute(file_analysis *analysis.ArgoCDAnalysis) (RuleResult, er
 			continue
 		}
 
-		// Check if helm directive exists
-		_, hasHelm := getYAMLValue(&yamlDoc, "spec.source.helm")
-		if !hasHelm {
-			// No helm directive, mark as inactive
-			inactiveFiles = append(inactiveFiles, app.Name)
-			continue
+		// Get source nodes (either single source or multi-source)
+		var sourceNodes []*yaml.Node
+		sourcesNode, hasMultiSource := getYAMLValue(&yamlDoc, "spec.sources")
+		if hasMultiSource && sourcesNode.Kind == yaml.SequenceNode {
+			// Multi-source application
+			sourceNodes = sourcesNode.Content
+		} else {
+			// Single source application
+			if sourceNode, hasSingleSource := getYAMLValue(&yamlDoc, "spec.source"); hasSingleSource {
+				sourceNodes = []*yaml.Node{sourceNode}
+			}
 		}
 
-		// Check if helm directive contains parameters field
-		_, hasParameters := getYAMLValue(&yamlDoc, "spec.source.helm.parameters")
-		if hasParameters {
-			// Has parameters field - rule fails
-			failedFiles = append(failedFiles, app.Name)
-		} else {
-			// Has helm directive but no parameters - rule passes
+		// Check all sources
+		hasHelm := false
+		rulePassed := true
+		for _, sourceNode := range sourceNodes {
+			result := checkHelmParametersSource(sourceNode)
+			if result.hasHelm {
+				hasHelm = true
+				if !result.passed {
+					rulePassed = false
+				}
+			}
+		}
+
+		// Categorize the application
+		if !hasHelm {
+			// No helm directive in any source
+			inactiveFiles = append(inactiveFiles, app.Name)
+		} else if rulePassed {
 			passedFiles = append(passedFiles, app.Name)
+		} else {
+			failedFiles = append(failedFiles, app.Name)
 		}
 	}
 
 	// Determine overall rule result
 	return determineRuleResult(r.Metadata(), failedFiles, passedFiles, inactiveFiles)
+}
+
+// helmParametersCheckResult holds the result of checking a single source entry for helm parameters
+type helmParametersCheckResult struct {
+	hasHelm bool
+	passed  bool
+}
+
+// checkHelmParametersSource examines a single source entry for helm parameter configuration
+func checkHelmParametersSource(sourceNode *yaml.Node) helmParametersCheckResult {
+	// Check if helm directive exists
+	_, hasHelm := getYAMLValueFromNode(sourceNode, "helm")
+	if !hasHelm {
+		return helmParametersCheckResult{hasHelm: false, passed: true}
+	}
+
+	// Check if helm directive contains parameters field
+	_, hasParameters := getYAMLValueFromNode(sourceNode, "helm.parameters")
+
+	// Rule fails if it has parameters
+	passed := !hasParameters
+	return helmParametersCheckResult{hasHelm: true, passed: passed}
 }
