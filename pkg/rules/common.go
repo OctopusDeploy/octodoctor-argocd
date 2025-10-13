@@ -41,6 +41,42 @@ func getYAMLValue(node *yaml.Node, path string) (*yaml.Node, bool) {
 	return current, true
 }
 
+// getYAMLValueFromNode extracts a value from a YAML node using a dot-separated path
+// Unlike getYAMLValue, this works on any MappingNode, not just the document root.
+// This is useful when navigating within array elements or nested structures.
+func getYAMLValueFromNode(node *yaml.Node, path string) (*yaml.Node, bool) {
+	if node == nil || node.Kind != yaml.MappingNode {
+		return nil, false
+	}
+
+	// Start with the current node
+	current := node
+
+	// Split path by dots and navigate through the YAML structure
+	parts := strings.Split(path, ".")
+	for _, part := range parts {
+		if current.Kind != yaml.MappingNode {
+			return nil, false
+		}
+
+		// Look for the key in the mapping
+		found := false
+		for i := 0; i < len(current.Content); i += 2 {
+			if current.Content[i].Value == part {
+				current = current.Content[i+1]
+				found = true
+				break
+			}
+		}
+
+		if !found {
+			return nil, false
+		}
+	}
+
+	return current, true
+}
+
 // getBoolValue safely extracts a boolean value from a YAML node
 func getBoolValue(node *yaml.Node) (bool, bool) {
 	if node == nil || node.Kind != yaml.ScalarNode {
