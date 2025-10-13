@@ -18,19 +18,19 @@ func TestRule01(t *testing.T) {
 		expectedActive bool
 	}{
 		{
-			name:           "R01 Trigger scenario",
+			name:           "Problematic scenario",
 			testFile:       "app-fail.yaml",
 			expectedPassed: false,
 			expectedActive: true,
 		},
 		{
-			name:           "R01 Followed scenario",
+			name:           "Happy Path scenario",
 			testFile:       "app-pass.yaml",
 			expectedPassed: true,
 			expectedActive: true,
 		},
 		{
-			name:           "R01 Inactive scenario",
+			name:           "Inactive scenario",
 			testFile:       "app-inactive.yaml",
 			expectedPassed: true,
 			expectedActive: false,
