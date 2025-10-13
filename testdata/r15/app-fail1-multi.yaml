@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: my-helm-override-multi
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: my-app
+  sources:
+    - repoURL: https://github.com/example-org/example-repo.git  
+      targetRevision: HEAD  
+      path: my-chart  
+      helm:
+        # DONT DO THIS
+        valuesObject:
+          image:
+            repository: docker.io/example/my-app
+            tag: 0.1
+            pullPolicy: IfNotPresent
+    - repoURL: https://github.com/example-org/common-settings.git
+      targetRevision: HEAD
+      path: config
+

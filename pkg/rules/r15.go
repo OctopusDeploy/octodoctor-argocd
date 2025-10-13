@@ -36,39 +36,78 @@ func (r *Rule15) Execute(file_analysis *analysis.ArgoCDAnalysis) (RuleResult, er
 			continue
 		}
 
-		// Check if helm directive exists
-		helmNode, hasHelm := getYAMLValue(&yamlDoc, "spec.source.helm")
-		if !hasHelm {
-			// No helm directive, mark as inactive
-			inactiveFiles = append(inactiveFiles, app.Name)
-			continue
+		// Get source nodes (either single source or multi-source)
+		var sourceNodes []*yaml.Node
+		sourcesNode, hasMultiSource := getYAMLValue(&yamlDoc, "spec.sources")
+		if hasMultiSource && sourcesNode.Kind == yaml.SequenceNode {
+			// Multi-source application
+			sourceNodes = sourcesNode.Content
+		} else {
+			// Single source application
+			if sourceNode, hasSingleSource := getYAMLValue(&yamlDoc, "spec.source"); hasSingleSource {
+				sourceNodes = []*yaml.Node{sourceNode}
+			}
 		}
 
-		// Check if helm directive contains "values" or "valuesObject" fields
-		hasValues := false
-		hasValuesObject := false
-
-		if helmNode.Kind == yaml.MappingNode {
-			// Iterate through the helm mapping to check for "values" or "valuesObject"
-			for i := 0; i < len(helmNode.Content); i += 2 {
-				if helmNode.Content[i].Value == "values" {
-					hasValues = true
-				}
-				if helmNode.Content[i].Value == "valuesObject" {
-					hasValuesObject = true
+		// Check all sources
+		hasHelm := false
+		rulePassed := true
+		for _, sourceNode := range sourceNodes {
+			result := checkHelmSource(sourceNode)
+			if result.hasHelm {
+				hasHelm = true
+				if !result.passed {
+					rulePassed = false
 				}
 			}
 		}
 
-		if hasValues || hasValuesObject {
-			// Has values or valuesObject field - rule fails
-			failedFiles = append(failedFiles, app.Name)
-		} else {
-			// Has helm directive but no values/valuesObject - rule passes
+		// Categorize the application
+		if !hasHelm {
+			// No helm directive in any source
+			inactiveFiles = append(inactiveFiles, app.Name)
+		} else if rulePassed {
 			passedFiles = append(passedFiles, app.Name)
+		} else {
+			failedFiles = append(failedFiles, app.Name)
 		}
 	}
 
 	// Determine overall rule result
 	return determineRuleResult(r.Metadata(), failedFiles, passedFiles, inactiveFiles)
+}
+
+// helmCheckResult holds the result of checking a single source entry for helm configuration
+type helmCheckResult struct {
+	hasHelm bool
+	passed  bool
+}
+
+// checkHelmSource examines a single source entry for helm configuration
+func checkHelmSource(sourceNode *yaml.Node) helmCheckResult {
+	// Check if helm directive exists
+	helmNode, hasHelm := getYAMLValueFromNode(sourceNode, "helm")
+	if !hasHelm {
+		return helmCheckResult{hasHelm: false, passed: true}
+	}
+
+	// Check if helm directive contains "values" or "valuesObject" fields
+	hasValues := false
+	hasValuesObject := false
+
+	if helmNode.Kind == yaml.MappingNode {
+		// Iterate through the helm mapping to check for "values" or "valuesObject"
+		for i := 0; i < len(helmNode.Content); i += 2 {
+			if helmNode.Content[i].Value == "values" {
+				hasValues = true
+			}
+			if helmNode.Content[i].Value == "valuesObject" {
+				hasValuesObject = true
+			}
+		}
+	}
+
+	// Rule fails if it has values or valuesObject
+	passed := !(hasValues || hasValuesObject)
+	return helmCheckResult{hasHelm: true, passed: passed}
 }

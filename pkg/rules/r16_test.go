@@ -29,6 +29,18 @@ func TestRule16(t *testing.T) {
 			expectedPassed: true,
 			expectedActive: true,
 		},
+		{
+			name:           "Multi-source problematic scenario",
+			testFile:       "app-fail-multi.yaml",
+			expectedPassed: false,
+			expectedActive: true,
+		},
+		{
+			name:           "Multi-source happy path",
+			testFile:       "app-pass-multi.yaml",
+			expectedPassed: true,
+			expectedActive: true,
+		},
 	}
 
 	// Run each test case

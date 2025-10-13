@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: demo-multi
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  sources:
+    - repoURL: https://github.com/codefresh-contrib/not-important.git
+      targetRevision: HEAD
+      path: ./not-important
+      directory:
+        recurse: false
+    - repoURL: https://github.com/codefresh-contrib/config.git
+      targetRevision: HEAD
+      path: ./config
+

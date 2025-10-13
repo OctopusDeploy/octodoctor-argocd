@@ -36,8 +36,29 @@ func (r *Rule16) Execute(file_analysis *analysis.ArgoCDAnalysis) (RuleResult, er
 			continue
 		}
 
-		// Check if kustomize directive exists
-		_, hasKustomize := getYAMLValue(&yamlDoc, "spec.source.kustomize")
+		// Get source nodes (either single source or multi-source)
+		var sourceNodes []*yaml.Node
+		sourcesNode, hasMultiSource := getYAMLValue(&yamlDoc, "spec.sources")
+		if hasMultiSource && sourcesNode.Kind == yaml.SequenceNode {
+			// Multi-source application
+			sourceNodes = sourcesNode.Content
+		} else {
+			// Single source application
+			if sourceNode, hasSingleSource := getYAMLValue(&yamlDoc, "spec.source"); hasSingleSource {
+				sourceNodes = []*yaml.Node{sourceNode}
+			}
+		}
+
+		// Check all sources for kustomize directive
+		hasKustomize := false
+		for _, sourceNode := range sourceNodes {
+			if checkKustomizeSource(sourceNode) {
+				hasKustomize = true
+				break
+			}
+		}
+
+		// Categorize the application
 		if hasKustomize {
 			// Has kustomize directive - rule fails
 			failedFiles = append(failedFiles, app.Name)
@@ -50,4 +71,11 @@ func (r *Rule16) Execute(file_analysis *analysis.ArgoCDAnalysis) (RuleResult, er
 	// Determine overall rule result
 	// Note: This rule cannot be inactive - it either passes or fails
 	return determineRuleResult(r.Metadata(), failedFiles, passedFiles, inactiveFiles)
+}
+
+// checkKustomizeSource examines a single source entry for kustomize configuration
+func checkKustomizeSource(sourceNode *yaml.Node) bool {
+	// Check if kustomize directive exists
+	_, hasKustomize := getYAMLValueFromNode(sourceNode, "kustomize")
+	return hasKustomize
 }
