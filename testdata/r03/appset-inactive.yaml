@@ -1,3 +1,4 @@
+# No Reque period defined at all
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:

@@ -6,7 +6,7 @@ The tool will look at the extracted contents of a Codefresh support package and 
 |-------------|-------------|----------|-----------|
 | R01 | Found Applications with dangerous sync policy settings (prune=true and allowEmpty=true) | High ⚠️ | ✅ |
 | R02 | Found Applications without automated sync policy configured | Medium | ✅ |
-| R03 | Application Sets with requeueAfterSeconds setting of less than 1 minute | Medium | ❌ |
+| R03 | Application Sets with requeueAfterSeconds setting of less than 1 minute | Medium | ✅ |
 | R04 | Found Applications with sync policy replace = true | Medium | ✅ |
 | R05 | Found AppProjects with overly permissive sourceRepos settings (using wildcard '*') | High ⚠️ | ✅ |
 | R06 | Not using `argocd.argoproj.io/manifest-generate-paths` annotation | Medium | ✅ |
@@ -23,7 +23,7 @@ The tool will look at the extracted contents of a Codefresh support package and 
 | R19 | Using Git hashes or branch names in Target Revision (anything else other than `HEAD`) | Medium | ✅ |
 | R20 | Having more than 2 connected clusters and applicationsets don't use the cluster generator | Medium | ❌ |
 | R22 | No webhooks setup for Argo CD repo server | Medium | ❌ |
-| R23 | No webhooks setup for ApplicationSets | Medium | ❌ |
+| R23 | No webhooks setup for Application Set Git generator | Medium | ❌ |
 | R97 | Having exactly one application set (results in complex YAML) | Medium | ✅ |
 | R98 | No Application Set resources while Application Resources are > 0 | Medium | ✅ |
 | R99 | Having too many application sets (performance issues) | Medium | ✅ |

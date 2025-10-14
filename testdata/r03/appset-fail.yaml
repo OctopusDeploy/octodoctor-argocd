@@ -1,3 +1,4 @@
+## Requeue period is too short. Problems with GitHub request limits
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
