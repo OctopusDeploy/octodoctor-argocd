@@ -19,7 +19,7 @@ The tool will look at the extracted contents of a Codefresh support package and 
 | R15 | Found Application CRDs with hardcoded values in helm: property | Medium | ✅ |
 | R16 | Found Application CRDs with hardcoded values in kustomize: property | Medium | ✅ |
 | R17 | Found Application CRDs with parameter overrides | High ⚠️ | ✅ |
-| R18 | Found an Application Set that combines SMC generator and Pull Request generator | Medium | ❌ |
+| R18 | Found an Application Set that combines SMC generator and Pull Request generator | Medium | ✅ |
 | R19 | Using Git hashes or branch names in Target Revision (anything else other than `HEAD`) | Medium | ✅ |
 | R20 | Having more than 2 connected clusters and applicationsets don't use the cluster generator | Medium | ❌ |
 | R22 | No webhooks setup for Argo CD repo server | Medium | ❌ |

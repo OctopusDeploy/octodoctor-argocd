@@ -1,0 +1,48 @@
+## Pull Request generator with scm generator. This can quickly eatup all GitHub request limits
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: myapps
+  namespace: argocd  
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+  - matrix:
+      generators:
+      - scmProvider:
+          github:
+            # The GitHub organization to scan.
+            organization: myorg
+            # For GitHub Enterprise:
+            api: https://git.example.com/
+            # If true, scan every branch of every repository. If false, scan only the default branch. Defaults to false.
+            allBranches: true
+      - pullRequest:
+          github:
+            owner: kostis-codefresh
+            repo: preview-env-source-code
+          requeueAfterSeconds: 180
+  template:
+    metadata:
+      name: 'myapp-{{.branch}}'
+      labels:
+        app: '{{.myapp}}'
+        environment: '{{.myenv}}'
+    spec:
+      source:
+        repoURL: 'https://github.com/kostis-codefresh/preview-env-manifests.git'
+        targetRevision: HEAD
+        path: kustomize-preview-app/ 
+        kustomize:
+          images:
+            - 'docker.io/kostiscodefresh/my-preview-app:{{.head_short_sha_7}}'
+      project: "default"
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: 'preview-{{.branch_slug}}'
+      syncPolicy:
+        automated:
+          prune: true  
+        syncOptions:
+        - CreateNamespace=true 
