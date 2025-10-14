@@ -11,7 +11,7 @@ The tool will look at the extracted contents of a Codefresh support package and 
 | R05 | Found AppProjects with overly permissive sourceRepos settings (using wildcard '*') | High ⚠️ | ✅ |
 | R06 | Not using `argocd.argoproj.io/manifest-generate-paths` annotation | Medium | ✅ |
 | R07 | Using `ARGOCD_RECONCILIATION_TIMEOUT=0` without `--revision-cache-expiration` | Medium | ❌ |
-| R09 | Found Application Sets with duplicate generators | Medium | ❌ |
+| R09 | Found Application Sets with duplicate generators | Medium | ✅ |
 | R10 | ArgoCD controller sync timeout set to 0 seconds | Medium | ✅ |
 | R11 | ArgoCD anonymous user access is enabled | High ⚠️ | ✅ |
 | R12 | Found Application Sets with 3 levels of generators | Medium | ❌ |
