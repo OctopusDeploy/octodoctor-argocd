@@ -1,0 +1,53 @@
+## 2 levels of matrix/merge generators. Complex and problematic
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: myapps
+  namespace: argocd  
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - merge:
+        mergeKeys:
+          - path
+        generators:
+          - matrix:
+              generators:
+                - git:
+                    directories:
+                      - path: aws-ebs-csi-driver
+                      - path: cluster-autoscaler
+                - clusters:
+                    selector:
+                      matchLabels:
+                        argocd.argoproj.io/secret-type: cluster
+          - list:
+              elements:
+                - path: aws-ebs-csi-driver
+                  namespace: system
+                - path: cluster-autoscaler
+                  namespace: system
+  template:
+    metadata:
+      name: 'myapp-{{.branch}}'
+      labels:
+        app: '{{.myapp}}'
+        environment: '{{.myenv}}'
+    spec:
+      source:
+        repoURL: 'https://github.com/kostis-codefresh/preview-env-manifests.git'
+        targetRevision: HEAD
+        path: kustomize-preview-app/ 
+        kustomize:
+          images:
+            - 'docker.io/kostiscodefresh/my-preview-app:{{.head_short_sha_7}}'
+      project: "default"
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: 'preview-{{.branch_slug}}'
+      syncPolicy:
+        automated:
+          prune: true  
+        syncOptions:
+        - CreateNamespace=true 

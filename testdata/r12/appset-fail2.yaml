@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: not-working
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - matrix:
+        generators:
+          - list:  # this one is not relevant for the bug showcase - it's only here because a matrix generator must have exactly two children.
+              elements:
+                - dummy: a
+          - matrix:
+              generators:
+              - git:
+                    repoURL: 'https://some-git-server/some-repo.git'
+                    revision: "some-revision"
+                    gitParamPrefix: test
+                    files:
+                      - path: "deployments/config.yaml"
+              - list:
+                  elementsYaml: "{{ .apps.myapp | toJson }}"
+  template:
+    metadata:
+      name: "myapp-{{ .namespace }}"
+    spec:
+      project: "infra"
+      sources:
+        - repoURL: "https://some-git-server/some-other-repo.git"
+          targetRevision: 'some-tag'
+          ref: values
+      destination:
+        server: 'some-server'
+        namespace: '{{.namespace}}'

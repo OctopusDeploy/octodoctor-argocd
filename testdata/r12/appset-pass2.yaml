@@ -1,0 +1,46 @@
+# Single level of matrix. No problems
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: cluster-git
+spec:
+  generators:
+    # merge 'parent' generator
+    - merge:
+        mergeKeys:
+          - server
+        generators:
+          - clusters:
+              values:
+                kafka: 'true'
+                redis: 'false'
+          # For clusters with a specific label, enable Kafka.
+          - clusters:
+              selector:
+                matchLabels:
+                  use-kafka: 'false'
+              values:
+                kafka: 'false'
+          # For a specific cluster, enable Redis.
+          - list:
+              elements: 
+                - server: https://2.4.6.8
+                  values.redis: 'true'
+  template:
+    metadata:
+      name: '{{name}}'
+    spec:
+      project: '{{metadata.labels.environment}}'
+      source:
+        repoURL: https://github.com/argoproj/argo-cd.git
+        targetRevision: HEAD
+        path: app
+        helm:
+          parameters:
+            - name: kafka
+              value: '{{values.kafka}}'
+            - name: redis
+              value: '{{values.redis}}'
+      destination:
+        server: '{{server}}'
+        namespace: default
