@@ -14,14 +14,14 @@ The tool analyzes various Argo CD resource types including:
 - **Applications** (`argoproj.io/v1alpha1/Application`)
 - **ApplicationSets** (`argoproj.io/v1alpha1/ApplicationSet`) 
 - **AppProjects** (`argoproj.io/v1alpha1/AppProject`)
-- **ConfigMaps** (Argo CD specific ConfigMaps like `argocd-cm`, `argocd-cmd-params-cm`, etc.)
+- **ConfigMaps, Secrets** (Argo CD specific ConfigMaps like `argocd-cm`, `argocd-cmd-params-cm`, etc.)
 
 ## 🚀 How to Run This Tool
 
 ### Prerequisites
 
-- Go 1.23.0 or later (for building from source)
-- A directory containing Argo CD YAML configuration files
+- A directory containing Argo CD YAML configuration files. The tool also will automatically list all files recursively 
+- The tool works great when using as input the files from a Codefresh support package (unzipped)
 
 ### Running 
 
@@ -32,8 +32,8 @@ The tool accepts a single parameter specifying the directory to scan:
 ./argocd-doctor
 
 # Scan specific directory
-./argocd-doctor -d /path/to/argocd/configs
-./argocd-doctor --directory /path/to/argocd/configs
+./argocd-doctor -d /path/to/argocd/manifests
+./argocd-doctor --directory /path/to/argocd/manifests
 ```
 
 
@@ -52,7 +52,7 @@ When you run Argo CD Doctor, it will:
 
 - Go 1.23.0 or later
 - Make (for using the Makefile)
-- golangci-lint (for code linting)
+- `golangci-lint` (for code linting)
 
 ### Build Commands
 
