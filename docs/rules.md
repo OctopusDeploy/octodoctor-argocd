@@ -22,8 +22,7 @@ The tool will look at the extracted contents of a Codefresh support package and 
 | R18 | Found an Application Set that combines SMC generator and Pull Request generator | Medium | ✅ |
 | R19 | Using Git hashes or branch names in Target Revision (anything else other than `HEAD`) | Medium | ✅ |
 | R20 | Having more than 2 connected clusters and applicationsets don't use the cluster generator | Medium | ❌ |
-| R22 | No webhooks setup for Argo CD repo server | Medium | ❌ |
-| R23 | No webhooks setup for Application Set Git generator | Medium | ❌ |
+| R22 | No webhooks setup for Argo CD repo server/Git generator | Medium | ✅ |
 | R30 | Using Image Updater without writing back to Git | High ⚠️ | ✅ |
 | R97 | Having exactly one application set (results in complex YAML) | Medium | ✅ |
 | R98 | No Application Set resources while Application Resources are > 0 | Medium | ✅ |

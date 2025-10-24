@@ -24,8 +24,8 @@ func main() {
 	// Find All YAML files (regardless of their contents)
 	file_analysis.DiscoverYamlFiles(targetDir)
 	file_analysis.FilterArgoCDFiles()
-	log.Printf("Found %d Applications, %d ApplicationSets, %d AppProjects, %d ConfigMaps",
-		len(file_analysis.Applications), len(file_analysis.ApplicationSets), len(file_analysis.AppProjects), len(file_analysis.ConfigMaps))
+	log.Printf("Found %d Applications, %d ApplicationSets, %d AppProjects, %d ConfigMaps, %d Secrets",
+		len(file_analysis.Applications), len(file_analysis.ApplicationSets), len(file_analysis.AppProjects), len(file_analysis.ConfigMaps), len(file_analysis.Secrets))
 
 	//Step 2 - Execute all rules and get the results
 	registry := rules.NewRegistry()

@@ -162,6 +162,14 @@ func (analysis *ArgoCDAnalysis) categorizeAndStoreFile(apiVersion, kind string, 
 			log.Printf("Scanner -> Found allowed ConfigMap: %s (name: %s)", argoCDFile.FullPath, name)
 			return true
 		}
+	} else if apiVersion == "v1" && kind == "Secret" {
+		isArgoCD, name := isArgoCDSecret(yamlContent)
+
+		if isArgoCD {
+			analysis.Secrets = append(analysis.Secrets, argoCDFile)
+			log.Printf("Scanner -> Found allowed Secret: %s (name: %s)", argoCDFile.FullPath, name)
+			return true
+		}
 	}
 	return false
 }
@@ -193,6 +201,37 @@ func isArgoCDConfigMap(yamlContent map[string]interface{}) (bool, string) {
 
 	// Check if the ConfigMap name is in the allowed list
 	for _, allowedName := range allowedArgoCDConfigMaps {
+		if name == allowedName {
+			return true, name
+		}
+	}
+
+	return false, name
+}
+
+// isArgoCDSecret checks if a Secret belongs to Argo CD configuration
+func isArgoCDSecret(yamlContent map[string]interface{}) (bool, string) {
+
+	// Allowed ArgoCD Secret names
+	var allowedArgoCDSecrets = []string{
+		"argocd-secret",
+	}
+
+	// Read metadata.name
+	metadata, ok := yamlContent["metadata"].(map[string]interface{})
+	if !ok {
+		// metadata not found or not a map
+		return false, ""
+	}
+
+	name, ok := metadata["name"].(string)
+	if !ok {
+		// name not found or not a string
+		return false, ""
+	}
+
+	// Check if the Secret name is in the allowed list
+	for _, allowedName := range allowedArgoCDSecrets {
 		if name == allowedName {
 			return true, name
 		}

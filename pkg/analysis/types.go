@@ -23,6 +23,7 @@ type ArgoCDAnalysis struct {
 	ApplicationSets []ArgoCDFile
 	AppProjects     []ArgoCDFile
 	ConfigMaps      []ArgoCDFile
+	Secrets         []ArgoCDFile
 
 	RulesFailed   []RuleExecution
 	RulesPassed   []RuleExecution
