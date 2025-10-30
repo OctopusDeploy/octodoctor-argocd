@@ -28,6 +28,7 @@ type RuleMetadata struct {
 }
 
 type Rule interface {
+	Metadata() RuleMetadata
 	Execute(analysis *analysis.ArgoCDAnalysis) (RuleResult, error)
 }
 

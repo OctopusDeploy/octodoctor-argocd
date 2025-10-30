@@ -33,3 +33,9 @@ release:
 	make BIN_NAME=argocd-doctor-linux-amd64 GOOS=linux GOARCH=amd64 argocd-doctor-build
 	make BIN_NAME=argocd-doctor-linux-arm64 GOOS=linux GOARCH=arm64 argocd-doctor-build
 	make BIN_NAME=argocd-doctor-windows-amd64.exe GOOS=windows argocd-doctor-build
+
+.PHONY: clean
+clean:
+	rm -f $(BIN_NAME)
+	rm -rf coverage.out coverage.html
+	rm -rf argocd-doctor-output
