@@ -58,6 +58,11 @@ func main() {
 	outputPath := filepath.Join(targetDir, outputDirectory)
 	report.GenerateHTMLReport(&file_analysis, outputPath)
 
+	// Step 4 - Exit with code 1 if any rules failed, otherwise 0
+	if len(file_analysis.RulesFailed) > 0 {
+		os.Exit(1)
+	}
+	os.Exit(0)
 }
 
 // getTargetDirectory returns the target directory to scan
