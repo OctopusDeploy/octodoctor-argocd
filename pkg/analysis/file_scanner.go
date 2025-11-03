@@ -237,5 +237,15 @@ func isArgoCDSecret(yamlContent map[string]interface{}) (bool, string) {
 		}
 	}
 
+	// Check if this is a cluster type secret (for rules that deal with external clusters)
+	// Look for the label argocd.argoproj.io/secret-type: cluster
+	labels, ok := metadata["labels"].(map[string]interface{})
+	if ok {
+		secretType, ok := labels["argocd.argoproj.io/secret-type"].(string)
+		if ok && secretType == "cluster" {
+			return true, name
+		}
+	}
+
 	return false, name
 }

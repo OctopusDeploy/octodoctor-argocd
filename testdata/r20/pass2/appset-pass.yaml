@@ -1,0 +1,23 @@
+# Two external clusters. But we correctly use the cluster generator. No problems
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: guestbook
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+  - clusters: {} # Automatically use all clusters defined within Argo CD
+  template:
+    metadata:
+      name: '{{.name}}-guestbook' # 'name' field of the Secret
+    spec:
+      project: "my-project"
+      source:
+        repoURL: https://github.com/argoproj/argocd-example-apps/
+        targetRevision: HEAD
+        path: guestbook
+      destination:
+        server: '{{.server}}' # 'server' field of the secret
+        namespace: guestbook
