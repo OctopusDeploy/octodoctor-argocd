@@ -1,7 +1,10 @@
 BIN_NAME=argocd-doctor
 
+# Get version from git tag or hash, default to "dev"
+VERSION := $(shell git describe --tags --exact-match HEAD 2>/dev/null || git rev-parse --short HEAD 2>/dev/null || echo "dev")
+
 argocd-doctor-build: 
-	CGO_ENABLED=0 GOOS=${GOOS} GOARCH=${GOARCH} go build -v -o ${BIN_NAME} .
+	CGO_ENABLED=0 GOOS=${GOOS} GOARCH=${GOARCH} go build -v -ldflags "-X main.version=$(VERSION)" -o ${BIN_NAME} .
 
 .PHONY: lint
 lint:

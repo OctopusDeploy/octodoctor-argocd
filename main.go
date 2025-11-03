@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -11,13 +12,31 @@ import (
 	"github.com/codefresh-contrib/argocd-doctor/pkg/rules"
 )
 
+var (
+	// version is set at build time via ldflags
+	version = "dev"
+)
+
 const (
 	outputDirectory = "argocd-doctor-output"
 )
 
 func main() {
-	// Parse command line flags and get target directory
-	targetDir := parseDirectoryFlag()
+	// Parse command line flags
+	var showVersion = flag.Bool("version", false, "Print version information")
+	var showVersionShort = flag.Bool("v", false, "Print version information (shorthand)")
+	var directory = flag.String("d", ".", "Directory to scan for ArgoCD files (default: current directory)")
+	flag.StringVar(directory, "directory", ".", "Directory to scan for ArgoCD files (default: current directory)")
+	flag.Parse()
+
+	// Handle version flag
+	if *showVersion || *showVersionShort {
+		fmt.Println(version)
+		os.Exit(0)
+	}
+
+	// Get target directory
+	targetDir := getTargetDirectory(*directory)
 
 	//Step 1 - Read all YAML files
 	file_analysis := analysis.ArgoCDAnalysis{}
@@ -41,16 +60,11 @@ func main() {
 
 }
 
-// parseDirectoryFlag parses command line flags and returns the target directory to scan
-func parseDirectoryFlag() string {
-	// Define command line flags
-	var directory = flag.String("d", ".", "Directory to scan for ArgoCD files (default: current directory)")
-	flag.StringVar(directory, "directory", ".", "Directory to scan for ArgoCD files (default: current directory)")
-	flag.Parse()
-
+// getTargetDirectory returns the target directory to scan
+func getTargetDirectory(directory string) string {
 	// Get the target directory - use flag value or current directory as fallback
 	var targetDir string
-	if *directory == "." {
+	if directory == "." {
 		// Get current working directory as absolute path
 		currentDir, err := os.Getwd()
 		if err != nil {
@@ -58,7 +72,7 @@ func parseDirectoryFlag() string {
 		}
 		targetDir = currentDir
 	} else {
-		targetDir = *directory
+		targetDir = directory
 	}
 
 	// Validate that the target directory exists
