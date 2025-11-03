@@ -64,7 +64,7 @@ func NewRegistry() *Registry {
 	}
 }
 
-func (r *Registry) ExecuteAll(file_analysis *analysis.ArgoCDAnalysis) error {
+func (r *Registry) ExecuteAll(file_analysis *analysis.ArgoCDAnalysis) {
 	// Execute all global rules at the end
 	for _, rule := range r.Rules {
 		result, err := rule.Execute(file_analysis)
@@ -79,5 +79,4 @@ func (r *Registry) ExecuteAll(file_analysis *analysis.ArgoCDAnalysis) error {
 			file_analysis.RulesFailed = append(file_analysis.RulesFailed, result.Execution)
 		}
 	}
-	return nil
 }
