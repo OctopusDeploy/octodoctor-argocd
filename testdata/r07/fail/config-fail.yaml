@@ -1,0 +1,25 @@
+## R07 timeout.reconciliation is 0 and we have default reposerver.default.cache.expiration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: argocd-cm
+    app.kubernetes.io/part-of: argocd
+data:
+  # Argo CD's externally facing base URL (optional). Required when configuring SSO
+  url: https://argo-cd-demo.argoproj.io
+
+  # Additional externally facing base URLs (optional)
+  additionalUrls: |
+    - https://argo-cd-demo2.argoproj.io
+
+  # Enables application status badge feature
+  statusbadge.enabled: "true"
+
+  # Specifies a reconciliation timeout for applications. "0" means no timeout (default "120s")
+  timeout.reconciliation: 0
+
+
+ 

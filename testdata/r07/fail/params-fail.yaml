@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cmd-params-cm
+  labels:
+    app.kubernetes.io/name: argocd-cmd-params-cm
+    app.kubernetes.io/part-of: argocd
+data:
+  # Repo server address. (default "argocd-repo-server:8081")
+  repo.server: "argocd-repo-server:8081"
+
+  # Commit server address. (default "argocd-commit-server:8086")
+  commit.server: "argocd-commit-server:8086"
+
+  # Redis server hostname and port (e.g. argocd-redis:6379)
+  redis.server: "argocd-redis:6379"
+  # Enable compression for data sent to Redis with the required compression algorithm. (default 'gzip')
+  redis.compression: gzip
+
+  # Cache expiration default (default 24h0m0s)
+  reposerver.default.cache.expiration: "24h0m0s"
