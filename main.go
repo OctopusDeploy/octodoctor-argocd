@@ -26,6 +26,8 @@ func main() {
 	var showVersion = flag.Bool("version", false, "Print version information")
 	var showVersionShort = flag.Bool("v", false, "Print version information (shorthand)")
 	var directory = flag.String("d", ".", "Directory to scan for ArgoCD files (default: current directory)")
+	var limit int
+	flag.IntVar(&limit, "l", 5, "Limit number of results to display")
 	flag.StringVar(directory, "directory", ".", "Directory to scan for ArgoCD files (default: current directory)")
 	flag.Parse()
 
@@ -56,7 +58,7 @@ func main() {
 	// Step 3 - Generate a nice HTML report
 	// Create output directory path relative to the target directory
 	outputPath := filepath.Join(targetDir, outputDirectory)
-	report.GenerateHTMLReport(&file_analysis, outputPath)
+	report.GenerateHTMLReport(&file_analysis, outputPath, limit)
 
 	// Step 4 - Exit with code 1 if any rules failed, otherwise 0
 	if len(file_analysis.RulesFailed) > 0 {

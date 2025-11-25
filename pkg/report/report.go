@@ -47,7 +47,7 @@ func copyEmbeddedFile(embeddedPath string, dst string) {
 }
 
 // GenerateHTMLReport creates an HTML report from the analysis results
-func GenerateHTMLReport(analysis *analysis.ArgoCDAnalysis, outputDirectory string) {
+func GenerateHTMLReport(analysis *analysis.ArgoCDAnalysis, outputDirectory string, limit int) {
 	log.Println("Creating output directory at ./" + outputDirectory)
 	err := os.MkdirAll(outputDirectory, 0755)
 	if err != nil {
@@ -61,7 +61,7 @@ func GenerateHTMLReport(analysis *analysis.ArgoCDAnalysis, outputDirectory strin
 	log.Println("Rendering HTML report at ./" + outputDirectory + "/index.html")
 
 	// Beautify the analysis data for HTML display
-	beautifyHTMLreport(analysis)
+	beautifyHTMLreport(analysis, limit)
 
 	// Parse the HTML template from embedded files
 	tmpl, err := template.ParseFS(templateFS, "templates/index.html.tpl")
@@ -93,19 +93,19 @@ func GenerateHTMLReport(analysis *analysis.ArgoCDAnalysis, outputDirectory strin
 	}
 }
 
-// beautifyHTMLreport truncates FilesTriggered arrays in RulesFailed to maximum 4 entries
-// If more than 4 files exist, the 4th entry becomes "+X more files" where X is the count of extra files
-func beautifyHTMLreport(analysis *analysis.ArgoCDAnalysis) {
+// beautifyHTMLreport truncates FilesTriggered arrays in RulesFailed to maximum LIMIT entries
+// If more than LIMIT files exist, the next entry becomes "+X more files" where X is the count of extra files
+func beautifyHTMLreport(analysis *analysis.ArgoCDAnalysis, limit int) {
 	for i := range analysis.RulesFailed {
 		rule := &analysis.RulesFailed[i]
 		filesCount := len(rule.FilesTriggered)
 
-		if filesCount > 4 {
+		if filesCount > limit+1 {
 			// Calculate how many extra files there are
-			extraFiles := filesCount - 3 // We keep 3 original files + 1 summary entry
+			extraFiles := filesCount - limit // We keep 3 original files + 1 summary entry
 
 			// Truncate to first 3 files and add summary
-			rule.FilesTriggered = rule.FilesTriggered[:3]
+			rule.FilesTriggered = rule.FilesTriggered[:limit]
 			rule.FilesTriggered = append(rule.FilesTriggered, fmt.Sprintf("+%d more files", extraFiles))
 		}
 	}
