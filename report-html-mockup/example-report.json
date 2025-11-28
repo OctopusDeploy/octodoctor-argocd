@@ -32,8 +32,7 @@
           "affected_files": [
             "applications/app1.yaml",
             "applications/app2.yaml"
-          ],
-          "affected_files_count": 2
+          ]
         },
         {
           "id": "R05",
@@ -42,8 +41,7 @@
           "severity": "high",
           "affected_files": [
             "projects/default-project.yaml"
-          ],
-          "affected_files_count": 1
+          ]
         },
         {
           "id": "R11",
@@ -52,8 +50,7 @@
           "severity": "high",
           "affected_files": [
             "configmaps/argocd-cm.yaml"
-          ],
-          "affected_files_count": 1
+          ]
         }
       ],
       "passed": [

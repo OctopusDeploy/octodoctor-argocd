@@ -28,7 +28,6 @@ results:
     affected_files:
     - applications/app1.yaml
     - applications/app2.yaml
-    affected_files_count: 2
   - id: R05
     name: AppProjects with overly permissive sourceRepos
     description: Found AppProjects with overly permissive sourceRepos settings (using
@@ -36,14 +35,12 @@ results:
     severity: high
     affected_files:
     - projects/default-project.yaml
-    affected_files_count: 1
   - id: R11
     name: ArgoCD anonymous user access
     description: ArgoCD anonymous user access is enabled.
     severity: high
     affected_files:
     - configmaps/argocd-cm.yaml
-    affected_files_count: 1
   passed:
   - id: R02
     name: Applications without automated sync policy
