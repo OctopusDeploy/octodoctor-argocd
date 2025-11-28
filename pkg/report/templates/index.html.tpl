@@ -9,6 +9,7 @@
 </head>
 <body>
   <h1>Argo CD Doctor Analysis Report</h1>
+  <img src="argo-cd-doctor.png" alt="Argo CD Doctor Logo" class="logo">  
   <p class="report-info">Generated at {{.Now.Format "02 Jan 2006 15:04 MST"}}</p>
 
   <section class="scan-results">

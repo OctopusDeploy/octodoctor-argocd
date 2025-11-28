@@ -22,6 +22,13 @@ h1 {
   text-align: center;
 }
 
+.logo {
+  display: block;
+  margin: 1.5rem auto;
+  max-width: 15%;
+  height: auto;
+}
+
 .report-info {
   text-align: center;
   color: #6c757d;
