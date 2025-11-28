@@ -1,0 +1,64 @@
+---
+metadata:
+  version: 1.0.0
+  timestamp: '2025-01-15T10:30:45Z'
+  scanned_directory: "/path/to/argocd/manifests"
+  tool: argocd-doctor
+summary:
+  total_yaml_files: 42
+  total_analyzed_files: 35
+  resources:
+    applications: 12
+    application_sets: 5
+    app_projects: 3
+    configmaps: 10
+    secrets: 5
+  rules:
+    total: 30
+    failed: 3
+    passed: 20
+    inactive: 7
+results:
+  failed:
+  - id: R01
+    name: Check sync policy automated settings
+    description: Applications have dangerous sync policy settings (prune=true and
+      allowEmpty=true). This combination can lead to unintended resource deletion.
+    severity: high
+    affected_files:
+    - applications/app1.yaml
+    - applications/app2.yaml
+    affected_files_count: 2
+  - id: R05
+    name: AppProjects with overly permissive sourceRepos
+    description: Found AppProjects with overly permissive sourceRepos settings (using
+      wildcard '*').
+    severity: high
+    affected_files:
+    - projects/default-project.yaml
+    affected_files_count: 1
+  - id: R11
+    name: ArgoCD anonymous user access
+    description: ArgoCD anonymous user access is enabled.
+    severity: high
+    affected_files:
+    - configmaps/argocd-cm.yaml
+    affected_files_count: 1
+  passed:
+  - id: R02
+    name: Applications without automated sync policy
+    description: All Applications have automated sync policy configured.
+    severity: medium
+    affected_files: []
+  - id: R03
+    name: Application Sets with requeueAfterSeconds
+    description: Application Sets have appropriate requeueAfterSeconds settings (>=
+      1 minute).
+    severity: medium
+    affected_files: []
+  inactive:
+  - id: R20
+    name: Cluster generator usage
+    description: 'Rule not applicable: Less than 2 connected clusters detected.'
+    severity: medium
+    affected_files: []
