@@ -27,14 +27,25 @@ func main() {
 	var showVersionShort = flag.Bool("v", false, "Print version information (shorthand)")
 	var directory = flag.String("d", ".", "Directory to scan for ArgoCD files (default: current directory)")
 	var limit int
+	var output = ""
 	flag.IntVar(&limit, "l", 5, "Limit number of results to display")
 	flag.StringVar(directory, "directory", ".", "Directory to scan for ArgoCD files (default: current directory)")
+	flag.StringVar(&output, "o", "", "Output format (yaml or json)")
 	flag.Parse()
 
 	// Handle version flag
 	if *showVersion || *showVersionShort {
 		fmt.Println(version)
 		os.Exit(0)
+	}
+
+	// Check output
+	if output != "" {
+		if output != "yaml" && output != "json" {
+			log.Fatalf("Invalid output format: %s. Supported formats are 'yaml' and 'json'.", output)
+			os.Exit(1)
+		}
+
 	}
 
 	// Get target directory
@@ -55,10 +66,16 @@ func main() {
 
 	log.Printf("Analysis complete. %d rule(s) failed, %d rule(s) passed", len(file_analysis.RulesFailed), len(file_analysis.RulesPassed))
 
-	// Step 3 - Generate a nice HTML report
+	// Step 3 - Reports
+	// 3.1 Generate a nice HTML report
 	// Create output directory path relative to the target directory
 	outputPath := filepath.Join(targetDir, outputDirectory)
 	report.GenerateHTMLReport(&file_analysis, outputPath, limit)
+
+	// 3.2 Generate JSON report if requested
+	if output == "json" {
+		report.GenerateJSONReport(&file_analysis, outputPath, version)
+	}
 
 	// Step 4 - Exit with code 1 if any rules failed, otherwise 0
 	if len(file_analysis.RulesFailed) > 0 {
