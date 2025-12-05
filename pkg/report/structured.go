@@ -2,7 +2,6 @@ package report
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"os"
 	"time"
@@ -107,7 +106,7 @@ func GenerateStructuredReport(analysis *analysis.ArgoCDAnalysis, outputDirectory
 		if err != nil {
 			log.Fatal("marshal yaml: ", err)
 		}
-		fmt.Printf("%s", yaml)
+		// fmt.Printf("%s", yaml)
 		f.WriteString(string(yaml))
 	}
 	f.Sync()
