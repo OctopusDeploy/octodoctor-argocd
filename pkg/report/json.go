@@ -2,7 +2,6 @@ package report
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"os"
 	"time"
@@ -30,15 +29,71 @@ func GenerateJSONReport(analysis *analysis.ArgoCDAnalysis, outputDirectory strin
 		}
 	}()
 
-	metadata := Metadata{
-		Version:          version,
-		Timestamp:        time.Now().Format(time.RFC3339),
-		ScannedDirectory: analysis.BaseDirectory,
-		Tool:             "ArgoCD Doctor",
+	summary := Summary{
+		TotalYAMLFiles:     len(analysis.YamlFiles),
+		TotalAnalyzedFiles: len(analysis.AnalyzedFiles),
+		Resources: Resources{
+			Applications:    len(analysis.Applications),
+			ApplicationSets: len(analysis.ApplicationSets),
+			AppProjects:     len(analysis.AppProjects),
+			ConfigMaps:      len(analysis.ConfigMaps),
+			Secrets:         len(analysis.Secrets),
+		},
+		Rules: Rules{
+			Total:    len(analysis.RulesFailed) + len(analysis.RulesPassed) + len(analysis.RulesInactive),
+			Failed:   len(analysis.RulesFailed),
+			Passed:   len(analysis.RulesPassed),
+			Inactive: len(analysis.RulesInactive),
+		},
 	}
 
+	// build results
+	var results Results
+	results.Failed = make([]Rule, len(analysis.RulesFailed))
+	for i, r := range analysis.RulesFailed {
+		rule := Rule{
+			Id:            r.ID,
+			Name:          r.Name,
+			Description:   r.Description,
+			Severity:      r.Severity,
+			AffectedFiles: r.FilesTriggered,
+		}
+		results.Failed[i] = rule
+	}
+
+	results.Passed = make([]Rule, len(analysis.RulesPassed))
+	for i, r := range analysis.RulesPassed {
+		rule := Rule{
+			Id:            r.ID,
+			Name:          r.Name,
+			Description:   r.Description,
+			Severity:      r.Severity,
+			AffectedFiles: r.FilesTriggered,
+		}
+		results.Passed[i] = rule
+	}
+
+	results.Inactive = make([]Rule, len(analysis.RulesInactive))
+	for i, r := range analysis.RulesInactive {
+		rule := Rule{
+			Id:          r.ID,
+			Name:        r.Name,
+			Description: r.Description,
+			Severity:    r.Severity,
+		}
+		results.Inactive[i] = rule
+	}
+
+	// build final report
 	report := JSONReport{
-		Metadata: metadata,
+		Metadata: Metadata{
+			Version:          version,
+			Timestamp:        time.Now().Format(time.RFC3339),
+			ScannedDirectory: analysis.BaseDirectory,
+			Tool:             "ArgoCD Doctor",
+		},
+		Summary: summary,
+		Results: results,
 	}
 
 	// Turn structure into JSON
@@ -46,7 +101,7 @@ func GenerateJSONReport(analysis *analysis.ArgoCDAnalysis, outputDirectory strin
 	if err != nil {
 		log.Fatal("marshal json: ", err)
 	}
-	fmt.Printf("%s", js)
+	// fmt.Printf("%s", js)
 	f.WriteString(string(js))
 	f.Sync()
 }
