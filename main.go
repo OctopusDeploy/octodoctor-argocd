@@ -73,8 +73,8 @@ func main() {
 	report.GenerateHTMLReport(&file_analysis, outputPath, limit)
 
 	// 3.2 Generate JSON report if requested
-	if output == "json" {
-		report.GenerateJSONReport(&file_analysis, outputPath, version)
+	if output != "" {
+		report.GenerateStructuredReport(&file_analysis, outputPath, output, version)
 	}
 
 	// Step 4 - Exit with code 1 if any rules failed, otherwise 0

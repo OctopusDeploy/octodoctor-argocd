@@ -2,24 +2,22 @@ package report
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"os"
 	"time"
 
+	"gopkg.in/yaml.v3"
+
 	"github.com/codefresh-contrib/argocd-doctor/pkg/analysis"
 )
 
-func GenerateJSONReport(analysis *analysis.ArgoCDAnalysis, outputDirectory string, version string) {
-	// log.Println("Creating output directory at ./" + outputDirectory)
-	// err := os.MkdirAll(outputDirectory, 0755)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
+func GenerateStructuredReport(analysis *analysis.ArgoCDAnalysis, outputDirectory string, language string, version string) {
 
-	log.Println("Rendering JSON report at ./" + outputDirectory + "/report.json")
+	log.Println("Rendering " + language + " report at ./" + outputDirectory + "/report.json")
 
 	// Create the output JSON file
-	f, err := os.Create(outputDirectory + "/report.json")
+	f, err := os.Create(outputDirectory + "/report." + language)
 	if err != nil {
 		log.Fatal("create file: ", err)
 	}
@@ -97,11 +95,20 @@ func GenerateJSONReport(analysis *analysis.ArgoCDAnalysis, outputDirectory strin
 	}
 
 	// Turn structure into JSON
-	js, err := json.MarshalIndent(report, "", "  ")
-	if err != nil {
-		log.Fatal("marshal json: ", err)
+	if language == "json" {
+		js, err := json.MarshalIndent(report, "", "  ")
+		if err != nil {
+			log.Fatal("marshal json: ", err)
+		}
+		// fmt.Printf("%s", js)
+		f.WriteString(string(js))
+	} else if language == "yaml" {
+		yaml, err := yaml.Marshal(report)
+		if err != nil {
+			log.Fatal("marshal yaml: ", err)
+		}
+		fmt.Printf("%s", yaml)
+		f.WriteString(string(yaml))
 	}
-	// fmt.Printf("%s", js)
-	f.WriteString(string(js))
 	f.Sync()
 }
