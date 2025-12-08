@@ -58,6 +58,7 @@ func main() {
 	// Step 3 - Generate all reports (HTML, YAML, and JSON)
 	// Create output directory path relative to the target directory
 	outputPath := filepath.Join(targetDir, outputDirectory)
+	report.CreateOutputDirectory(outputPath)
 	report.GenerateStructuredReport(&file_analysis, outputPath, "yaml", version)
 	report.GenerateStructuredReport(&file_analysis, outputPath, "json", version)
 	report.GenerateHTMLReport(&file_analysis, outputPath, limit)

@@ -46,14 +46,16 @@ func copyEmbeddedFile(embeddedPath string, dst string) {
 	checkErr(err)
 }
 
-// GenerateHTMLReport creates an HTML report from the analysis results
-func GenerateHTMLReport(analysis *analysis.ArgoCDAnalysis, outputDirectory string, limit int) {
+func CreateOutputDirectory(outputDirectory string) {
 	log.Println("Creating output directory at ./" + outputDirectory)
 	err := os.MkdirAll(outputDirectory, 0755)
 	if err != nil {
 		log.Fatal(err)
 	}
+}
 
+// GenerateHTMLReport creates an HTML report from the analysis results
+func GenerateHTMLReport(analysis *analysis.ArgoCDAnalysis, outputDirectory string, limit int) {
 	// Copy static assets from embedded files
 	copyEmbeddedFile("templates/style.css", outputDirectory+"/style.css")
 	copyEmbeddedFile("templates/favicon.png", outputDirectory+"/favicon.png")
