@@ -3,15 +3,15 @@ package report
 type Metadata struct {
 	Version          string `json:"version"`
 	Timestamp        string `json:"timestamp"`
-	ScannedDirectory string `json:"scanned_directory"`
+	ScannedDirectory string `json:"scannedDirectory"`
 	Tool             string `json:"tool"`
 }
 
 type Resources struct {
 	Applications    int `json:"applications"`
-	ApplicationSets int `json:"application_sets"`
-	AppProjects     int `json:"app_projects"`
-	ConfigMaps      int `json:"config_maps"`
+	ApplicationSets int `json:"applicationSets"`
+	AppProjects     int `json:"appProjects"`
+	ConfigMaps      int `json:"configmaps"`
 	Secrets         int `json:"secrets"`
 }
 
@@ -22,8 +22,8 @@ type Rules struct {
 	Inactive int `json:"inactive"`
 }
 type Summary struct {
-	TotalYAMLFiles     int       `json:"total_yaml_files"`
-	TotalAnalyzedFiles int       `json:"total_analyzed_files"`
+	TotalYAMLFiles     int       `json:"totalYamlFiles"`
+	TotalAnalyzedFiles int       `json:"totalAnalyzedFiles"`
 	Resources          Resources `json:"resources"`
 	Rules              Rules     `json:"rules"`
 }
@@ -33,7 +33,7 @@ type Rule struct {
 	Name          string   `json:"name"`
 	Description   string   `json:"description"`
 	Severity      string   `json:"severity"`
-	AffectedFiles []string `json:"affected_files"`
+	AffectedFiles []string `json:"affectedFiles"`
 }
 
 type Results struct {
