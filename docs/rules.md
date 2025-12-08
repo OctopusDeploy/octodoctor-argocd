@@ -25,7 +25,7 @@ The tool will look at the extracted contents of a Codefresh support package and 
 | R19 | Using Git hashes or branch names in Target Revision (anything else other than `HEAD`) | Medium | ✅ |
 | R20 | Having more than 2 connected clusters and applicationsets don't use the cluster generator | Medium | ✅ |
 | R22 | No webhooks setup for Argo CD repo server/Git generator | Medium | ✅ |
-| R25 | Having more then 3 sources in a multi-source app | Medium | ❌ |
+| R25 | Having more than 2 sources in a multi-source app | Medium | ✅ |
 | R26 | Having multiple sources with just Helm charts | Medium | ❌ |
 | R30 | Using Image Updater without writing back to Git | High ⚠️ | ✅ |
 | R97 | Having exactly one application set (results in complex YAML) | Medium | ✅ |
