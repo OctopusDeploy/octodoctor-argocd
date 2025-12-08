@@ -13,7 +13,7 @@ import (
 
 func GenerateStructuredReport(analysis *analysis.ArgoCDAnalysis, outputDirectory string, language string, version string) {
 
-	log.Println("Rendering " + language + " report at ./" + outputDirectory + "/report.json")
+	log.Println("Rendering " + language + " report at ./" + outputDirectory + "/report." + language)
 
 	// Create the output JSON file
 	f, err := os.Create(outputDirectory + "/report." + language)
@@ -73,10 +73,11 @@ func GenerateStructuredReport(analysis *analysis.ArgoCDAnalysis, outputDirectory
 	results.Inactive = make([]Rule, len(analysis.RulesInactive))
 	for i, r := range analysis.RulesInactive {
 		rule := Rule{
-			Id:          r.ID,
-			Name:        r.Name,
-			Description: r.Description,
-			Severity:    r.Severity,
+			Id:            r.ID,
+			Name:          r.Name,
+			Description:   r.Description,
+			Severity:      r.Severity,
+			AffectedFiles: r.FilesTriggered,
 		}
 		results.Inactive[i] = rule
 	}
@@ -87,7 +88,7 @@ func GenerateStructuredReport(analysis *analysis.ArgoCDAnalysis, outputDirectory
 			Version:          version,
 			Timestamp:        time.Now().Format(time.RFC3339),
 			ScannedDirectory: analysis.BaseDirectory,
-			Tool:             "ArgoCD Doctor",
+			Tool:             "argocd-doctor",
 		},
 		Summary: summary,
 		Results: results,

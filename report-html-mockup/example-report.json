@@ -1,0 +1,82 @@
+{
+    "metadata": {
+      "version": "1.0.0",
+      "timestamp": "2025-01-15T10:30:45Z",
+      "scannedDirectory": "/path/to/argocd/manifests",
+      "tool": "argocd-doctor"
+    },
+    "summary": {
+      "totalYamlFiles": 42,
+      "totalAnalyzedFiles": 35,
+      "resources": {
+        "applications": 12,
+        "applicationSets": 5,
+        "appProjects": 3,
+        "configmaps": 10,
+        "secrets": 5
+      },
+      "rules": {
+        "total": 30,
+        "failed": 3,
+        "passed": 20,
+        "inactive": 7
+      }
+    },
+    "results": {
+      "failed": [
+        {
+          "id": "R01",
+          "name": "Check sync policy automated settings",
+          "description": "Applications have dangerous sync policy settings (prune=true and allowEmpty=true). This combination can lead to unintended resource deletion.",
+          "severity": "high",
+          "affectedFiles": [
+            "applications/app1.yaml",
+            "applications/app2.yaml"
+          ]
+        },
+        {
+          "id": "R05",
+          "name": "AppProjects with overly permissive sourceRepos",
+          "description": "Found AppProjects with overly permissive sourceRepos settings (using wildcard '*').",
+          "severity": "high",
+          "affectedFiles": [
+            "projects/default-project.yaml"
+          ]
+        },
+        {
+          "id": "R11",
+          "name": "ArgoCD anonymous user access",
+          "description": "ArgoCD anonymous user access is enabled.",
+          "severity": "high",
+          "affectedFiles": [
+            "configmaps/argocd-cm.yaml"
+          ]
+        }
+      ],
+      "passed": [
+        {
+          "id": "R02",
+          "name": "Applications without automated sync policy",
+          "description": "All Applications have automated sync policy configured.",
+          "severity": "medium",
+          "affectedFiles": []
+        },
+        {
+          "id": "R03",
+          "name": "Application Sets with requeueAfterSeconds",
+          "description": "Application Sets have appropriate requeueAfterSeconds settings (>= 1 minute).",
+          "severity": "medium",
+          "affectedFiles": []
+        }
+      ],
+      "inactive": [
+        {
+          "id": "R20",
+          "name": "Cluster generator usage",
+          "description": "Rule not applicable: Less than 2 connected clusters detected.",
+          "severity": "medium",
+          "affectedFiles": []
+        }
+      ]
+    }
+  }
