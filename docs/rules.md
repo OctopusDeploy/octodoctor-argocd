@@ -28,6 +28,7 @@ The tool will look at the extracted contents of a Codefresh support package and 
 | R25 | Having more than 2 sources in a multi-source app | Medium | ✅ |
 | R26 | Having multiple sources with just Helm charts | Medium | ✅ |
 | R30 | Using Image Updater without writing back to Git | High ⚠️ | ✅ |
+| R50 | ArgoCD resourceTrackingMethod is set to an invalid value | High ⚠️ | ✅ |
 | R97 | Having exactly one application set (results in complex YAML) | Medium | ✅ |
 | R98 | No Application Set resources while Application Resources are > 0 | Medium | ✅ |
 | R99 | Having too many application sets (performance issues) | Medium | ✅ |
