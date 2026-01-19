@@ -30,8 +30,8 @@ func (r *Rule50) Execute(file_analysis *analysis.ArgoCDAnalysis) (RuleResult, er
 
 	// Accepted values for resourceTrackingMethod
 	acceptedValues := map[string]bool{
-		"label":           true,
-		"annotation":      true,
+		"label":            true,
+		"annotation":       true,
 		"annotation+label": true,
 	}
 
