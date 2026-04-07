@@ -110,8 +110,10 @@ func determineRuleResult(metadata RuleMetadata, failedFiles, passedFiles, inacti
 		}, nil
 	}
 
-	// If we have inactive files but no failed files, mark as inactive
-	if len(inactiveFiles) > 0 && len(passedFiles) == 0 {
+	// Mark as inactive when no files passed the rule's relevance check — covers both
+	// the case where every file was individually inactive and the case where no files
+	// of the relevant type exist at all (empty lists).
+	if len(passedFiles) == 0 {
 		result := analysis.RuleExecution{
 			ID:             metadata.ID,
 			Name:           metadata.Name,
@@ -119,8 +121,6 @@ func determineRuleResult(metadata RuleMetadata, failedFiles, passedFiles, inacti
 			Severity:       metadata.Severity,
 			FilesTriggered: nil,
 		}
-		// Note: The registry doesn't handle inactive rules yet, so we'll return as passed
-		// but this could be extended to support RulesInactive
 		return RuleResult{
 			Active:    false,
 			Passed:    true,
