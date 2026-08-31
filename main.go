@@ -18,7 +18,7 @@ var (
 )
 
 const (
-	outputDirectory = "argocd-doctor-output"
+	outputDirectory = "octodoctor-output"
 )
 
 func main() {

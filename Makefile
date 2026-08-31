@@ -1,9 +1,9 @@
-BIN_NAME=argocd-doctor
+BIN_NAME=octodoctor
 
 # Get version from git tag or hash, default to "dev"
 VERSION := $(shell git describe --tags --exact-match HEAD 2>/dev/null || git rev-parse --short HEAD 2>/dev/null || echo "dev")
 
-argocd-doctor-build: 
+octodoctor-build: 
 	CGO_ENABLED=0 GOOS=${GOOS} GOARCH=${GOARCH} go build -v -ldflags "-X main.version=$(VERSION)" -o ${BIN_NAME} .
 
 .PHONY: lint
@@ -31,14 +31,14 @@ coverage:
 
 .PHONY: release
 release:
-	make BIN_NAME=argocd-doctor-darwin-amd64 GOOS=darwin GOARCH=amd64 argocd-doctor-build
-	make BIN_NAME=argocd-doctor-darwin-arm64 GOOS=darwin GOARCH=arm64 argocd-doctor-build
-	make BIN_NAME=argocd-doctor-linux-amd64 GOOS=linux GOARCH=amd64 argocd-doctor-build
-	make BIN_NAME=argocd-doctor-linux-arm64 GOOS=linux GOARCH=arm64 argocd-doctor-build
-	make BIN_NAME=argocd-doctor-windows-amd64.exe GOOS=windows argocd-doctor-build
+	make BIN_NAME=octodoctor-darwin-amd64 GOOS=darwin GOARCH=amd64 octodoctor-build
+	make BIN_NAME=octodoctor-darwin-arm64 GOOS=darwin GOARCH=arm64 octodoctor-build
+	make BIN_NAME=octodoctor-linux-amd64 GOOS=linux GOARCH=amd64 octodoctor-build
+	make BIN_NAME=octodoctor-linux-arm64 GOOS=linux GOARCH=arm64 octodoctor-build
+	make BIN_NAME=octodoctor-windows-amd64.exe GOOS=windows octodoctor-build
 
 .PHONY: clean
 clean:
 	rm -f $(BIN_NAME)
 	rm -rf coverage.out coverage.html
-	rm -rf argocd-doctor-output
+	rm -rf octodoctor-output

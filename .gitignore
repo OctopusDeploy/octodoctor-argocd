@@ -32,7 +32,7 @@ go.work.sum
 # .vscode/
 
 ## output folder
-argocd-doctor-output/
+octodoctor-output/
 
 ## binary
-argocd-doctor
+octodoctor
