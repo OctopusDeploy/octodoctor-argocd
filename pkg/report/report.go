@@ -8,7 +8,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/codefresh-contrib/argocd-doctor/pkg/analysis"
+	"github.com/OctopusDeploy/argocd-doctor/pkg/analysis"
 )
 
 //go:embed templates/*

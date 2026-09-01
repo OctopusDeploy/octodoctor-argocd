@@ -6,7 +6,7 @@ package rules
 import (
 	"gopkg.in/yaml.v3"
 
-	"github.com/codefresh-contrib/argocd-doctor/pkg/analysis"
+	"github.com/OctopusDeploy/argocd-doctor/pkg/analysis"
 )
 
 type Rule12 struct {

@@ -3,7 +3,7 @@ package rules
 import (
 	"strings"
 
-	"github.com/codefresh-contrib/argocd-doctor/pkg/analysis"
+	"github.com/OctopusDeploy/argocd-doctor/pkg/analysis"
 	"gopkg.in/yaml.v3"
 )
 

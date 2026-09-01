@@ -3,7 +3,7 @@
 package rules
 
 import (
-	"github.com/codefresh-contrib/argocd-doctor/pkg/analysis"
+	"github.com/OctopusDeploy/argocd-doctor/pkg/analysis"
 )
 
 type Rule99 struct {

@@ -1,4 +1,4 @@
-module github.com/codefresh-contrib/argocd-doctor
+module github.com/OctopusDeploy/argocd-doctor
 
 go 1.23.0
 
