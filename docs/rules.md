@@ -1,6 +1,6 @@
 # Argo CD detection rules
 
-![Argo CD doctor logo](argo-cd-doctor-logo.png)
+![OctoDoctor for Argo CD logo](octodoctor-logo.png)
 
 The tool will look at the extracted contents of a Codefresh support package and detect the following
 

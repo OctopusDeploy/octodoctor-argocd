@@ -59,7 +59,7 @@ func GenerateHTMLReport(analysis *analysis.ArgoCDAnalysis, outputDirectory strin
 	// Copy static assets from embedded files
 	copyEmbeddedFile("templates/style.css", outputDirectory+"/style.css")
 	copyEmbeddedFile("templates/favicon.png", outputDirectory+"/favicon.png")
-	copyEmbeddedFile("templates/argo-cd-doctor.png", outputDirectory+"/argo-cd-doctor.png")
+	copyEmbeddedFile("templates/octodoctor.png", outputDirectory+"/octodoctor.png")
 
 	log.Println("Rendering HTML report at ./" + outputDirectory + "/index.html")
 

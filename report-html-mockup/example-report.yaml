@@ -3,7 +3,7 @@ metadata:
   version: 1.0.0
   timestamp: '2025-01-15T10:30:45Z'
   scannedDirectory: "/path/to/argocd/manifests"
-  tool: argocd-doctor
+  tool: octodoctor
 summary:
   totalYamlFiles: 42
   totalAnalyzedFiles: 35

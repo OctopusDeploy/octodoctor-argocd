@@ -88,7 +88,7 @@ func GenerateStructuredReport(analysis *analysis.ArgoCDAnalysis, outputDirectory
 			Version:          version,
 			Timestamp:        time.Now().Format(time.RFC3339),
 			ScannedDirectory: analysis.BaseDirectory,
-			Tool:             "argocd-doctor",
+			Tool:             "octodoctor",
 		},
 		Summary: summary,
 		Results: results,
