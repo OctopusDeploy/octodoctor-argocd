@@ -108,6 +108,6 @@ func checkHelmSource(sourceNode *yaml.Node) helmCheckResult {
 	}
 
 	// Rule fails if it has values or valuesObject
-	passed := !(hasValues || hasValuesObject)
+	passed := !hasValues && !hasValuesObject
 	return helmCheckResult{hasHelm: true, passed: passed}
 }

@@ -73,7 +73,6 @@ func TestRule22(t *testing.T) {
 			// Assert the rule active status
 			assert.Equal(t, tc.expectedActive, result.Active, "Rule R22 active status mismatch")
 			assert.Equal(t, tc.expectedPassed, result.Passed, "Rule R22 passed status mismatch")
-
 		})
 	}
 }

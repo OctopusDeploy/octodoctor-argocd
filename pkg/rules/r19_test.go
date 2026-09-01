@@ -91,7 +91,6 @@ func TestRule19(t *testing.T) {
 			// Assert the rule active status
 			assert.Equal(t, tc.expectedActive, result.Active, "Rule R19 active status mismatch")
 			assert.Equal(t, tc.expectedPassed, result.Passed, "Rule R19 passed status mismatch")
-
 		})
 	}
 }

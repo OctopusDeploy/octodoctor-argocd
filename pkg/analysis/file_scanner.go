@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"slices"
 	"sort"
 	"strings"
 
@@ -78,7 +79,6 @@ func (analysis *ArgoCDAnalysis) DiscoverYamlFiles(folderPath string) {
 
 	log.Printf("Scanner -> Found %d YAML file(s) in %s", len(yamlFiles), folderPath)
 	analysis.YamlFiles = yamlFiles
-
 }
 
 // filterArgoCDFiles filters YAML files to keep only ArgoCD Application, ApplicationSet resources and ConfigMaps
@@ -96,7 +96,7 @@ func (analysis *ArgoCDAnalysis) FilterArgoCDFiles() {
 		}
 
 		// Parse YAML into a map
-		var yamlContent map[string]interface{}
+		var yamlContent map[string]any
 		err = yaml.Unmarshal(fileData, &yamlContent)
 		if err != nil {
 			log.Printf("Scanner -> Error parsing YAML file %s: %v", filePath, err)
@@ -141,7 +141,7 @@ func (analysis *ArgoCDAnalysis) FilterArgoCDFiles() {
 
 // categorizeAndStoreFile categorizes and stores files according to their type
 // Returns true if the file was categorized and stored, false otherwise
-func (analysis *ArgoCDAnalysis) categorizeAndStoreFile(apiVersion, kind string, argoCDFile ArgoCDFile, yamlContent map[string]interface{}) bool {
+func (analysis *ArgoCDAnalysis) categorizeAndStoreFile(apiVersion, kind string, argoCDFile ArgoCDFile, yamlContent map[string]any) bool {
 	if apiVersion == "argoproj.io/v1alpha1" && kind == "Application" {
 		analysis.Applications = append(analysis.Applications, argoCDFile)
 		log.Printf("Scanner -> Found ArgoCD Application: %s", argoCDFile.FullPath)
@@ -175,8 +175,7 @@ func (analysis *ArgoCDAnalysis) categorizeAndStoreFile(apiVersion, kind string, 
 }
 
 // isArgoCDConfigMap checks if a ConfigMap belong to Argo CD configuration
-func isArgoCDConfigMap(yamlContent map[string]interface{}) (bool, string) {
-
+func isArgoCDConfigMap(yamlContent map[string]any) (bool, string) {
 	// Allowed ArgoCD ConfigMap names
 	var allowedArgoCDConfigMaps = []string{
 		"argocd-cm",
@@ -187,7 +186,7 @@ func isArgoCDConfigMap(yamlContent map[string]interface{}) (bool, string) {
 	}
 
 	// Read metadata.name
-	metadata, ok := yamlContent["metadata"].(map[string]interface{})
+	metadata, ok := yamlContent["metadata"].(map[string]any)
 	if !ok {
 		// metadata not found or not a map
 		return false, ""
@@ -200,25 +199,22 @@ func isArgoCDConfigMap(yamlContent map[string]interface{}) (bool, string) {
 	}
 
 	// Check if the ConfigMap name is in the allowed list
-	for _, allowedName := range allowedArgoCDConfigMaps {
-		if name == allowedName {
-			return true, name
-		}
+	if slices.Contains(allowedArgoCDConfigMaps, name) {
+		return true, name
 	}
 
 	return false, name
 }
 
 // isArgoCDSecret checks if a Secret belongs to Argo CD configuration
-func isArgoCDSecret(yamlContent map[string]interface{}) (bool, string) {
-
+func isArgoCDSecret(yamlContent map[string]any) (bool, string) {
 	// Allowed ArgoCD Secret names
 	var allowedArgoCDSecrets = []string{
 		"argocd-secret",
 	}
 
 	// Read metadata.name
-	metadata, ok := yamlContent["metadata"].(map[string]interface{})
+	metadata, ok := yamlContent["metadata"].(map[string]any)
 	if !ok {
 		// metadata not found or not a map
 		return false, ""
@@ -231,15 +227,13 @@ func isArgoCDSecret(yamlContent map[string]interface{}) (bool, string) {
 	}
 
 	// Check if the Secret name is in the allowed list
-	for _, allowedName := range allowedArgoCDSecrets {
-		if name == allowedName {
-			return true, name
-		}
+	if slices.Contains(allowedArgoCDSecrets, name) {
+		return true, name
 	}
 
 	// Check if this is a cluster type secret (for rules that deal with external clusters)
 	// Look for the label argocd.argoproj.io/secret-type: cluster
-	labels, ok := metadata["labels"].(map[string]interface{})
+	labels, ok := metadata["labels"].(map[string]any)
 	if ok {
 		secretType, ok := labels["argocd.argoproj.io/secret-type"].(string)
 		if ok && secretType == "cluster" {

@@ -3,6 +3,8 @@
 package rules
 
 import (
+	"slices"
+
 	"gopkg.in/yaml.v3"
 
 	"github.com/OctopusDeploy/argocd-doctor/pkg/analysis"
@@ -50,13 +52,7 @@ func (r *Rule16) Execute(file_analysis *analysis.ArgoCDAnalysis) (RuleResult, er
 		}
 
 		// Check all sources for kustomize directive
-		hasKustomize := false
-		for _, sourceNode := range sourceNodes {
-			if checkKustomizeSource(sourceNode) {
-				hasKustomize = true
-				break
-			}
-		}
+		hasKustomize := slices.ContainsFunc(sourceNodes, checkKustomizeSource)
 
 		// Categorize the application
 		if hasKustomize {

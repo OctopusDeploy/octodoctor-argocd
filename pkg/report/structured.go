@@ -12,7 +12,6 @@ import (
 )
 
 func GenerateStructuredReport(analysis *analysis.ArgoCDAnalysis, outputDirectory string, language string, version string) {
-
 	log.Println("Rendering " + language + " report at ./" + outputDirectory + "/report." + language)
 
 	// Create the output JSON file
@@ -95,14 +94,15 @@ func GenerateStructuredReport(analysis *analysis.ArgoCDAnalysis, outputDirectory
 	}
 
 	// Turn structure into JSON
-	if language == "json" {
+	switch language {
+	case "json":
 		js, err := json.MarshalIndent(report, "", "  ")
 		if err != nil {
 			log.Fatal("marshal json: ", err)
 		}
 		// fmt.Printf("%s", js)
 		f.WriteString(string(js))
-	} else if language == "yaml" {
+	case "yaml":
 		yaml, err := yaml.Marshal(report)
 		if err != nil {
 			log.Fatal("marshal yaml: ", err)

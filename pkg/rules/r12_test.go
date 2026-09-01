@@ -79,7 +79,6 @@ func TestRule12(t *testing.T) {
 			// Assert the rule active status
 			assert.Equal(t, tc.expectedActive, result.Active, "Rule R12 active status mismatch")
 			assert.Equal(t, tc.expectedPassed, result.Passed, "Rule R12 passed status mismatch")
-
 		})
 	}
 }
