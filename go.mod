@@ -1,4 +1,4 @@
-module github.com/OctopusDeploy/argocd-doctor
+module github.com/OctopusDeploy/octodoctor-argocd
 
 go 1.23.0
 

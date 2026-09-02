@@ -10,7 +10,7 @@ a cluster — it only reads YAML files from a directory you give it.
 ## Download a prebuilt binary
 
 Grab the archive for your platform from the
-[releases page](https://github.com/OctopusDeploy/argocd-doctor/releases), then make it executable and
+[releases page](https://github.com/OctopusDeploy/octodoctor-argocd/releases), then make it executable and
 put it somewhere on your `PATH`. Binaries are published for Linux, macOS and Windows on both `amd64`
 and `arm64`.
 
@@ -19,8 +19,8 @@ and `arm64`.
 You need Go 1.23.0 or later.
 
 ```bash
-git clone https://github.com/OctopusDeploy/argocd-doctor.git
-cd argocd-doctor
+git clone https://github.com/OctopusDeploy/octodoctor-argocd.git
+cd octodoctor-argocd
 make octodoctor-build
 ```
 

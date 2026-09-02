@@ -3,7 +3,7 @@ package rules
 import (
 	"testing"
 
-	"github.com/OctopusDeploy/argocd-doctor/pkg/analysis"
+	"github.com/OctopusDeploy/octodoctor-argocd/pkg/analysis"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

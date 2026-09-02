@@ -3,7 +3,7 @@ package rules
 import (
 	"log"
 
-	"github.com/OctopusDeploy/argocd-doctor/pkg/analysis"
+	"github.com/OctopusDeploy/octodoctor-argocd/pkg/analysis"
 )
 
 type RuleResult struct {

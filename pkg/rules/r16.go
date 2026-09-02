@@ -7,7 +7,7 @@ import (
 
 	"gopkg.in/yaml.v3"
 
-	"github.com/OctopusDeploy/argocd-doctor/pkg/analysis"
+	"github.com/OctopusDeploy/octodoctor-argocd/pkg/analysis"
 )
 
 type Rule16 struct {

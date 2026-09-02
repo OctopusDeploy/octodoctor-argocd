@@ -8,7 +8,7 @@ import (
 
 	"gopkg.in/yaml.v3"
 
-	"github.com/OctopusDeploy/argocd-doctor/pkg/analysis"
+	"github.com/OctopusDeploy/octodoctor-argocd/pkg/analysis"
 )
 
 func GenerateStructuredReport(analysis *analysis.ArgoCDAnalysis, outputDirectory string, language string, version string) {

@@ -1,6 +1,6 @@
 site_name: OctoDoctor for Argo CD
-site_url: https://argocd-doctor.readthedocs.io/
-repo_url: https://github.com/OctopusDeploy/argocd-doctor
+site_url: https://octodoctor-argocd.readthedocs.io/
+repo_url: https://github.com/OctopusDeploy/octodoctor-argocd
 
 markdown_extensions:
 - admonition

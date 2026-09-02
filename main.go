@@ -7,9 +7,9 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/OctopusDeploy/argocd-doctor/pkg/analysis"
-	"github.com/OctopusDeploy/argocd-doctor/pkg/report"
-	"github.com/OctopusDeploy/argocd-doctor/pkg/rules"
+	"github.com/OctopusDeploy/octodoctor-argocd/pkg/analysis"
+	"github.com/OctopusDeploy/octodoctor-argocd/pkg/report"
+	"github.com/OctopusDeploy/octodoctor-argocd/pkg/rules"
 )
 
 var (
