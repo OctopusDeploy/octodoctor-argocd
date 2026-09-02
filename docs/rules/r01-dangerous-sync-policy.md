@@ -63,4 +63,7 @@ For more information, see these Octopus Deploy blog posts:
 - [Argo CD finalizers: prevent accidental deletion issues](https://octopus.com/blog/argocd-application-deletion-finalizers)
 - [Top 30 Argo CD anti-patterns to avoid when adopting GitOps](https://octopus.com/blog/30-argo-cd-antipatterns-for-gitops)
 
+The Argo CD documentation describes the setting itself under
+[automatic pruning with allow-empty](https://argo-cd.readthedocs.io/en/latest/user-guide/auto_sync/#automatic-pruning-with-allow-empty-v18).
+
 [Back to all rules](index.md)

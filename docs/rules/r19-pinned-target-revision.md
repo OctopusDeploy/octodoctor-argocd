@@ -78,4 +78,7 @@ For more information, see these Octopus Deploy blog posts:
 - [Abusing the target revision field for Argo CD promotions](https://octopus.com/blog/argocd-application-target-revision-field)
 - [Top 30 Argo CD anti-patterns to avoid when adopting GitOps](https://octopus.com/blog/30-argo-cd-antipatterns-for-gitops)
 
+The Argo CD documentation compares the options under
+[tracking and deployment strategies](https://argo-cd.readthedocs.io/en/latest/user-guide/tracking_strategies/#head-branch-tracking).
+
 [Back to all rules](index.md)

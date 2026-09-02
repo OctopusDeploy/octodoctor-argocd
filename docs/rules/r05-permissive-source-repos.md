@@ -58,6 +58,8 @@ developers can reach should name its repositories.
 ## Further reading
 
 For more information, see the Octopus Deploy blog post
-[Securing Argo CD in a multi-tenant environment with application projects](https://octopus.com/blog/multi-tenant-argocd-with-application-projects).
+[Securing Argo CD in a multi-tenant environment with application projects](https://octopus.com/blog/multi-tenant-argocd-with-application-projects),
+and the Argo CD documentation on
+[the default project](https://argo-cd.readthedocs.io/en/latest/user-guide/projects/#the-default-project).
 
 [Back to all rules](index.md)

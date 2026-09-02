@@ -65,6 +65,8 @@ a mistake.
 ## Further reading
 
 For more information, see the Octopus Deploy blog post
-[Top 30 Argo CD anti-patterns to avoid when adopting GitOps](https://octopus.com/blog/30-argo-cd-antipatterns-for-gitops).
+[Top 30 Argo CD anti-patterns to avoid when adopting GitOps](https://octopus.com/blog/30-argo-cd-antipatterns-for-gitops),
+and the Argo CD documentation on
+[choosing a tracking method](https://argo-cd.readthedocs.io/en/latest/user-guide/resource_tracking/#choosing-a-tracking-method).
 
 [Back to all rules](index.md)

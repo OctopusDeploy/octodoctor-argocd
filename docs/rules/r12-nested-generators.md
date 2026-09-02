@@ -79,4 +79,8 @@ For more information, see these Octopus Deploy blog posts:
 - [Structuring Argo CD repositories](https://octopus.com/blog/how-to-structure-your-argo-cd-repositories-using-application-sets)
 - [Top 30 Argo CD anti-patterns to avoid when adopting GitOps](https://octopus.com/blog/30-argo-cd-antipatterns-for-gitops)
 
+Argo CD enforces part of this itself. The
+[Matrix generator restrictions](https://argo-cd.readthedocs.io/en/latest/operator-manual/applicationset/Generators-Matrix/#restrictions)
+state that combination-type generators can only be nested once.
+
 [Back to all rules](index.md)
