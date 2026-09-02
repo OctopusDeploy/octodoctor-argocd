@@ -10,13 +10,13 @@ spec:
         generators:
           # Git generator, 'child' #1
           - git:
-              repoURL: https://github.com/codefresh-contrib/gitops-cert-level-2-examples.git
+              repoURL: https://github.com/example-org/gitops-examples.git
               revision: HEAD
               directories:
                 - path: application-sets/example-apps/*
           # Git generator, 'child' #2
           - git:
-              repoURL: https://github.com/codefresh-contrib/gitops-cert-level-2-examples.git
+              repoURL: https://github.com/example-org/gitops-examples.git
               revision: HEAD
               directories:
                 - path: application-sets/example-apps/values/*
@@ -26,7 +26,7 @@ spec:
     spec:
       project: default
       source:
-        repoURL: https://github.com/codefresh-contrib/gitops-cert-level-2-examples.git
+        repoURL: https://github.com/example-org/gitops-examples.git
         targetRevision: HEAD
         path: '{{path}}'
       destination:

@@ -20,7 +20,7 @@ spec:
             allBranches: true
       - pullRequest:
           github:
-            owner: kostis-codefresh
+            owner: example-owner
             repo: preview-env-source-code
           requeueAfterSeconds: 180
   template:
@@ -31,12 +31,12 @@ spec:
         environment: '{{.myenv}}'
     spec:
       source:
-        repoURL: 'https://github.com/kostis-codefresh/preview-env-manifests.git'
+        repoURL: 'https://github.com/example-owner/preview-env-manifests.git'
         targetRevision: HEAD
         path: kustomize-preview-app/ 
         kustomize:
           images:
-            - 'docker.io/kostiscodefresh/my-preview-app:{{.head_short_sha_7}}'
+            - 'docker.io/exampleowner/my-preview-app:{{.head_short_sha_7}}'
       project: "default"
       destination:
         server: https://kubernetes.default.svc

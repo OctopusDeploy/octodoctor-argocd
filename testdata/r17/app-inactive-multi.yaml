@@ -9,12 +9,12 @@ spec:
     server: https://kubernetes.default.svc
     namespace: default
   sources:
-    - repoURL: https://github.com/codefresh-contrib/not-important.git
+    - repoURL: https://github.com/example-org/not-important.git
       targetRevision: HEAD
       path: ./not-important
       directory:
         recurse: false
-    - repoURL: https://github.com/codefresh-contrib/config.git
+    - repoURL: https://github.com/example-org/config.git
       targetRevision: HEAD
       path: ./config
 

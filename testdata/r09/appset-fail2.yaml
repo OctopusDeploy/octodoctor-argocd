@@ -29,7 +29,7 @@ spec:
     spec:
       project: default
       source:
-        repoURL: https://github.com/codefresh-contrib/gitops-cert-level-2-examples.git
+        repoURL: https://github.com/example-org/gitops-examples.git
         targetRevision: HEAD
         path: '{{path}}'
       destination:

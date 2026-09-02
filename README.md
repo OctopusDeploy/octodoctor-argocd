@@ -23,7 +23,7 @@ The tool analyzes various Argo CD resource types including:
 ### Prerequisites
 
 - A directory containing Argo CD YAML configuration files. The tool also will automatically list all files recursively 
-- The tool works great when using as input the files from a Codefresh support package (unzipped)
+- The tool works great when using as input Argo CD application manifests as yaml files
 
 ### Running 
 

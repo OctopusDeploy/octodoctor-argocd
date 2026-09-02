@@ -2,7 +2,7 @@
 
 ![OctoDoctor for Argo CD logo](octodoctor-logo.png)
 
-The tool will look at the extracted contents of a Codefresh support package and detect the following
+The tool will look at Argo CD application manifests as yaml files and detect the following
 
 | Rule Number | Description | Severity | Implemented |
 |-------------|-------------|----------|-----------|

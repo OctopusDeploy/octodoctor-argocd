@@ -10,7 +10,7 @@ spec:
   project: default
 
   source:
-    repoURL: https://github.com/codefresh-contrib/not-important.git
+    repoURL: https://github.com/example-org/not-important.git
     targetRevision: HEAD
     path: ./not-important
    
