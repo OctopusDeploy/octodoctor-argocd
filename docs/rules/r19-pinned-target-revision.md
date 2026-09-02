@@ -1,6 +1,6 @@
 # R19 – Pinned targetRevision
 
-**Severity:** Medium
+!!! warning "Severity: Medium"
 
 Applications have targetRevision set to a specific value (not `HEAD`) for Git repositories. This can lead to stale deployments.
 

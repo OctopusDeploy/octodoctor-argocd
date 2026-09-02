@@ -1,6 +1,6 @@
 # R98 – No ApplicationSets
 
-**Severity:** Medium
+!!! warning "Severity: Medium"
 
 You are not using application sets. Application Sets are a powerful feature of Argo CD that allows you to deploy applications to multiple clusters and namespaces.
 

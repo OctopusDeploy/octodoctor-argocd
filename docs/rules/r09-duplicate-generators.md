@@ -1,6 +1,6 @@
 # R09 – Duplicate generators
 
-**Severity:** Medium
+!!! warning "Severity: Medium"
 
 ApplicationSets have duplicate generators in matrix/merge configurations. This creates complex and confusing configurations that are hard to maintain.
 

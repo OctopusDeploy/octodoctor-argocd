@@ -1,6 +1,6 @@
 # R14 – Prune enabled
 
-**Severity:** Medium
+!!! warning "Severity: Medium"
 
 Applications have prune=true in sync policy. This can lead to unintended resource deletion.
 

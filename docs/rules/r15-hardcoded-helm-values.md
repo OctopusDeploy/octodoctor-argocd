@@ -1,6 +1,6 @@
 # R15 – Hardcoded Helm values
 
-**Severity:** Medium
+!!! warning "Severity: Medium"
 
 Applications use hardcoded values in helm configuration. Consider using valueFiles instead of hardcoded values for better maintainability.
 

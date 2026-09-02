@@ -1,6 +1,6 @@
 # R25 – More than two sources
 
-**Severity:** Medium
+!!! warning "Severity: Medium"
 
 Applications with more than 2 sources need a different grouping mechanism.
 

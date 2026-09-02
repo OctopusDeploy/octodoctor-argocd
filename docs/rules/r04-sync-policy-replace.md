@@ -1,6 +1,6 @@
 # R04 – Sync policy replace
 
-**Severity:** Medium
+!!! warning "Severity: Medium"
 
 Applications have sync policy replace=true. This can lead to unintended resource deletion.
 

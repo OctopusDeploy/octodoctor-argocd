@@ -1,6 +1,6 @@
 # R02 – No automated sync
 
-**Severity:** Medium
+!!! warning "Severity: Medium"
 
 Applications do not have automated sync policy configured. Manual sync is required for deployments.
 

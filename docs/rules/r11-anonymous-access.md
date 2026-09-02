@@ -1,6 +1,6 @@
 # R11 – Anonymous access enabled
 
-**Severity:** High ⚠️
+!!! danger "Severity: High"
 
 ArgoCD anonymous user access is enabled, which poses a security risk as it allows unauthenticated access to the system.
 

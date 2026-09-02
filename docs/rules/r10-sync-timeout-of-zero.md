@@ -1,6 +1,6 @@
 # R10 – Sync timeout of zero
 
-**Severity:** Medium
+!!! warning "Severity: Medium"
 
 ArgoCD controller sync timeout is set to 0 seconds, which means no timeout and can cause inefficient synchronization.
 

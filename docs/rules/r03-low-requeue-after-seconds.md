@@ -1,6 +1,6 @@
 # R03 – Low requeueAfterSeconds
 
-**Severity:** Medium
+!!! warning "Severity: Medium"
 
 ApplicationSets have requeueAfterSeconds set to less than 180 seconds (3 minutes). This can cause excessive API calls and rate limiting issues.
 

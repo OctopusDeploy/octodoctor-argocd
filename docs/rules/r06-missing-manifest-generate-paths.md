@@ -1,6 +1,6 @@
 # R06 – Missing manifest-generate-paths
 
-**Severity:** Medium
+!!! warning "Severity: Medium"
 
 Applications do not have the argocd.argoproj.io/manifest-generate-paths annotation configured.
 

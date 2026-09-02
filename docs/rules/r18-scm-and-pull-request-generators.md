@@ -1,6 +1,6 @@
 # R18 – SCM and Pull Request generators combined
 
-**Severity:** Medium
+!!! warning "Severity: Medium"
 
 ApplicationSets combine SCM Provider and Pull Request generators in matrix/merge configurations. This can cause exponential API calls and exhaust rate limits.
 

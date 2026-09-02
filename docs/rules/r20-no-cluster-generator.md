@@ -1,6 +1,6 @@
 # R20 – No cluster generator
 
-**Severity:** Medium
+!!! warning "Severity: Medium"
 
 ApplicationSets do not use cluster generators despite having multiple connected clusters. This can lead to performance issues and configuration complexity.
 

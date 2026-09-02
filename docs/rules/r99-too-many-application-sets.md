@@ -1,6 +1,6 @@
 # R99 – Too many ApplicationSets
 
-**Severity:** Medium
+!!! warning "Severity: Medium"
 
 You have too many application sets. This can cause performance issues and make it difficult to manage.
 

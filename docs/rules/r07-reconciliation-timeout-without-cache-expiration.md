@@ -1,6 +1,6 @@
 # R07 – Reconciliation timeout without cache expiration
 
-**Severity:** Medium
+!!! warning "Severity: Medium"
 
 Using ARGOCD_RECONCILIATION_TIMEOUT=0 without proper ARGOCD_DEFAULT_CACHE_EXPIRATION settings can cause performance issues.
 

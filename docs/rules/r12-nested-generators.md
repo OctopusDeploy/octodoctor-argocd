@@ -1,6 +1,6 @@
 # R12 – Deeply nested generators
 
-**Severity:** Medium
+!!! warning "Severity: Medium"
 
 ApplicationSets have 3 or more levels of generators by nesting matrix/merge combinations. This creates overly complex and hard-to-maintain configurations.
 

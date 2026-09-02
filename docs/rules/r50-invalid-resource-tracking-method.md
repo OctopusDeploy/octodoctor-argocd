@@ -1,6 +1,6 @@
 # R50 – Invalid resourceTrackingMethod
 
-**Severity:** High ⚠️
+!!! danger "Severity: High"
 
 ArgoCD resourceTrackingMethod is set to an invalid value. It must be exactly one of: label, annotation, or annotation+label.
 

@@ -1,6 +1,6 @@
 # R97 – Exactly one ApplicationSet
 
-**Severity:** Medium
+!!! warning "Severity: Medium"
 
 You have exactly one application set. This usually results in a very complex YAML file. Consider using multiple application sets.
 

@@ -1,6 +1,6 @@
 # R17 – Parameter overrides
 
-**Severity:** High ⚠️
+!!! danger "Severity: High"
 
 Applications use parameter overrides in helm configuration. Consider using valueFiles instead of hardcoded parameters for better maintainability.
 

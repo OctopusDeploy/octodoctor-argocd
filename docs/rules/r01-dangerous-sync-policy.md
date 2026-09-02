@@ -1,6 +1,6 @@
 # R01 – Dangerous sync policy
 
-**Severity:** High ⚠️
+!!! danger "Severity: High"
 
 Applications have dangerous sync policy settings (prune=true and allowEmpty=true). This combination can lead to unintended resource deletion.
 

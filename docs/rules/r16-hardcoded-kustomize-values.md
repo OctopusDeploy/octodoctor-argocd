@@ -1,6 +1,6 @@
 # R16 – Hardcoded Kustomize values
 
-**Severity:** Medium
+!!! warning "Severity: Medium"
 
 Applications use hardcoded values in kustomize configuration. Consider using kustomize overlays instead of hardcoded values for better maintainability.
 

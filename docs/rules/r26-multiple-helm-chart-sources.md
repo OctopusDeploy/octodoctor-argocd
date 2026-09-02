@@ -1,6 +1,6 @@
 # R26 – Multiple Helm chart sources
 
-**Severity:** Medium
+!!! warning "Severity: Medium"
 
 Applications have 2 or more sources with Helm charts. Multiple Helm charts should be grouped differently.
 

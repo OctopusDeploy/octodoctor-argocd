@@ -1,6 +1,6 @@
 # R30 – Image Updater without Git writeback
 
-**Severity:** High ⚠️
+!!! danger "Severity: High"
 
 Applications using Image Updater without Git writeback. This is against GitOps principles.
 

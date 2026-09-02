@@ -1,6 +1,6 @@
 # R22 – No webhooks configured
 
-**Severity:** Medium
+!!! warning "Severity: Medium"
 
 No webhooks are configured in argocd-secret. Webhooks improve Argo CD performance by triggering immediate syncs instead of polling.
 

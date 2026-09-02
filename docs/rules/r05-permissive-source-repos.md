@@ -1,6 +1,6 @@
 # R05 – Permissive sourceRepos
 
-**Severity:** High ⚠️
+!!! danger "Severity: High"
 
 AppProjects have overly permissive sourceRepos settings (using wildcard '*'). This allows applications to deploy from any Git repository, which poses a security risk.
 
