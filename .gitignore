@@ -36,3 +36,6 @@ octodoctor-output/
 
 ## binary
 octodoctor
+
+## mkdocs build output
+site/

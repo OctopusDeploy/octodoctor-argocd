@@ -1,4 +1,5 @@
 BIN_NAME=octodoctor
+CURRENT_DIR=$(shell pwd)
 
 # Get version from git tag or hash, default to "dev"
 VERSION := $(shell git describe --tags --exact-match HEAD 2>/dev/null || git rev-parse --short HEAD 2>/dev/null || echo "dev")
@@ -42,3 +43,9 @@ clean:
 	rm -f $(BIN_NAME)
 	rm -rf coverage.out coverage.html
 	rm -rf octodoctor-output
+	rm -rf site
+
+# convenience target to run `mkdocs serve` using a docker container
+.PHONY: serve-docs
+serve-docs:  ## serve docs locally
+	docker run --rm -it -p 8000:8000 -v ${CURRENT_DIR}:/docs squidfunk/mkdocs-material:9.7.7 serve -a 0.0.0.0:8000
