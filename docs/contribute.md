@@ -53,3 +53,24 @@ To add a new validation rule:
 3. Add the rule to the registry in `pkg/rules/registry.go`
 4. Create test data in `testdata/rXX/`
 5. Update documentation as needed
+
+## Releasing a New Version
+
+Releases are triggered by pushing a Git tag matching `v*` (e.g. `v1.2.3`):
+
+```bash
+git tag v1.2.3
+git push origin v1.2.3
+```
+
+This triggers the [`release.yml`](https://github.com/OctopusDeploy/octodoctor-argocd/blob/main/.github/workflows/release.yml)
+GitHub Actions workflow, which:
+
+1. Verifies the tagged commit is an ancestor of `main` — the workflow fails if the tag points to a
+   commit that hasn't been merged into `main`.
+2. Runs `make release` to build binaries for macOS (AMD64/ARM64), Linux (AMD64/ARM64), and Windows
+   (AMD64).
+3. Publishes a GitHub Release named `Release <tag>` with all five binaries attached.
+
+The workflow can also be triggered manually via `workflow_dispatch` (the "Run workflow" button in the
+Actions tab) for testing, without pushing a tag.
