@@ -8,7 +8,7 @@ The tool will look at Argo CD application manifests as yaml files and detect the
 |-------------|-------------|----------|-----------|
 | [R01](r01-dangerous-sync-policy.md) | Found Applications with dangerous sync policy settings (prune=true and allowEmpty=true) | High ⚠️ | ✅ |
 | [R02](r02-no-automated-sync.md) | Found Applications without automated sync policy configured | Medium | ✅ |
-| [R03](r03-low-requeue-after-seconds.md) | Application Sets with requeueAfterSeconds setting of less than 1 minute | Medium | ✅ |
+| [R03](r03-low-requeue-after-seconds.md) | Application Sets with requeueAfterSeconds setting of less than 3 minutes (180 seconds) | Medium | ✅ |
 | [R04](r04-sync-policy-replace.md) | Found Applications with sync policy replace = true | Medium | ✅ |
 | [R05](r05-permissive-source-repos.md) | Found AppProjects with overly permissive sourceRepos settings (using wildcard '*') | High ⚠️ | ✅ |
 | [R06](r06-missing-manifest-generate-paths.md) | Not using `argocd.argoproj.io/manifest-generate-paths` annotation | Medium | ✅ |
@@ -21,9 +21,9 @@ The tool will look at Argo CD application manifests as yaml files and detect the
 | [R15](r15-hardcoded-helm-values.md) | Found Application CRDs with hardcoded values in helm: property | Medium | ✅ |
 | [R16](r16-hardcoded-kustomize-values.md) | Found Application CRDs with hardcoded values in kustomize: property | Medium | ✅ |
 | [R17](r17-parameter-overrides.md) | Found Application CRDs with parameter overrides | High ⚠️ | ✅ |
-| [R18](r18-scm-and-pull-request-generators.md) | Found an Application Set that combines SMC generator and Pull Request generator | Medium | ✅ |
+| [R18](r18-scm-and-pull-request-generators.md) | Found an Application Set that combines SCM generator and Pull Request generator | Medium | ✅ |
 | [R19](r19-pinned-target-revision.md) | Using Git hashes or branch names in Target Revision (anything else other than `HEAD`) | Medium | ✅ |
-| [R20](r20-no-cluster-generator.md) | Having more than 2 connected clusters and applicationsets don't use the cluster generator | Medium | ✅ |
+| [R20](r20-no-cluster-generator.md) | Having 2 or more connected clusters and applicationsets don't use the cluster generator | Medium | ✅ |
 | [R22](r22-no-webhooks-configured.md) | No webhooks setup for Argo CD repo server/Git generator | Medium | ✅ |
 | [R25](r25-more-than-two-sources.md) | Having more than 2 sources in a multi-source app | Medium | ✅ |
 | [R26](r26-multiple-helm-chart-sources.md) | Having multiple sources with just Helm charts | Medium | ✅ |
