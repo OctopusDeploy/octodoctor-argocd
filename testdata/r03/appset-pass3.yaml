@@ -10,7 +10,7 @@ spec:
         generators:
           # Git generator, 'child' #1
           - git:
-              repoURL: https://github.com/codefresh-contrib/gitops-cert-level-2-examples.git
+              repoURL: https://github.com/example-org/gitops-examples.git
               revision: HEAD
               requeueAfterSeconds: 600
               directories:
@@ -23,7 +23,7 @@ spec:
     spec:
       project: default
       source:
-        repoURL: https://github.com/codefresh-contrib/gitops-cert-level-2-examples.git
+        repoURL: https://github.com/example-org/gitops-examples.git
         targetRevision: HEAD
         path: '{{path}}'
       destination:
