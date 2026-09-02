@@ -4,13 +4,63 @@
 
 Applications have dangerous sync policy settings (prune=true and allowEmpty=true). This combination can lead to unintended resource deletion.
 
-!!! note "This page is a placeholder"
-    TODO: explain why this matters, how to fix it, and when it is safe to ignore the finding.
-
 ## Why this matters
+
+`prune: true` tells Argo CD to delete any cluster resource that no longer appears in the rendered
+manifests. `allowEmpty: true` tells it to proceed even when the rendering produces nothing at all.
+Together, they turn a bad render into a cluster-wide delete. A broken Helm values file, a mistyped
+`path`, a renamed directory, or a repository that briefly returns an empty tree is enough for Argo CD
+to conclude the desired state is "no resources" and prune everything the Application owns.
+
+With `allowEmpty: false` (the default), Argo CD refuses to sync an empty result. It reports the
+Application as out of sync instead, which is a loud signal that something upstream is broken.
+
+The blast radius is wider than it first appears. Argo CD deletes child resources in a cascading
+manner, so one accidental empty render can take out Deployments, Services, PersistentVolumeClaims,
+and everything else the Application tracks.
 
 ## How to fix it
 
+Leave `allowEmpty` out so it takes its default of `false`, or set it explicitly. You can keep
+`prune: true` if you want Argo CD to clean up resources you deliberately removed from Git.
+
+**Flagged by this rule**
+
+```yaml
+spec:
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: true
+```
+
+**Passes**
+
+```yaml
+spec:
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+```
+
+The rule is inactive for Applications with no `spec.syncPolicy.automated` block, because manual sync
+never prunes on its own.
+
 ## Exceptions
+
+A handful of Applications legitimately render to zero resources in some environments, such as an
+optional component that's switched off per cluster. Those need `allowEmpty: true` to sync at all.
+Keep them small and narrowly scoped so an accidental prune can't reach anything important, and make
+sure every resource they own is in Git so you can recreate it.
+
+## Further reading
+
+For more information, see these Octopus Deploy blog posts:
+
+- [Argo CD finalizers: prevent accidental deletion issues](https://octopus.com/blog/argocd-application-deletion-finalizers)
+- [Top 30 Argo CD anti-patterns to avoid when adopting GitOps](https://octopus.com/blog/30-argo-cd-antipatterns-for-gitops)
 
 [Back to all rules](index.md)
