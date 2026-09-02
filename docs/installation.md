@@ -34,4 +34,4 @@ run `make release`.
 ```
 
 The report is written to an `octodoctor-output` directory inside the directory you scanned. See the
-[rules reference](rules.md) for what gets checked.
+[rules reference](rules/index.md) for what gets checked.

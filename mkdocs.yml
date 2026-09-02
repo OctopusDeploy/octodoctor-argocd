@@ -12,10 +12,39 @@ markdown_extensions:
 - toc:
     permalink: true
 
+strict: true
+
 nav:
 - Introduction: index.md
 - Installation: installation.md
-- Rules: rules.md
+- Rules:
+  - Overview: rules/index.md
+  - R01 – Dangerous sync policy: rules/r01-dangerous-sync-policy.md
+  - R02 – No automated sync: rules/r02-no-automated-sync.md
+  - R03 – Low requeueAfterSeconds: rules/r03-low-requeue-after-seconds.md
+  - R04 – Sync policy replace: rules/r04-sync-policy-replace.md
+  - R05 – Permissive sourceRepos: rules/r05-permissive-source-repos.md
+  - R06 – Missing manifest-generate-paths: rules/r06-missing-manifest-generate-paths.md
+  - R07 – Reconciliation timeout without cache expiration: rules/r07-reconciliation-timeout-without-cache-expiration.md
+  - R09 – Duplicate generators: rules/r09-duplicate-generators.md
+  - R10 – Sync timeout of zero: rules/r10-sync-timeout-of-zero.md
+  - R11 – Anonymous access enabled: rules/r11-anonymous-access.md
+  - R12 – Deeply nested generators: rules/r12-nested-generators.md
+  - R14 – Prune enabled: rules/r14-prune-enabled.md
+  - R15 – Hardcoded Helm values: rules/r15-hardcoded-helm-values.md
+  - R16 – Hardcoded Kustomize values: rules/r16-hardcoded-kustomize-values.md
+  - R17 – Parameter overrides: rules/r17-parameter-overrides.md
+  - R18 – SCM and Pull Request generators combined: rules/r18-scm-and-pull-request-generators.md
+  - R19 – Pinned targetRevision: rules/r19-pinned-target-revision.md
+  - R20 – No cluster generator: rules/r20-no-cluster-generator.md
+  - R22 – No webhooks configured: rules/r22-no-webhooks-configured.md
+  - R25 – More than two sources: rules/r25-more-than-two-sources.md
+  - R26 – Multiple Helm chart sources: rules/r26-multiple-helm-chart-sources.md
+  - R30 – Image Updater without Git writeback: rules/r30-image-updater-without-git-writeback.md
+  - R50 – Invalid resourceTrackingMethod: rules/r50-invalid-resource-tracking-method.md
+  - R97 – Exactly one ApplicationSet: rules/r97-exactly-one-application-set.md
+  - R98 – No ApplicationSets: rules/r98-no-application-sets.md
+  - R99 – Too many ApplicationSets: rules/r99-too-many-application-sets.md
 
 theme:
   name: material

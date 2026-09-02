@@ -4,7 +4,7 @@
 
 A comprehensive static analysis tool for Argo CD configurations that helps you identify potential issues, misconfigurations, and anti-patterns in your GitOps setup.
 
-See available [rules](docs/rules.md).
+See available [rules](docs/rules/index.md).
 
 
 ## Example report
