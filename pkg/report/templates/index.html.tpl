@@ -25,7 +25,7 @@
       <tbody>
         {{range .Analysis.RulesFailed}}
         <tr class="severity-{{.Severity}}">
-          <td class="rule-id">{{.ID}}</td>
+          <td class="rule-id"><a href="{{.DocumentationURL}}" target="_blank" rel="noopener" title="{{.Name}}">{{.ID}}</a></td>
           <td class="rule-description">{{.Description}}</td>
           <td class="affected-files">
             {{range .FilesTriggered}}
@@ -48,7 +48,7 @@
       <tbody>
         {{range .Analysis.RulesPassed}}
         <tr>
-          <td class="rule-id">{{.ID}}</td>
+          <td class="rule-id"><a href="{{.DocumentationURL}}" target="_blank" rel="noopener" title="{{.Name}}">{{.ID}}</a></td>
           <td class="rule-description">{{.Description}}</td>
         </tr>
         {{end}}
@@ -66,7 +66,7 @@
       <tbody>
         {{range .Analysis.RulesInactive}}
         <tr>
-          <td class="rule-id">{{.ID}}</td>
+          <td class="rule-id"><a href="{{.DocumentationURL}}" target="_blank" rel="noopener" title="{{.Name}}">{{.ID}}</a></td>
           <td class="rule-description">{{.Description}}</td>
         </tr>
         {{end}}

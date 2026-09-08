@@ -15,6 +15,7 @@ func (r *Rule07) Metadata() RuleMetadata {
 	return RuleMetadata{
 		ID:              "R07",
 		Name:            "Check ARGOCD_RECONCILIATION_TIMEOUT=0 usage with ARGOCD_DEFAULT_CACHE_EXPIRATION ",
+		DocSlug:         "r07-reconciliation-timeout-without-cache-expiration",
 		PassDescription: "ArgoCD reconciliation timeout is properly configured or has appropriate cache expiration settings.",
 		FailDescription: "Using ARGOCD_RECONCILIATION_TIMEOUT=0 without proper ARGOCD_DEFAULT_CACHE_EXPIRATION  settings can cause performance issues.",
 		Severity:        SeverityMedium,

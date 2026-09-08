@@ -17,6 +17,7 @@ func (r *Rule16) Metadata() RuleMetadata {
 	return RuleMetadata{
 		ID:              "R16",
 		Name:            "Check for hardcoded values in kustomize directive",
+		DocSlug:         "r16-hardcoded-kustomize-values",
 		PassDescription: "Applications do not use hardcoded values in kustomize configuration.",
 		FailDescription: "Applications use hardcoded values in kustomize configuration. Consider using kustomize overlays instead of hardcoded values for better maintainability.",
 		Severity:        SeverityMedium,

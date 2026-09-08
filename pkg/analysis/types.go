@@ -1,11 +1,12 @@
 package analysis
 
 type RuleExecution struct {
-	ID             string
-	Name           string
-	Description    string
-	Severity       string
-	FilesTriggered []string
+	ID               string
+	Name             string
+	Description      string
+	Severity         string
+	DocumentationURL string
+	FilesTriggered   []string
 }
 
 type ArgoCDFile struct {

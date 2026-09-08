@@ -18,6 +18,7 @@ func (r *Rule03) Metadata() RuleMetadata {
 	return RuleMetadata{
 		ID:              "R03",
 		Name:            "Check requeueAfterSeconds setting",
+		DocSlug:         "r03-low-requeue-after-seconds",
 		PassDescription: "ApplicationSets have requeueAfterSeconds set to 180 seconds (3 minutes) or more.",
 		FailDescription: "ApplicationSets have requeueAfterSeconds set to less than 180 seconds (3 minutes). This can cause excessive API calls and rate limiting issues.",
 		Severity:        SeverityMedium,

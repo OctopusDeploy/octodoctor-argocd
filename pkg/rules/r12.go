@@ -16,6 +16,7 @@ func (r *Rule12) Metadata() RuleMetadata {
 	return RuleMetadata{
 		ID:              "R12",
 		Name:            "Check for excessive generator nesting levels",
+		DocSlug:         "r12-nested-generators",
 		PassDescription: "ApplicationSets use 2 levels of generators (single matrix or merge combination).",
 		FailDescription: "ApplicationSets have 3 or more levels of generators by nesting matrix/merge combinations. This creates overly complex and hard-to-maintain configurations.",
 		Severity:        SeverityMedium,

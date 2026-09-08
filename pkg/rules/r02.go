@@ -15,6 +15,7 @@ func (r *Rule02) Metadata() RuleMetadata {
 	return RuleMetadata{
 		ID:              "R02",
 		Name:            "Check if sync policy is automated",
+		DocSlug:         "r02-no-automated-sync",
 		PassDescription: "Applications have automated sync policy configured.",
 		FailDescription: "Applications do not have automated sync policy configured. Manual sync is required for deployments.",
 		Severity:        SeverityMedium,

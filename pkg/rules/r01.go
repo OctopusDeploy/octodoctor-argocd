@@ -15,6 +15,7 @@ func (r *Rule01) Metadata() RuleMetadata {
 	return RuleMetadata{
 		ID:              "R01",
 		Name:            "Check sync policy automated settings",
+		DocSlug:         "r01-dangerous-sync-policy",
 		PassDescription: "Applications have safe sync policy settings (prune=false or allowEmpty=true).",
 		FailDescription: "Applications have dangerous sync policy settings (prune=true and allowEmpty=true). This combination can lead to unintended resource deletion.",
 		Severity:        SeverityHigh,

@@ -17,6 +17,7 @@ func (r *Rule22) Metadata() RuleMetadata {
 	return RuleMetadata{
 		ID:              "R22",
 		Name:            "Check argocd-secret webhook configuration",
+		DocSlug:         "r22-no-webhooks-configured",
 		PassDescription: "Webhooks are configured in argocd-secret for improved performance.",
 		FailDescription: "No webhooks are configured in argocd-secret. Webhooks improve Argo CD performance by triggering immediate syncs instead of polling.",
 		Severity:        SeverityMedium,

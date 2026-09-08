@@ -15,6 +15,7 @@ func (r *Rule14) Metadata() RuleMetadata {
 	return RuleMetadata{
 		ID:              "R14",
 		Name:            "Check for prune setting in sync policy",
+		DocSlug:         "r14-prune-enabled",
 		PassDescription: "Applications have safe prune settings (prune=false or not specified).",
 		FailDescription: "Applications have prune=true in sync policy. This can lead to unintended resource deletion.",
 		Severity:        SeverityMedium,

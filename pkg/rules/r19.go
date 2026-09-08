@@ -15,6 +15,7 @@ func (r *Rule19) Metadata() RuleMetadata {
 	return RuleMetadata{
 		ID:              "R19",
 		Name:            "Check targetRevision field usage",
+		DocSlug:         "r19-pinned-target-revision",
 		PassDescription: "Applications have targetRevision set to HEAD or not specified.",
 		FailDescription: "Applications have targetRevision set to a specific value (not HEAD) for Git repositories. This can lead to stale deployments.",
 		Severity:        SeverityMedium,

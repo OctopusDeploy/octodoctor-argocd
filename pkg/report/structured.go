@@ -48,11 +48,12 @@ func GenerateStructuredReport(analysis *analysis.ArgoCDAnalysis, outputDirectory
 	results.Failed = make([]Rule, len(analysis.RulesFailed))
 	for i, r := range analysis.RulesFailed {
 		rule := Rule{
-			Id:            r.ID,
-			Name:          r.Name,
-			Description:   r.Description,
-			Severity:      r.Severity,
-			AffectedFiles: r.FilesTriggered,
+			Id:               r.ID,
+			Name:             r.Name,
+			Description:      r.Description,
+			Severity:         r.Severity,
+			DocumentationURL: r.DocumentationURL,
+			AffectedFiles:    r.FilesTriggered,
 		}
 		results.Failed[i] = rule
 	}
@@ -60,11 +61,12 @@ func GenerateStructuredReport(analysis *analysis.ArgoCDAnalysis, outputDirectory
 	results.Passed = make([]Rule, len(analysis.RulesPassed))
 	for i, r := range analysis.RulesPassed {
 		rule := Rule{
-			Id:            r.ID,
-			Name:          r.Name,
-			Description:   r.Description,
-			Severity:      r.Severity,
-			AffectedFiles: r.FilesTriggered,
+			Id:               r.ID,
+			Name:             r.Name,
+			Description:      r.Description,
+			Severity:         r.Severity,
+			DocumentationURL: r.DocumentationURL,
+			AffectedFiles:    r.FilesTriggered,
 		}
 		results.Passed[i] = rule
 	}
@@ -72,11 +74,12 @@ func GenerateStructuredReport(analysis *analysis.ArgoCDAnalysis, outputDirectory
 	results.Inactive = make([]Rule, len(analysis.RulesInactive))
 	for i, r := range analysis.RulesInactive {
 		rule := Rule{
-			Id:            r.ID,
-			Name:          r.Name,
-			Description:   r.Description,
-			Severity:      r.Severity,
-			AffectedFiles: r.FilesTriggered,
+			Id:               r.ID,
+			Name:             r.Name,
+			Description:      r.Description,
+			Severity:         r.Severity,
+			DocumentationURL: r.DocumentationURL,
+			AffectedFiles:    r.FilesTriggered,
 		}
 		results.Inactive[i] = rule
 	}

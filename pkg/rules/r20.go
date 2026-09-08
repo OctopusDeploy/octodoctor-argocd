@@ -15,6 +15,7 @@ func (r *Rule20) Metadata() RuleMetadata {
 	return RuleMetadata{
 		ID:              "R20",
 		Name:            "Check cluster generator usage with multiple clusters",
+		DocSlug:         "r20-no-cluster-generator",
 		PassDescription: "ApplicationSets correctly use cluster generators when multiple clusters are available.",
 		FailDescription: "ApplicationSets do not use cluster generators despite having multiple connected clusters. This can lead to performance issues and configuration complexity.",
 		Severity:        SeverityMedium,

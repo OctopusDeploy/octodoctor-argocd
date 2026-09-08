@@ -15,6 +15,7 @@ func (r *Rule17) Metadata() RuleMetadata {
 	return RuleMetadata{
 		ID:              "R17",
 		Name:            "Check for parameter overrides in helm directive",
+		DocSlug:         "r17-parameter-overrides",
 		PassDescription: "Applications do not use parameter overrides in helm configuration.",
 		FailDescription: "Applications use parameter overrides in helm configuration. Consider using valueFiles instead of hardcoded parameters for better maintainability.",
 		Severity:        SeverityHigh,

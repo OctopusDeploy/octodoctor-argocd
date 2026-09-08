@@ -15,6 +15,7 @@ func (r *Rule25) Metadata() RuleMetadata {
 	return RuleMetadata{
 		ID:              "R25",
 		Name:            "Check for applications with more than 2 sources",
+		DocSlug:         "r25-more-than-two-sources",
 		PassDescription: "Applications have at most 2 sources in multi-source configuration.",
 		FailDescription: "Applications with more than 2 sources need a different grouping mechanism.",
 		Severity:        SeverityMedium,

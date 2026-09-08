@@ -15,6 +15,7 @@ func (r *Rule15) Metadata() RuleMetadata {
 	return RuleMetadata{
 		ID:              "R15",
 		Name:            "Check for hardcoded values in helm directive",
+		DocSlug:         "r15-hardcoded-helm-values",
 		PassDescription: "Applications do not use hardcoded values in helm configuration.",
 		FailDescription: "Applications use hardcoded values in helm configuration. Consider using valueFiles instead of hardcoded values for better maintainability.",
 		Severity:        SeverityMedium,

@@ -19,12 +19,22 @@ const (
 	SeverityLow    = "low"
 )
 
+// documentationBaseURL is where the mkdocs site is published. The rule pages live under
+// rules/<DocSlug>/ because mkdocs uses directory URLs by default.
+const documentationBaseURL = "https://octodoctor-argocd.readthedocs.io/en/latest/"
+
 type RuleMetadata struct {
 	ID              string
 	Name            string
+	DocSlug         string // basename of the rule page under docs/rules, without the .md extension
 	PassDescription string
 	FailDescription string
 	Severity        string // High, Medium
+}
+
+// DocumentationURL returns the public URL of the rule's documentation page
+func (m RuleMetadata) DocumentationURL() string {
+	return documentationBaseURL + "rules/" + m.DocSlug + "/"
 }
 
 type Rule interface {
@@ -76,6 +86,9 @@ func (r *Registry) ExecuteAll(file_analysis *analysis.ArgoCDAnalysis) {
 		if err != nil {
 			log.Printf("Error executing rule: %v", err)
 		}
+		// Set here rather than in every rule so the four rules that build their
+		// RuleExecution inline cannot forget it
+		result.Execution.DocumentationURL = rule.Metadata().DocumentationURL()
 		if !result.Active {
 			file_analysis.RulesInactive = append(file_analysis.RulesInactive, result.Execution)
 		} else if result.Passed {

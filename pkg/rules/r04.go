@@ -17,6 +17,7 @@ func (r *Rule04) Metadata() RuleMetadata {
 	return RuleMetadata{
 		ID:              "R04",
 		Name:            "Check sync policy replace setting",
+		DocSlug:         "r04-sync-policy-replace",
 		PassDescription: "Applications have safe sync policy settings (replace=false or replace not specified).",
 		FailDescription: "Applications have sync policy replace=true. This can lead to unintended resource deletion.",
 		Severity:        SeverityMedium,

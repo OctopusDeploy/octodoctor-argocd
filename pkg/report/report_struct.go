@@ -29,11 +29,12 @@ type Summary struct {
 }
 
 type Rule struct {
-	Id            string   `json:"id" yaml:"id"`
-	Name          string   `json:"name" yaml:"name"`
-	Description   string   `json:"description" yaml:"description"`
-	Severity      string   `json:"severity" yaml:"severity"`
-	AffectedFiles []string `json:"affectedFiles" yaml:"affectedFiles"`
+	Id               string   `json:"id" yaml:"id"`
+	Name             string   `json:"name" yaml:"name"`
+	Description      string   `json:"description" yaml:"description"`
+	Severity         string   `json:"severity" yaml:"severity"`
+	DocumentationURL string   `json:"documentationUrl" yaml:"documentationUrl"`
+	AffectedFiles    []string `json:"affectedFiles" yaml:"affectedFiles"`
 }
 
 type Results struct {

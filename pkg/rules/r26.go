@@ -15,6 +15,7 @@ func (r *Rule26) Metadata() RuleMetadata {
 	return RuleMetadata{
 		ID:              "R26",
 		Name:            "Check for applications with multiple sources containing Helm charts",
+		DocSlug:         "r26-multiple-helm-chart-sources",
 		PassDescription: "Applications have at most one source with a Helm chart in multi-source configuration.",
 		FailDescription: "Applications have 2 or more sources with Helm charts. Multiple Helm charts should be grouped differently.",
 		Severity:        SeverityMedium,
