@@ -45,6 +45,7 @@ nav:
   - R97 – Exactly one ApplicationSet: rules/r97-exactly-one-application-set.md
   - R98 – No ApplicationSets: rules/r98-no-application-sets.md
   - R99 – Too many ApplicationSets: rules/r99-too-many-application-sets.md
+- Best practices: best-practices.md
 - Contribute: contribute.md
 
 theme:
