@@ -155,7 +155,7 @@ func (analysis *ArgoCDAnalysis) categorizeAndStoreFile(apiVersion, kind string, 
 		log.Printf("Scanner -> Found ArgoCD AppProject: %s", argoCDFile.FullPath)
 		return true
 	} else if apiVersion == "v1" && kind == "ConfigMap" {
-		isArgoCD, name := isArgoCDConfigMap(yamlContent)
+		isArgoCD, name := IsArgoCDConfigMap(yamlContent)
 
 		if isArgoCD {
 			analysis.ConfigMaps = append(analysis.ConfigMaps, argoCDFile)
@@ -163,7 +163,7 @@ func (analysis *ArgoCDAnalysis) categorizeAndStoreFile(apiVersion, kind string, 
 			return true
 		}
 	} else if apiVersion == "v1" && kind == "Secret" {
-		isArgoCD, name := isArgoCDSecret(yamlContent)
+		isArgoCD, name := IsArgoCDSecret(yamlContent)
 
 		if isArgoCD {
 			analysis.Secrets = append(analysis.Secrets, argoCDFile)
@@ -174,8 +174,8 @@ func (analysis *ArgoCDAnalysis) categorizeAndStoreFile(apiVersion, kind string, 
 	return false
 }
 
-// isArgoCDConfigMap checks if a ConfigMap belong to Argo CD configuration
-func isArgoCDConfigMap(yamlContent map[string]any) (bool, string) {
+// IsArgoCDConfigMap checks if a ConfigMap belong to Argo CD configuration
+func IsArgoCDConfigMap(yamlContent map[string]any) (bool, string) {
 	// Allowed ArgoCD ConfigMap names
 	var allowedArgoCDConfigMaps = []string{
 		"argocd-cm",
@@ -206,8 +206,8 @@ func isArgoCDConfigMap(yamlContent map[string]any) (bool, string) {
 	return false, name
 }
 
-// isArgoCDSecret checks if a Secret belongs to Argo CD configuration
-func isArgoCDSecret(yamlContent map[string]any) (bool, string) {
+// IsArgoCDSecret checks if a Secret belongs to Argo CD configuration
+func IsArgoCDSecret(yamlContent map[string]any) (bool, string) {
 	// Allowed ArgoCD Secret names
 	var allowedArgoCDSecrets = []string{
 		"argocd-secret",
