@@ -1,4 +1,4 @@
-# OctoDoctor for Argo CD 🩺
+# OctoDoctor for Argo CD
 
 ![OctoDoctor for Argo CD logo](docs/octodoctor-logo.png)
 
@@ -18,7 +18,7 @@ The tool analyzes various Argo CD resource types including:
 - **AppProjects** (`argoproj.io/v1alpha1/AppProject`)
 - **ConfigMaps, Secrets** (Argo CD specific ConfigMaps like `argocd-cm`, `argocd-cmd-params-cm`, etc.)
 
-## 🚀 How to Run This Tool
+## How to Run This Tool
 
 ### Prerequisites
 
@@ -70,7 +70,7 @@ The tool exits with `1` when at least one rule failed, and `0` otherwise.
 
 When you run OctoDoctor for Argo CD, it will:
 
-1. **📁 Scan for YAML Files**: Recursively discovers all `.yaml` and `.yml` files in the specified directory
-2. **🔎 Filter Argo CD Resources**: Identifies and categorizes Argo CD-specific resources
-3. **✅ Execute Validation Rules**: Runs all configured rules against your configurations
-4. **📊 Generate HTML Report**: Creates a comprehensive report in the `octodoctor-output` directory
+1. **Scan for YAML Files**: Recursively discovers all `.yaml` and `.yml` files in the specified directory
+2. **Filter Argo CD Resources**: Identifies and categorizes Argo CD-specific resources
+3. **Execute Validation Rules**: Runs all configured rules against your configurations
+4. **Generate HTML Report**: Creates a comprehensive report in the `octodoctor-output` directory
