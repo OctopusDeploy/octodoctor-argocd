@@ -17,8 +17,8 @@ func getYAMLValue(node *yaml.Node, path string) (*yaml.Node, bool) {
 	current := node.Content[0]
 
 	// Split path by dots and navigate through the YAML structure
-	parts := strings.Split(path, ".")
-	for _, part := range parts {
+	parts := strings.SplitSeq(path, ".")
+	for part := range parts {
 		if current.Kind != yaml.MappingNode {
 			return nil, false
 		}
@@ -53,8 +53,8 @@ func getYAMLValueFromNode(node *yaml.Node, path string) (*yaml.Node, bool) {
 	current := node
 
 	// Split path by dots and navigate through the YAML structure
-	parts := strings.Split(path, ".")
-	for _, part := range parts {
+	parts := strings.SplitSeq(path, ".")
+	for part := range parts {
 		if current.Kind != yaml.MappingNode {
 			return nil, false
 		}

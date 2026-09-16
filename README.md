@@ -24,10 +24,11 @@ The tool analyzes various Argo CD resource types including:
 
 - A directory containing Argo CD YAML configuration files. The tool also will automatically list all files recursively 
 - The tool works great when using as input Argo CD application manifests as yaml files
+- Alternatively, a live cluster you can reach with your kubeconfig, and the tool will export the manifests for you
 
 ### Running 
 
-The tool accepts a single parameter specifying the directory to scan:
+Point the tool at the directory to scan:
 
 ```bash
 # Scan current directory
@@ -37,6 +38,34 @@ The tool accepts a single parameter specifying the directory to scan:
 ./octodoctor -d /path/to/argocd/manifests
 ./octodoctor --directory /path/to/argocd/manifests
 ```
+
+If you only have a cluster and no manifests, let the tool export them first and analyze them in
+the same step:
+
+```bash
+# Export from the current kubeconfig context, namespace argocd
+./octodoctor --export
+
+# Export from a specific context and namespace
+./octodoctor --export --context production --namespace my-argocd
+```
+
+The manifests are saved into `argocd-manifests-export-<context>` and kept there after the analysis.
+Secret values are replaced with a placeholder, so no credentials are written to disk. See the
+[export documentation](docs/export.md) for the details.
+
+### Command line options
+
+| Option | Default | What it does |
+|---|---|---|
+| `-d`, `--directory` | current directory | Directory to scan for Argo CD files |
+| `--export` | off | Export the manifests of a live cluster and analyze them |
+| `--context` | the current kubeconfig context | Kubeconfig context to export from, only used with `--export` |
+| `-n`, `--namespace` | `argocd` | Namespace to export from, only used with `--export` |
+| `-l` | `5` | How many files to list under each rule in the HTML report |
+| `-v`, `--version` | | Print the version and exit |
+
+The tool exits with `1` when at least one rule failed, and `0` otherwise.
 
 
 When you run OctoDoctor for Argo CD, it will:

@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 
 	"github.com/OctopusDeploy/octodoctor-argocd/pkg/analysis"
+	"github.com/OctopusDeploy/octodoctor-argocd/pkg/export"
 	"github.com/OctopusDeploy/octodoctor-argocd/pkg/report"
 	"github.com/OctopusDeploy/octodoctor-argocd/pkg/rules"
 )
@@ -29,6 +30,10 @@ func main() {
 	var limit int
 	flag.IntVar(&limit, "l", 5, "Limit number of results to display")
 	flag.StringVar(directory, "directory", ".", "Directory to scan for ArgoCD files (default: current directory)")
+	var exportFromCluster = flag.Bool("export", false, "Export Argo CD manifests from a live cluster and analyze them")
+	var kubeContext = flag.String("context", "", "Kubeconfig context to export from (default: the current context)")
+	var namespace = flag.String("n", "argocd", "Namespace to export Argo CD manifests from")
+	flag.StringVar(namespace, "namespace", "argocd", "Namespace to export Argo CD manifests from")
 	flag.Parse()
 
 	// Handle version flag
@@ -37,8 +42,8 @@ func main() {
 		os.Exit(0)
 	}
 
-	// Get target directory
-	targetDir := getTargetDirectory(*directory)
+	// Get target directory, either by exporting a live cluster or by using a local directory
+	targetDir := resolveTargetDirectory(*exportFromCluster, *directory, *kubeContext, *namespace)
 
 	//Step 1 - Read all YAML files
 	file_analysis := analysis.ArgoCDAnalysis{}
@@ -68,6 +73,42 @@ func main() {
 		os.Exit(1)
 	}
 	os.Exit(0)
+}
+
+// resolveTargetDirectory returns the directory the analysis runs against. With --export the
+// manifests of a live cluster are saved locally first and that new directory is analyzed,
+// otherwise a local directory is used.
+func resolveTargetDirectory(exportFromCluster bool, directory string, kubeContext string, namespace string) string {
+	if !exportFromCluster {
+		if isFlagProvided("context") || isFlagProvided("n") || isFlagProvided("namespace") {
+			log.Print("Ignoring --context and --namespace, they only apply together with --export")
+		}
+		return getTargetDirectory(directory)
+	}
+
+	if isFlagProvided("d") || isFlagProvided("directory") {
+		log.Fatal("Only one of --export and --directory can be used at the same time")
+	}
+
+	exportDirectory, err := export.Run(kubeContext, namespace)
+	if err != nil {
+		log.Fatal("Failed to export Argo CD manifests: ", err)
+	}
+
+	return exportDirectory
+}
+
+// isFlagProvided reports whether a flag was given on the command line. This cannot be told
+// from the value of the flag, because -d holds the current directory either way.
+func isFlagProvided(name string) bool {
+	provided := false
+	flag.Visit(func(f *flag.Flag) {
+		if f.Name == name {
+			provided = true
+		}
+	})
+
+	return provided
 }
 
 // getTargetDirectory returns the target directory to scan
