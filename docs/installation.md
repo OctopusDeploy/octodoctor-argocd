@@ -42,10 +42,10 @@ The report is written to an `octodoctor-output` directory inside the directory y
 | Option | Default | What it does |
 |---|---|---|
 | `-d`, `--directory` | current directory | Directory to scan for Argo CD files |
-| `--export` | off | [Export the manifests of a live cluster](export.md) and analyse them |
-| `--context` | the current kubeconfig context | Kubeconfig context to export from, only used with `--export` |
+| `-e`, `--export` | off | [Export the manifests of a live cluster](export.md) and analyse them |
+| `-c`, `--context` | the current kubeconfig context | Kubeconfig context to export from, only used with `--export` |
 | `-n`, `--namespace` | `argocd` | Namespace to export from, only used with `--export` |
-| `-l` | `5` | How many files to list under each rule in the HTML report |
+| `-l`, `--limit` | `5` | How many files to list under each rule in the HTML report |
 | `-v`, `--version` | | Print the version and exit |
 
 OctoDoctor exits with `1` when at least one rule failed, and `0` otherwise.

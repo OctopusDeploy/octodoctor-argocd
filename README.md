@@ -44,9 +44,11 @@ the same step:
 
 ```bash
 # Export from the current kubeconfig context, namespace argocd
+./octodoctor -e
 ./octodoctor --export
 
 # Export from a specific context and namespace
+./octodoctor -e -c production -n my-argocd
 ./octodoctor --export --context production --namespace my-argocd
 ```
 
@@ -59,10 +61,10 @@ Secret values are replaced with a placeholder, so no credentials are written to 
 | Option | Default | What it does |
 |---|---|---|
 | `-d`, `--directory` | current directory | Directory to scan for Argo CD files |
-| `--export` | off | Export the manifests of a live cluster and analyze them |
-| `--context` | the current kubeconfig context | Kubeconfig context to export from, only used with `--export` |
+| `-e`, `--export` | off | Export the manifests of a live cluster and analyze them |
+| `-c`, `--context` | the current kubeconfig context | Kubeconfig context to export from, only used with `--export` |
 | `-n`, `--namespace` | `argocd` | Namespace to export from, only used with `--export` |
-| `-l` | `5` | How many files to list under each rule in the HTML report |
+| `-l`, `--limit` | `5` | How many files to list under each rule in the HTML report |
 | `-v`, `--version` | | Print the version and exit |
 
 The tool exits with `1` when at least one rule failed, and `0` otherwise.

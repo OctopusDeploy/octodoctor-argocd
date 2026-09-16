@@ -9,6 +9,7 @@ both in one step:
 
 ```bash
 ./octodoctor --export
+./octodoctor -e
 ```
 
 OctoDoctor connects to your cluster with the standard kubeconfig, saves the Argo CD manifests it cares
@@ -26,6 +27,7 @@ Without any further arguments, OctoDoctor uses the current context of your kubec
 
 # A specific context
 ./octodoctor --export --context production
+./octodoctor --export -c production
 
 # A specific namespace
 ./octodoctor --export --namespace my-argocd

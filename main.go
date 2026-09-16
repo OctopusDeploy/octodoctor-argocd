@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -11,6 +10,7 @@ import (
 	"github.com/OctopusDeploy/octodoctor-argocd/pkg/export"
 	"github.com/OctopusDeploy/octodoctor-argocd/pkg/report"
 	"github.com/OctopusDeploy/octodoctor-argocd/pkg/rules"
+	"github.com/spf13/pflag"
 )
 
 var (
@@ -24,26 +24,30 @@ const (
 
 func main() {
 	// Parse command line flags
-	var showVersion = flag.Bool("version", false, "Print version information")
-	var showVersionShort = flag.Bool("v", false, "Print version information (shorthand)")
-	var directory = flag.String("d", ".", "Directory to scan for ArgoCD files (default: current directory)")
-	var limit int
-	flag.IntVar(&limit, "l", 5, "Limit number of results to display")
-	flag.StringVar(directory, "directory", ".", "Directory to scan for ArgoCD files (default: current directory)")
-	var exportFromCluster = flag.Bool("export", false, "Export Argo CD manifests from a live cluster and analyze them")
-	var kubeContext = flag.String("context", "", "Kubeconfig context to export from (default: the current context)")
-	var namespace = flag.String("n", "argocd", "Namespace to export Argo CD manifests from")
-	flag.StringVar(namespace, "namespace", "argocd", "Namespace to export Argo CD manifests from")
-	flag.Parse()
+	var (
+		showVersion       bool
+		directory         string
+		limit             int
+		exportFromCluster bool
+		kubeContext       string
+		namespace         string
+	)
+	pflag.BoolVarP(&showVersion, "version", "v", false, "Print version information")
+	pflag.StringVarP(&directory, "directory", "d", ".", "Directory to scan for ArgoCD files")
+	pflag.IntVarP(&limit, "limit", "l", 5, "Limit number of results to display")
+	pflag.BoolVarP(&exportFromCluster, "export", "e", false, "Export Argo CD manifests from a live cluster and analyze them")
+	pflag.StringVarP(&kubeContext, "context", "c", "", "Kubeconfig context to export from (default: the current context)")
+	pflag.StringVarP(&namespace, "namespace", "n", "argocd", "Namespace to export Argo CD manifests from")
+	pflag.Parse()
 
 	// Handle version flag
-	if *showVersion || *showVersionShort {
+	if showVersion {
 		fmt.Println(version)
 		os.Exit(0)
 	}
 
 	// Get target directory, either by exporting a live cluster or by using a local directory
-	targetDir := resolveTargetDirectory(*exportFromCluster, *directory, *kubeContext, *namespace)
+	targetDir := resolveTargetDirectory(exportFromCluster, directory, kubeContext, namespace)
 
 	//Step 1 - Read all YAML files
 	file_analysis := analysis.ArgoCDAnalysis{}
@@ -80,13 +84,13 @@ func main() {
 // otherwise a local directory is used.
 func resolveTargetDirectory(exportFromCluster bool, directory string, kubeContext string, namespace string) string {
 	if !exportFromCluster {
-		if isFlagProvided("context") || isFlagProvided("n") || isFlagProvided("namespace") {
+		if pflag.CommandLine.Changed("context") || pflag.CommandLine.Changed("namespace") {
 			log.Print("Ignoring --context and --namespace, they only apply together with --export")
 		}
 		return getTargetDirectory(directory)
 	}
 
-	if isFlagProvided("d") || isFlagProvided("directory") {
+	if pflag.CommandLine.Changed("directory") {
 		log.Fatal("Only one of --export and --directory can be used at the same time")
 	}
 
@@ -96,19 +100,6 @@ func resolveTargetDirectory(exportFromCluster bool, directory string, kubeContex
 	}
 
 	return exportDirectory
-}
-
-// isFlagProvided reports whether a flag was given on the command line. This cannot be told
-// from the value of the flag, because -d holds the current directory either way.
-func isFlagProvided(name string) bool {
-	provided := false
-	flag.Visit(func(f *flag.Flag) {
-		if f.Name == name {
-			provided = true
-		}
-	})
-
-	return provided
 }
 
 // getTargetDirectory returns the target directory to scan
