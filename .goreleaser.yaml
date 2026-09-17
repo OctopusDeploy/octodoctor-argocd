@@ -32,6 +32,17 @@ checksum:
 changelog:
   use: github
   sort: asc
+  # The default format for "use: github" is
+  # "{{ .SHA }}: {{ .Message }} ({{ ... }})", which puts a full 40-character
+  # hash in front of every line. GitHub does not autolink a bare SHA there, so
+  # it renders as unclickable noise -- drop it and keep the subject + author.
+  format: "{{ .Message }}{{ if .Logins }} ({{ .Logins | englishJoin }}){{ end }}"
+  filters:
+    exclude:
+      # Every PR lands squashed with its own conventional-commit subject, so the
+      # merge commit only ever restates it.
+      - '^Merge pull request'
+      - '^Merge branch'
   groups:
     - title: Features
       regexp: '^feat'
