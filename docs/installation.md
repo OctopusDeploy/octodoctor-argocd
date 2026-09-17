@@ -1,9 +1,5 @@
 # Installation
 
-!!! note "This page is a placeholder"
-    TODO: flesh out the installation instructions, including the exact release asset names and any
-    checksum verification steps.
-
 OctoDoctor for Argo CD is a single self-contained binary with no runtime dependencies. It analyses YAML
 files from a directory you give it, and can also
 [export those files from a live cluster](export.md) for you first.
