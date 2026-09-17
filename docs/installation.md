@@ -14,6 +14,7 @@ on both `amd64` and `arm64`, and for Windows on `amd64`.
 
 ```bash
 tar -xzf octodoctor_<version>_linux_amd64.tar.gz
+chmod +x octodoctor
 ./octodoctor --version
 ```
 

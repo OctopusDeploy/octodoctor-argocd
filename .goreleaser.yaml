@@ -59,6 +59,7 @@ release:
   footer: |
     ---
     Download the archive for your platform below, extract it, and put `octodoctor` on your `PATH`.
+    On Linux and macOS, run `chmod +x octodoctor` if you get a `permission denied` error.
     Verify your download against `checksums.txt`.
 
     See the [installation guide](https://github.com/OctopusDeploy/octodoctor-argocd/blob/main/docs/installation.md)
