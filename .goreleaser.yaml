@@ -1,0 +1,61 @@
+version: 2
+
+project_name: octodoctor
+
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos: [linux, darwin, windows]
+    goarch: [amd64, arm64]
+    ignore:
+      # Parity with the pre-GoReleaser matrix: 5 targets, no windows/arm64.
+      - goos: windows
+        goarch: arm64
+    # Overrides the GoReleaser default, which also injects main.commit,
+    # main.date and main.builtBy -- symbols main.go does not declare.
+    # The "v" prefix is deliberate: this string is embedded in every
+    # report.json / report.yaml, so its format must not change.
+    ldflags:
+      - -s -w -X main.version=v{{ .Version }}
+
+archives:
+  - formats: [tar.gz]
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+    files:
+      - README.md
+
+checksum:
+  name_template: checksums.txt
+
+changelog:
+  use: github
+  sort: asc
+  groups:
+    - title: Features
+      regexp: '^feat'
+      order: 0
+    - title: Fixes
+      regexp: '^fix'
+      order: 1
+    - title: Other changes
+      order: 99
+
+release:
+  name_template: Release {{ .Tag }}
+  prerelease: auto
+  footer: |
+    ---
+    Download the archive for your platform below, extract it, and put `octodoctor` on your `PATH`.
+    Verify your download against `checksums.txt`.
+
+    See the [installation guide](https://github.com/OctopusDeploy/octodoctor-argocd/blob/main/docs/installation.md)
+    for details.
+
+snapshot:
+  version_template: "{{ incpatch .Version }}-SNAPSHOT-{{ .ShortCommit }}"
+
+# Deliberately not configured: homebrew/scoop/winget taps (need a second repo
+# and a cross-repo token), nfpms (no deb/rpm story), dockers (the tool reads
+# local files), sboms/signs (needs a keyless-signing and verification story).

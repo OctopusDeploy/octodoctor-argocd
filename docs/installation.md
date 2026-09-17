@@ -7,9 +7,22 @@ files from a directory you give it, and can also
 ## Download a prebuilt binary
 
 Grab the archive for your platform from the
-[releases page](https://github.com/OctopusDeploy/octodoctor-argocd/releases), then make it executable and
-put it somewhere on your `PATH`. Binaries are published for Linux, macOS and Windows on both `amd64`
-and `arm64`.
+[releases page](https://github.com/OctopusDeploy/octodoctor-argocd/releases), extract it, and put the
+`octodoctor` binary somewhere on your `PATH`. Archives are named
+`octodoctor_<version>_<os>_<arch>.tar.gz`, or `.zip` on Windows, and are published for Linux and macOS
+on both `amd64` and `arm64`, and for Windows on `amd64`.
+
+```bash
+tar -xzf octodoctor_<version>_linux_amd64.tar.gz
+./octodoctor --version
+```
+
+Every release also ships a `checksums.txt`. To verify a download before you trust it:
+
+```bash
+sha256sum --ignore-missing -c checksums.txt   # Linux
+shasum -a 256 --ignore-missing -c checksums.txt   # macOS
+```
 
 ## Build from source
 
@@ -21,8 +34,9 @@ cd octodoctor-argocd
 make octodoctor-build
 ```
 
-This produces an `octodoctor` binary in the repository root. To build every supported platform at once,
-run `make release`.
+This produces an `octodoctor` binary in the repository root. To cross-compile and archive every
+release target at once, run `make snapshot`. That needs [GoReleaser](https://goreleaser.com) installed
+and writes the archives to `dist/`, exactly as the release workflow does.
 
 ## Verify the installation
 

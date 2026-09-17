@@ -14,15 +14,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
+          # Full history and tags are mandatory: the guard below needs origin/main
+          # to exist, and GoReleaser derives the version and changelog from tags.
           fetch-depth: 0
 
       - name: Set up Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version-file: 'go.mod'
 
+      # Must stay ahead of the GoReleaser step, or a tag cut from a feature
+      # branch would be published first and rejected afterwards.
       - name: Verify tag is from main branch
         run: |
           # Get the commit hash of the tag
@@ -34,93 +38,13 @@ jobs:
           fi
           echo "Tag ${{ github.ref_name }} is from main branch ✓"
 
-      - name: Build release binaries
-        run: make release
-
-      - name: List generated binaries
-        run: |
-          echo "Generated binaries:"
-          ls -la octodoctor-*
-
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v7
+        with:
+          distribution: goreleaser
+          version: '~> v2' # pin the major; never float to latest
+          # A manual run has no tag to release, so it builds a snapshot and
+          # publishes nothing, which keeps workflow_dispatch usable as a dry run.
+          args: ${{ github.ref_type == 'tag' && 'release --clean' || 'release --snapshot --clean' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref_name }}
-          release_name: Release ${{ github.ref_name }}
-          body: |
-            ## OctoDoctor for Argo CD ${{ github.ref_name }}
-            
-            This release contains pre-built binaries for multiple platforms.
-            
-            ### Download the appropriate binary for your system:
-            - **macOS Intel**: `octodoctor-darwin-amd64`
-            - **macOS Apple Silicon**: `octodoctor-darwin-arm64`  
-            - **Linux x86_64**: `octodoctor-linux-amd64`
-            - **Linux ARM64**: `octodoctor-linux-arm64`
-            - **Windows x86_64**: `octodoctor-windows-amd64.exe`
-            
-            ### Usage
-            ```bash
-            # Make the binary executable (Linux/macOS)
-            chmod +x octodoctor-*
-            
-            # Run the tool
-            ./octodoctor-* --directory /path/to/argocd/configs
-            ```
-            
-            See the [README](https://github.com/${{ github.repository }}/blob/main/README.md) for detailed usage instructions.
-          draft: false
-          prerelease: false
-
-      - name: Upload macOS AMD64 binary
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./octodoctor-darwin-amd64
-          asset_name: octodoctor-darwin-amd64
-          asset_content_type: application/octet-stream
-
-      - name: Upload macOS ARM64 binary
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./octodoctor-darwin-arm64
-          asset_name: octodoctor-darwin-arm64
-          asset_content_type: application/octet-stream
-
-      - name: Upload Linux AMD64 binary
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./octodoctor-linux-amd64
-          asset_name: octodoctor-linux-amd64
-          asset_content_type: application/octet-stream
-
-      - name: Upload Linux ARM64 binary
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./octodoctor-linux-arm64
-          asset_name: octodoctor-linux-arm64
-          asset_content_type: application/octet-stream
-
-      - name: Upload Windows AMD64 binary
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./octodoctor-windows-amd64.exe
-          asset_name: octodoctor-windows-amd64.exe
-          asset_content_type: application/octet-stream

@@ -30,18 +30,20 @@ coverage:
 	go test -cover ./...
 
 
-.PHONY: release
-release:
-	make BIN_NAME=octodoctor-darwin-amd64 GOOS=darwin GOARCH=amd64 octodoctor-build
-	make BIN_NAME=octodoctor-darwin-arm64 GOOS=darwin GOARCH=arm64 octodoctor-build
-	make BIN_NAME=octodoctor-linux-amd64 GOOS=linux GOARCH=amd64 octodoctor-build
-	make BIN_NAME=octodoctor-linux-arm64 GOOS=linux GOARCH=arm64 octodoctor-build
-	make BIN_NAME=octodoctor-windows-amd64.exe GOOS=windows octodoctor-build
+# cross-compile and archive every release target locally, publishing nothing
+.PHONY: snapshot
+snapshot:
+	goreleaser release --snapshot --clean
+
+.PHONY: release-check
+release-check:
+	goreleaser check
 
 .PHONY: clean
 clean:
 	rm -f $(BIN_NAME)
 	rm -rf coverage.out coverage.html
+	rm -rf dist
 	rm -rf octodoctor-output
 	rm -rf site
 

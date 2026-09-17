@@ -15,14 +15,18 @@ make octodoctor-build
 # Build for specific platform
 make BIN_NAME=octodoctor-linux-amd64 GOOS=linux GOARCH=amd64 octodoctor-build
 
-# Build for all supported platforms
-make release
+# Build and archive every release target (needs GoReleaser)
+make snapshot
 ```
 
-The `make release` command builds binaries for:
+`make snapshot` runs GoReleaser exactly as CI does, and writes archives plus a `checksums.txt` into
+`dist/` without publishing anything. It covers:
 - macOS (AMD64 and ARM64)
-- Linux (AMD64 and ARM64) 
+- Linux (AMD64 and ARM64)
 - Windows (AMD64)
+
+Install GoReleaser with `go install github.com/goreleaser/goreleaser/v2@latest`, and run
+`make release-check` to validate `.goreleaser.yaml` without building.
 
 ## Running Unit Tests
 
@@ -68,9 +72,18 @@ GitHub Actions workflow, which:
 
 1. Verifies the tagged commit is an ancestor of `main` — the workflow fails if the tag points to a
    commit that hasn't been merged into `main`.
-2. Runs `make release` to build binaries for macOS (AMD64/ARM64), Linux (AMD64/ARM64), and Windows
-   (AMD64).
-3. Publishes a GitHub Release named `Release <tag>` with all five binaries attached.
+2. Runs [GoReleaser](https://goreleaser.com), which cross-compiles all five targets and packages each
+   one as a `.tar.gz` (`.zip` on Windows) archive, alongside a `checksums.txt`.
+3. Publishes a GitHub Release named `Release <tag>` with those six assets attached.
+
+The release body is assembled by GoReleaser from the commit and pull request history since the previous
+tag, followed by the static footer defined in `.goreleaser.yaml` — that file is where you change either
+of them, not the workflow.
 
 The workflow can also be triggered manually via `workflow_dispatch` (the "Run workflow" button in the
-Actions tab) for testing, without pushing a tag.
+Actions tab). A manual run has no tag to release, so it builds a snapshot and publishes nothing, which
+makes it a safe dry run.
+
+The build matrix, archive layout, version stamping and release notes all live in `.goreleaser.yaml`.
+Note that `main.version` is injected at build time and is deliberately `v`-prefixed, because it is
+embedded in every `report.json` and `report.yaml`; changing its format changes that output.
