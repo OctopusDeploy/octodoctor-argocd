@@ -2,14 +2,17 @@
 
 !!! warning "Severity: Medium"
 
-Applications do not have automated sync policy configured. Manual sync is required for deployments.
+Applications do not have automated sync policy configured. Configuration drift is not eliminated.
 
 ## Why this matters
 
 Correcting configuration drift is the single biggest thing Argo CD does for you. When auto-sync and
 self-heal are on, the cluster converges on what Git says, and it keeps converging: someone who
 edits a live Deployment with `kubectl` sees their change reverted, and Git stays the source of
-truth. Turn auto-sync off and you keep the YAML but lose the guarantee.
+truth.
+
+By turning autosync off (and losing self-heal) you don't have the basic GitOps guarantee that what
+is in Git is also in your cluster.
 
 Teams usually disable it to gate deployments, so nothing reaches production without a human
 pressing a button. That gate belongs somewhere else. Put it in Git, with branch protection and
