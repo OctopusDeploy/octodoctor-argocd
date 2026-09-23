@@ -81,7 +81,11 @@ func NewRegistry() *Registry {
 
 func (r *Registry) ExecuteAll(file_analysis *analysis.ArgoCDAnalysis) {
 	// Execute all global rules at the end
-	for _, rule := range r.Rules {
+	total := len(r.Rules)
+	for i, rule := range r.Rules {
+		meta := rule.Metadata()
+		log.Printf("%d/%d %s - %s", i+1, total, meta.ID, meta.Name)
+
 		result, err := rule.Execute(file_analysis)
 		if err != nil {
 			log.Printf("Error executing rule: %v", err)
