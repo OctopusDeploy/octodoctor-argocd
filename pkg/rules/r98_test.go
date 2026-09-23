@@ -1,6 +1,7 @@
 package rules
 
 import (
+	"path/filepath"
 	"testing"
 
 	"github.com/OctopusDeploy/octodoctor-argocd/pkg/analysis"
@@ -10,47 +11,57 @@ import (
 
 func TestRule98(t *testing.T) {
 	testCases := []struct {
-		name           string
-		appSetCount    int
-		expectedPassed bool
-		expectedActive bool
+		name                string
+		testDir             string
+		expectedAppCount    int
+		expectedAppSetCount int
+		expectedPassed      bool
+		expectedActive      bool
 	}{
 		{
-			name:           "Problematic scenario zero application sets",
-			appSetCount:    0,
-			expectedPassed: false,
-			expectedActive: true,
+			name:                "Applications without application sets - should fail",
+			testDir:             "apps-no-appsets",
+			expectedAppCount:    2,
+			expectedAppSetCount: 0,
+			expectedPassed:      false,
+			expectedActive:      true,
 		},
 		{
-			name:           "Happy Path scenario at least one application set",
-			appSetCount:    1,
-			expectedPassed: true,
-			expectedActive: true,
+			name:                "No Applications and no application sets - should be inactive",
+			testDir:             "empty",
+			expectedAppCount:    0,
+			expectedAppSetCount: 0,
+			expectedPassed:      true,
+			expectedActive:      false,
 		},
 		{
-			name:           "Happy Path scenario many application sets",
-			appSetCount:    3,
-			expectedPassed: true,
-			expectedActive: true,
+			name:                "Application sets without Applications - should pass",
+			testDir:             "appsets-only",
+			expectedAppCount:    0,
+			expectedAppSetCount: 1,
+			expectedPassed:      true,
+			expectedActive:      true,
+		},
+		{
+			name:                "Applications and application sets - should pass",
+			testDir:             "apps-and-appsets",
+			expectedAppCount:    1,
+			expectedAppSetCount: 1,
+			expectedPassed:      true,
+			expectedActive:      true,
 		},
 	}
 
 	// Run each test case
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			// Create ArgoCDAnalysis with the specified number of application sets
-			testAnalysis := &analysis.ArgoCDAnalysis{
-				ApplicationSets: make([]analysis.ArgoCDFile, tc.appSetCount),
-			}
+			// Scan the test directory the same way the CLI does, since this is a global rule
+			testAnalysis := &analysis.ArgoCDAnalysis{}
+			testAnalysis.DiscoverYamlFiles(filepath.Join("..", "..", "testdata", "r98", tc.testDir))
+			testAnalysis.FilterArgoCDFiles()
 
-			// Populate with dummy application sets
-			for i := 0; i < tc.appSetCount; i++ {
-				testAnalysis.ApplicationSets[i] = analysis.ArgoCDFile{
-					Name:     "appset",
-					FullPath: "appset.yaml",
-					Content:  "dummy",
-				}
-			}
+			require.Len(t, testAnalysis.Applications, tc.expectedAppCount, "R98 unexpected number of Applications in %s", tc.testDir)
+			require.Len(t, testAnalysis.ApplicationSets, tc.expectedAppSetCount, "R98 unexpected number of application sets in %s", tc.testDir)
 
 			// Execute the rule
 			rule := &Rule98{}
