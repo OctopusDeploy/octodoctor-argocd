@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1900" height="730" viewBox="0 0 1900 730"
+     font-family="Inter, 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000000" flood-opacity="0.08"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#68778d"/>
+    </marker>
+    <style>
+      .card   { fill: #ffffff; stroke: #dee1e6; stroke-width: 1.5; }
+      .title  { font-size: 26px; font-weight: 700; fill: #282f38; }
+      .body   { font-size: 21px; font-weight: 400; fill: #515d70; }
+      .label  { font-size: 17px; font-weight: 600; fill: #1a77ca; letter-spacing: 1.5px; }
+      .caps   { font-size: 17px; font-weight: 600; fill: #68778d; letter-spacing: 1.5px; }
+      .chip   { fill: #f5f6f8; stroke: #dee1e6; stroke-width: 1; }
+      .chipt  { font-size: 18px; font-weight: 500; fill: #282f38; }
+      .flow   { fill: none; stroke: #68778d; stroke-width: 2.5; }
+      .icon   { fill: none; stroke: #1a77ca; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+      .otitle { font-size: 23px; font-weight: 700; fill: #282f38; }
+      .obody  { font-size: 19px; font-weight: 400; fill: #515d70; }
+    </style>
+  </defs>
+
+  <rect width="1900" height="730" fill="#ffffff"/>
+
+  <!-- ===================== Inputs ===================== -->
+  <text class="caps" x="48" y="120">YOUR ARGO CD SETUP</text>
+
+  <!-- Git repository -->
+  <g filter="url(#shadow)"><rect class="card" x="48" y="150" width="290" height="200" rx="12"/></g>
+  <rect x="72" y="174" width="56" height="56" rx="8" fill="#e8f1fa"/>
+  <path class="icon" d="M85 190 h10 l4 5 h16 v20 h-30 z"/>
+  <text class="title" x="72" y="272" style="font-size:25px">Git repository</text>
+  <text class="body" x="72" y="306">Argo CD YAML files in</text>
+  <text class="body" x="72" y="332">any folder</text>
+
+  <!-- Live cluster -->
+  <g filter="url(#shadow)"><rect class="card" x="48" y="410" width="290" height="200" rx="12"/></g>
+  <rect x="72" y="434" width="56" height="56" rx="8" fill="#e8f1fa"/>
+  <rect class="icon" x="86" y="447" width="28" height="12" rx="2"/>
+  <rect class="icon" x="86" y="465" width="28" height="12" rx="2"/>
+  <circle cx="92" cy="453" r="1.5" fill="#1a77ca"/>
+  <circle cx="92" cy="471" r="1.5" fill="#1a77ca"/>
+  <text class="title" x="72" y="532" style="font-size:25px">Live Argo CD cluster</text>
+  <text class="body" x="72" y="566">Read-only export,</text>
+  <text class="body" x="72" y="592">secret values masked</text>
+
+  <!-- Merge into Collect -->
+  <path class="flow" d="M338 250 H366 V380 H411" marker-end="url(#arrow)"/>
+  <path class="flow" d="M338 510 H366 V380"/>
+
+  <!-- ===================== octodoctor panel ===================== -->
+  <rect x="400" y="100" width="1140" height="518" rx="16" fill="#f5f6f8"/>
+  <text class="caps" x="420" y="140" style="fill:#1a77ca">OCTODOCTOR · SINGLE BINARY, RUNS LOCALLY</text>
+
+  <!-- Step 1: Collect -->
+  <g filter="url(#shadow)"><rect class="card" x="420" y="182" width="320" height="396" rx="12"/></g>
+  <g transform="translate(0,12)">
+  <circle cx="462" cy="214" r="18" fill="#1a77ca"/>
+  <text x="462" y="221" text-anchor="middle" font-size="20" font-weight="700" fill="#ffffff">1</text>
+  <text class="label" x="492" y="220">COLLECT</text>
+  <circle class="icon" cx="700" cy="210" r="11"/>
+  <path class="icon" d="M708 218 l9 9"/>
+  <text class="title" x="444" y="280">Find Argo CD files</text>
+  <text class="body" x="444" y="318">Scans every YAML file</text>
+  <text class="body" x="444" y="346">and keeps only what</text>
+  <text class="body" x="444" y="374">Argo CD uses:</text>
+  <rect class="chip" x="444" y="398" width="136" height="36" rx="6"/>
+  <text class="chipt" x="512" y="422" text-anchor="middle">Applications</text>
+  <rect class="chip" x="588" y="398" width="128" height="36" rx="6"/>
+  <text class="chipt" x="652" y="422" text-anchor="middle">AppProjects</text>
+  <rect class="chip" x="444" y="444" width="164" height="36" rx="6"/>
+  <text class="chipt" x="526" y="468" text-anchor="middle">ApplicationSets</text>
+  <rect class="chip" x="444" y="490" width="124" height="36" rx="6"/>
+  <text class="chipt" x="506" y="514" text-anchor="middle">ConfigMaps</text>
+  <rect class="chip" x="576" y="490" width="96" height="36" rx="6"/>
+  <text class="chipt" x="624" y="514" text-anchor="middle">Secrets</text>
+
+  </g>
+
+  <path class="flow" d="M740 380 H801" marker-end="url(#arrow)"/>
+
+  <!-- Step 2: Check -->
+  <g filter="url(#shadow)"><rect class="card" x="810" y="182" width="320" height="396" rx="12"/></g>
+  <g transform="translate(0,12)">
+  <circle cx="852" cy="214" r="18" fill="#1a77ca"/>
+  <text x="852" y="221" text-anchor="middle" font-size="20" font-weight="700" fill="#ffffff">2</text>
+  <text class="label" x="882" y="220">CHECK</text>
+  <rect class="icon" x="1078" y="198" width="22" height="26" rx="3"/>
+  <path class="icon" d="M1084 207 h10 M1084 215 h10"/>
+  <text class="title" x="834" y="280">Apply best practices</text>
+  <text class="body" x="834" y="318">Runs 26 best-practice</text>
+  <text class="body" x="834" y="346">rules, each with a</text>
+  <text class="body" x="834" y="374">severity level</text>
+
+  <circle cx="850" cy="424" r="14" fill="#00874d"/>
+  <path d="M843 424 l5 5 l9 -10" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text class="body" x="876" y="431" style="fill:#282f38;font-weight:500">Passed</text>
+
+  <circle cx="850" cy="472" r="14" fill="#d63d3d"/>
+  <path d="M844 466 l12 12 M856 466 l-12 12" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+  <text class="body" x="876" y="479" style="fill:#282f38;font-weight:500">Failed</text>
+
+  <circle cx="850" cy="520" r="14" fill="#68778d"/>
+  <path d="M843 520 h14" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+  <text class="body" x="876" y="527" style="fill:#282f38;font-weight:500">Not applicable</text>
+
+  </g>
+
+  <path class="flow" d="M1130 380 H1191" marker-end="url(#arrow)"/>
+
+  <!-- Step 3: Report -->
+  <g filter="url(#shadow)"><rect class="card" x="1200" y="182" width="320" height="396" rx="12"/></g>
+  <g transform="translate(0,12)">
+  <circle cx="1242" cy="214" r="18" fill="#1a77ca"/>
+  <text x="1242" y="221" text-anchor="middle" font-size="20" font-weight="700" fill="#ffffff">3</text>
+  <text class="label" x="1272" y="220">REPORT</text>
+  <path class="icon" d="M1470 198 h14 l8 8 v18 h-22 z M1484 198 v8 h8"/>
+  <text class="title" x="1224" y="280">Explain the results</text>
+  <text class="body" x="1224" y="318">Every failed rule says</text>
+  <text class="body" x="1224" y="346">what is wrong and links</text>
+  <text class="body" x="1224" y="374">to how to fix it</text>
+  <rect class="chip" x="1224" y="398" width="76" height="36" rx="6"/>
+  <text class="chipt" x="1262" y="422" text-anchor="middle">HTML</text>
+  <rect class="chip" x="1308" y="398" width="72" height="36" rx="6"/>
+  <text class="chipt" x="1344" y="422" text-anchor="middle">JSON</text>
+  <rect class="chip" x="1388" y="398" width="72" height="36" rx="6"/>
+  <text class="chipt" x="1424" y="422" text-anchor="middle">YAML</text>
+
+  </g>
+
+  <!-- Fan out to results -->
+  <path class="flow" d="M1520 380 H1560 V230 H1581" marker-end="url(#arrow)"/>
+  <path class="flow" d="M1560 380 H1581" marker-end="url(#arrow)"/>
+  <path class="flow" d="M1560 380 V530 H1581" marker-end="url(#arrow)"/>
+
+  <!-- ===================== Results ===================== -->
+  <text class="caps" x="1590" y="120">RESULTS</text>
+
+  <g filter="url(#shadow)"><rect class="card" x="1590" y="170" width="262" height="120" rx="12"/></g>
+  <rect x="1590" y="170" width="6" height="120" rx="3" fill="#1a77ca"/>
+  <text class="otitle" x="1614" y="216">HTML report</text>
+  <text class="obody" x="1614" y="246">For people to read</text>
+  <text class="obody" x="1614" y="272">and share</text>
+
+  <g filter="url(#shadow)"><rect class="card" x="1590" y="320" width="262" height="120" rx="12"/></g>
+  <rect x="1590" y="320" width="6" height="120" rx="3" fill="#895ed3"/>
+  <text class="otitle" x="1614" y="366">JSON &amp; YAML</text>
+  <text class="obody" x="1614" y="396">For dashboards</text>
+  <text class="obody" x="1614" y="422">and automation</text>
+
+  <g filter="url(#shadow)"><rect class="card" x="1590" y="470" width="262" height="120" rx="12"/></g>
+  <rect x="1590" y="470" width="6" height="120" rx="3" fill="#00874d"/>
+  <text class="otitle" x="1614" y="516">CI/CD gate</text>
+  <text class="obody" x="1614" y="546">Fails the pipeline</text>
+  <text class="obody" x="1614" y="572">when a rule fails</text>
+</svg>

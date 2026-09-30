@@ -9,13 +9,22 @@ ConfigMaps/Secrets, then reports misconfigurations and anti-patterns in your Git
 Every finding comes from a [rule](rules/index.md), and the results are written out as an HTML report
 alongside machine-readable YAML and JSON.
 
-!!! note "This page is a placeholder"
-    TODO: expand this introduction with the full story — what problems the tool catches, who it is for,
-    and how it fits into an Argo CD workflow.
+You can use the tool in two modes:
+
+- Read local Argo CD manifests (-d argument)
+- Export from Live Argo CD cluster (-k argument)
+
+In the latter case the Argo CD cluster will be reached via your current kubeconfig.
+
+[![Flow](octodoctor-flow.svg)](octodoctor-flow.svg)
+
+OctoDoctor will analyze your files or cluster and create a report in HTML/json/yaml format
 
 ## Example report
 
-![OctoDoctor for Argo CD report](example-report.png)
+Here is an example for the HTML report.
+
+[![OctoDoctor for Argo CD report](example-report.png)](example-report.png)
 
 ## Next steps
 
