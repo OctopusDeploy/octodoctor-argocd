@@ -2,7 +2,7 @@
 
 !!! danger "Severity: High"
 
-Applications have dangerous sync policy settings (prune=true and allowEmpty=true). This combination can lead to unintended resource deletion.
+Applications have dangerous sync policy settings (`prune=true` and `allowEmpty=true`). This combination can lead to unintended resource deletion.
 
 ## Why this matters
 
@@ -10,12 +10,13 @@ Applications have dangerous sync policy settings (prune=true and allowEmpty=true
 manifests. `allowEmpty: true` tells it to proceed even when the rendering produces nothing at all.
 Together, they turn a bad render into a cluster-wide delete. A broken Helm values file, a mistyped
 `path`, a renamed directory, or a repository that briefly returns an empty tree is enough for Argo CD
-to conclude the desired state is "no resources" and prune everything the Application owns.
+to conclude the desired state is "no resources" and prune everything the Application owns. This problem
+is even more evident when your Git repository is down.
 
 With `allowEmpty: false` (the default), Argo CD refuses to sync an empty result. It reports the
 Application as out of sync instead, which is a loud signal that something upstream is broken.
 
-The blast radius is wider than it first appears. Argo CD deletes child resources in a cascading
+The blast radius can be catastrophic if you have transient errors in your Git repository access. Argo CD deletes child resources in a cascading
 manner, so one accidental empty render can take out Deployments, Services, PersistentVolumeClaims,
 and everything else the Application tracks.
 
