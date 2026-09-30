@@ -64,10 +64,8 @@ of generators has nothing to duplicate.
 
 ## Exceptions
 
-A `merge` over 2 generators of the same type can be deliberate when you're layering defaults, for
-example a broad `list` of every application merged with a narrower `list` that overrides a few
-values by `mergeKeys`. If that's what you're doing, the finding is a false positive, but check that
-a values hierarchy in Git wouldn't express it more clearly.
+You might have an exotic directory structure that really needs 2 generators of the same kind. It is better to
+restructure your Git folders using best practices instead of trying to make Argo CD workarounds.
 
 ## Further reading
 

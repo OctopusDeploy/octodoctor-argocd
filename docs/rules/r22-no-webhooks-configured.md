@@ -6,8 +6,8 @@ No webhooks are configured in argocd-secret. Webhooks improve Argo CD performanc
 
 ## Why this matters
 
-Left to itself, Argo CD "polls Git/OCI/Helm repositories every three minutes to detect changes to
-the manifests." That's the only way it learns a commit happened, and it has 2 costs.
+With the default configuration, Argo CD will poll Git/OCI/Helm repositories every three minutes to detect changes to
+the manifests. That's the only way it learns a commit happened, and it has 2 costs.
 
 The obvious one is latency. A developer merges a change and then waits up to 3 minutes before
 Argo CD even notices, plus however long the sync takes. It's not a long wait in absolute terms, but

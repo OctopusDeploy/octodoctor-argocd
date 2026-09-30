@@ -2,7 +2,7 @@
 
 !!! warning "Severity: Medium"
 
-Applications do not have the argocd.argoproj.io/manifest-generate-paths annotation configured.
+Applications do not have the `argocd.argoproj.io/manifest-generate-paths` annotation configured.
 
 ## Why this matters
 

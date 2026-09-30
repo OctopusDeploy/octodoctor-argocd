@@ -6,13 +6,14 @@ Applications have targetRevision set to a specific value (not `HEAD`) for Git re
 
 ## Why this matters
 
-`targetRevision: HEAD` means "deploy whatever is on the default branch of this repository". It's a
-dull setting that quietly does 3 valuable things.
+`targetRevision: HEAD` means "deploy whatever is on the default branch of this repository". It's the default setting that quietly does 3 valuable things.
 
-Developers get self-service. Merging a change to the manifests repository deploys it, everywhere
-that repository is referenced, without anyone editing an Argo CD manifest first. Auditing gets
+1. Developers get self-service. Merging a change to the manifests repository deploys it, everywhere
+that repository is referenced, without anyone editing an Argo CD manifest first. 
+2. Auditing gets
 easy, because deployment history and Git history become the same history: `git log` answers what
-changed, when, and who approved it. And rollback is `git revert`, a command every engineer already
+changed, when, and who approved it. 
+3. A Rollback is just `git revert`, a command every engineer already
 knows, rather than a coordinated edit of Application YAML.
 
 Every other value gives one of those up:
@@ -26,6 +27,9 @@ Every other value gives one of those up:
 - **Git tags** are the least bad of the four and are a reasonable gate for production, but they still
   need a human to move them, and tags are mutable unless you've configured your Git provider to
   protect them.
+
+It is ok to have Git tags in `targetRevision` for your Helm charts that defined infrastructure (certmanager, coredns, sealed-secrets etc.). But
+your application workloads, using `HEAD` is always the sensible choice.
 
 ## How to fix it
 

@@ -68,9 +68,8 @@ children are all plain generators passes.
 
 ## Exceptions
 
-Rarely, an infrastructure ApplicationSet that fans out over applications, clusters, and regions
-really does need a third level, and no directory layout expresses it better. If you keep it, add a
-comment naming each level so the next reader doesn't have to reverse-engineer the cross product.
+You might have an exotic directory structure that really needs nesting generators. It is better to
+restructure your Git folders using best practices instead of trying to make Argo CD workarounds.
 
 ## Further reading
 

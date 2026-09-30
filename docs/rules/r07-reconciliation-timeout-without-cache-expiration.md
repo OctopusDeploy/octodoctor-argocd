@@ -2,7 +2,7 @@
 
 !!! warning "Severity: Medium"
 
-Using ARGOCD_RECONCILIATION_TIMEOUT=0 without proper ARGOCD_DEFAULT_CACHE_EXPIRATION settings can cause performance issues.
+Using `ARGOCD_RECONCILIATION_TIMEOUT=0` without proper `ARGOCD_DEFAULT_CACHE_EXPIRATION` settings can cause performance issues.
 
 ## Why this matters
 
