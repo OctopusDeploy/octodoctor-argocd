@@ -18,8 +18,8 @@ func (r *Rule99) Metadata() RuleMetadata {
 		ID:              "R99",
 		Name:            "Check number of application sets",
 		DocSlug:         "r99-too-many-application-sets",
-		PassDescription: "You have a reasonable number of application sets.",
-		FailDescription: "You have too many application sets. This can cause performance issues and make it difficult to manage.",
+		PassDescription: "You have a reasonable number of ApplicationSets.",
+		FailDescription: "You have too many ApplicationSets. This can cause performance issues and make them hard to manage.",
 		Severity:        SeverityMedium,
 	}
 }

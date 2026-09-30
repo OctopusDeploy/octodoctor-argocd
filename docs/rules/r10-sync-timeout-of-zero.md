@@ -2,7 +2,7 @@
 
 !!! warning "Severity: Medium"
 
-ArgoCD controller sync timeout is set to 0 seconds, which means no timeout and can cause inefficient synchronization.
+Argo CD controller sync timeout is set to 0 seconds, which means no timeout and can cause inefficient synchronization.
 
 ## Why this matters
 
@@ -50,13 +50,13 @@ data:
   controller.sync.timeout.seconds: "600"
 ```
 
-Omitting the key entirely also passes — the rule only reports a value it can parse as the integer
+Omitting the key entirely also passes: the rule only reports a value it can parse as the integer
 zero. It's inactive when `argocd-cmd-params-cm` isn't among the scanned files.
 
 ## Exceptions
 
-Installations with genuinely long-running syncs — large Helm charts with slow hooks, or database
-migrations run as PreSync Jobs — may find any timeout they pick either too short for the worst case
+Installations with genuinely long-running syncs (large Helm charts with slow hooks, or database
+migrations run as PreSync Jobs) may find any timeout they pick either too short for the worst case
 or too long to be useful. Leaving it unbounded is a defensible choice there, as long as something
 else watches for Applications stuck in `Progressing`.
 

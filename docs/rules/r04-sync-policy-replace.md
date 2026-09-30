@@ -2,7 +2,7 @@
 
 !!! warning "Severity: Medium"
 
-Applications have sync policy replace=true. This can lead to unintended resource deletion.
+Applications have a sync policy with `replace=true`. This can lead to unintended resource deletion.
 
 ## Why this matters
 
@@ -14,8 +14,8 @@ The Argo CD documentation is blunt about the consequence: this sync option "has 
 destructive and might lead to resources having to be recreated, which could cause an outage for
 your application."
 
-Recreation is the part that bites. Fields you never set in your manifest — ones a controller, a
-mutating webhook, or a default filled in — are not merged, they're dropped. A resource that can't be
+Recreation is the part that bites. Fields you never set yourself, such as ones a controller, a
+mutating webhook, or a default filled in, aren't merged. They're dropped. A resource that can't be
 updated in place gets deleted and made again, which for a Service means a new cluster IP, for a
 PersistentVolumeClaim means the bound volume is at risk, and for a Deployment means every Pod
 restarts at once rather than rolling. None of that is visible in the diff you review before syncing;
@@ -48,7 +48,7 @@ spec:
 ```
 
 The rule reads `spec.syncPolicy.syncOptions` and looks for an entry starting with `Replace=`. It's
-inactive when there's no `syncOptions` list, or when the list has no `Replace=` entry at all — the
+inactive when there's no `syncOptions` list, or when the list has no `Replace=` entry at all. The
 default behavior is what you want, so not mentioning the option is fine.
 
 ## Exceptions

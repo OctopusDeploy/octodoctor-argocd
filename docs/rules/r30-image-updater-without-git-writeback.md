@@ -7,7 +7,7 @@ Applications using Image Updater without Git writeback. This is against GitOps p
 ## Why this matters
 
 Argo CD Image Updater watches your container registry and rolls out new image tags as they appear.
-It can record the new tag in one of two places. With `write-back-method: git` it commits back to
+It can record the new tag in one of 2 places. With `write-back-method: git` it commits back to
 your repository, so Git keeps describing what's running. With the default, `argocd`, it patches the
 live Application through the Argo CD API and writes nothing down.
 

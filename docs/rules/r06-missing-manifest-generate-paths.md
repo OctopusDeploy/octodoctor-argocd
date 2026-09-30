@@ -8,14 +8,14 @@ Applications do not have the argocd.argoproj.io/manifest-generate-paths annotati
 
 Every time Argo CD sees a new commit in a repository, it re-renders the manifests for every
 Application pointing at that repository, then compares the result to the cluster. In a repository
-holding one application that's cheap. In a monorepo holding two hundred, a one-line change to a
-single service triggers two hundred renders, and each one means the repo-server fetching the
+holding one application that's cheap. In a monorepo holding 200, a one-line change to a
+single service triggers 200 renders, and each one means the repo-server fetching the
 revision, running Helm or Kustomize, and diffing the output.
 
 The `argocd.argoproj.io/manifest-generate-paths` annotation tells Argo CD which paths in the
 repository actually affect this Application's output. When a new commit arrives, Argo CD compares
 the changed files against that list, and if nothing matches it reuses the cached manifests instead
-of regenerating them. The Application is marked as synced to the new revision without any work.
+of regenerating them. It marks the Application as synced to the new revision without any work.
 
 The saving compounds. Fewer renders means a smaller refresh queue, less repo-server CPU, and
 noticeably faster feedback for the person whose change *did* match. This is the main lever Argo CD
@@ -55,7 +55,7 @@ spec:
 `.;../shared` when the Application also renders a shared directory, `/guestbook` for a path from the
 repository root, or a glob like `/shared/*-secret.yaml`.
 
-This rule is never inactive — every Application either carries the annotation or doesn't.
+This rule is never inactive: every Application either carries the annotation or doesn't.
 
 ## Exceptions
 

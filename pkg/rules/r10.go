@@ -18,8 +18,8 @@ func (r *Rule10) Metadata() RuleMetadata {
 		ID:              "R10",
 		Name:            "Check argocd-cmd-params-cm sync timeout configuration",
 		DocSlug:         "r10-sync-timeout-of-zero",
-		PassDescription: "ArgoCD controller sync timeout is properly configured (not 0 seconds).",
-		FailDescription: "ArgoCD controller sync timeout is set to 0 seconds, which means no timeout and can cause inefficient synchronization.",
+		PassDescription: "Argo CD controller sync timeout is properly configured (not 0 seconds).",
+		FailDescription: "Argo CD controller sync timeout is set to 0 seconds, which means no timeout and can cause inefficient synchronization.",
 		Severity:        SeverityMedium,
 	}
 }

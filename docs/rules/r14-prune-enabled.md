@@ -54,7 +54,7 @@ Omitting `prune` entirely also passes, because the default is `false`. Applicati
 ## Exceptions
 
 Pruning is a legitimate and common choice, so treat this finding as a prompt rather than a defect.
-Ignore it once you've checked that the Application's resources are all declared in Git, that the
+Ignore it after you've checked that the Application's resources are all declared in Git, that the
 `argocd.argoproj.io/sync-options: Prune=false` annotation protects any individual resource you
 can't afford to lose, and that resource tracking is set up so Argo CD knows exactly which resources it owns
 (see [R50](r50-invalid-resource-tracking-method.md)).

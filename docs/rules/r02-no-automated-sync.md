@@ -14,7 +14,7 @@ truth.
 By turning autosync off (and losing self-heal) you don't have the basic GitOps guarantee that what
 is in Git is also in your cluster.
 
-Teams usually disable it to gate deployments, so nothing reaches production without a human
+Teams usually turn it off to gate deployments, so nothing reaches production without a human
 pressing a button. That gate belongs somewhere else. Put it in Git, with branch protection and
 required reviews on the repository holding your manifests, and put it in the cluster, with RBAC that
 controls who can change what. Both survive a restart of Argo CD and both leave an audit trail. A
@@ -54,7 +54,7 @@ Application either has an automated policy or it doesn't.
 ## Exceptions
 
 A deliberately manual Application is defensible in a couple of places, like a break-glass runbook
-you sync by hand during an incident, or an early proof of concept. If you're disabling auto-sync
+you sync by hand during an incident, or an early proof of concept. If you're turning off auto-sync
 across the whole installation, that's the finding this rule exists to raise.
 
 ## Further reading

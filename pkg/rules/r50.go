@@ -16,8 +16,8 @@ func (r *Rule50) Metadata() RuleMetadata {
 		ID:              "R50",
 		Name:            "Check argocd-cm resourceTrackingMethod configuration",
 		DocSlug:         "r50-invalid-resource-tracking-method",
-		PassDescription: "ArgoCD resourceTrackingMethod is set to one of the accepted values (label, annotation, or annotation+label).",
-		FailDescription: "ArgoCD resourceTrackingMethod is set to an invalid value. It must be exactly one of: label, annotation, or annotation+label.",
+		PassDescription: "Argo CD resourceTrackingMethod is set to one of the accepted values (label, annotation, or annotation+label).",
+		FailDescription: "Argo CD resourceTrackingMethod is set to an invalid value. It must be exactly one of: label, annotation, or annotation+label.",
 		Severity:        SeverityHigh,
 	}
 }

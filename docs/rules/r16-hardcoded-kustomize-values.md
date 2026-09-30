@@ -9,13 +9,13 @@ Applications use hardcoded values in kustomize configuration. Consider using kus
 Kustomize is built around bases and overlays. An overlay is a directory containing a
 `kustomization.yaml` that patches a base, and it's a complete, self-contained description of one
 variant of your application. You can render it with `kustomize build`, review it in a pull request,
-and diff two of them against each other.
+and diff 2 of them against each other.
 
 Argo CD's `kustomize` block in the Application manifest duplicates a subset of that: `namePrefix`,
 `images`, `namespace`, `patches`, and friends. Anything you set there is invisible to Kustomize
 itself. `kustomize build` on the overlay no longer produces what Argo CD applies, so local testing
-stops matching reality, and the description of one environment is now split across two files in two
-repositories owned by two teams.
+stops matching reality, and the description of one environment is now split across 2 files in 2
+repositories owned by 2 teams.
 
 That split is the real cost. Changing which image tag production runs should be a change to the
 production overlay, reviewed by the people who own production manifests. Putting it in the
@@ -58,8 +58,8 @@ doesn't.
 
 ## Exceptions
 
-As with Helm values, a value that only the ApplicationSet template can know — a preview
-environment's image tag built from the pull request SHA, for example — has to be set at this level.
+As with Helm values, a value that only the ApplicationSet template can know (a preview
+environment's image tag built from the pull request SHA, for example) has to be set at this level.
 Everything that's stable across syncs belongs in the overlay.
 
 ## Further reading

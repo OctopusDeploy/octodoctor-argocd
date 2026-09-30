@@ -17,7 +17,7 @@ can only see public repositories," and the ApplicationSet controller's rate-limi
 that "ApplicationSet generators may call external APIs (SCM providers, Kubernetes secrets, cluster
 API servers)" with deliberately conservative defaults to avoid hammering them.
 
-A matrix combines exactly two child generators and produces their cross product. Put these two
+A matrix combines exactly 2 child generators and produces their cross product. Put both of these
 inside one, and the API cost multiplies rather than adds: the SCM side enumerates repositories, and
 the pull request side is evaluated across that enumeration. An organization with 50 repositories
 turns one refresh into a large burst of calls, repeated on every requeue, forever.
@@ -31,7 +31,7 @@ same token start failing too.
 ## How to fix it
 
 Use the Pull Request generator on its own, or combine it with a generator that doesn't call the
-provider API — a `list` or `clusters` generator costs nothing extra per refresh.
+provider API. A `list` or `clusters` generator costs nothing extra per refresh.
 
 **Flagged by this rule**
 
@@ -74,7 +74,7 @@ child. An ApplicationSet with no Pull Request generator inside a combination is 
 includes a standalone Pull Request generator at the top level.
 
 If you need previews across many repositories, run one ApplicationSet per repository rather than
-discovering them, and always supply credentials through `tokenRef` or `appSecretName` — the
+discovering them, and always supply credentials through `tokenRef` or `appSecretName`, because the
 authenticated rate limit is far higher than the anonymous one. Configuring pull request webhooks
 removes most of the polling entirely. See also [R03](r03-low-requeue-after-seconds.md).
 
@@ -82,8 +82,8 @@ removes most of the polling entirely. See also [R03](r03-low-requeue-after-secon
 
 A small organization with a handful of repositories may stay comfortably inside its rate limit with
 this combination, particularly with an authenticated token and a long `requeueAfterSeconds`. Check
-your provider's rate limit usage before deciding the finding doesn't apply — the failure mode only
-shows up once you're near the ceiling.
+how much of your provider's rate limit you're using before deciding the finding doesn't apply,
+because the failure mode only shows up when you're near the ceiling.
 
 ## Further reading
 

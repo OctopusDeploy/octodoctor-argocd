@@ -18,8 +18,8 @@ func (r *Rule11) Metadata() RuleMetadata {
 		ID:              "R11",
 		Name:            "Check argocd-cm anonymous user access configuration",
 		DocSlug:         "r11-anonymous-access",
-		PassDescription: "ArgoCD anonymous user access is disabled for security.",
-		FailDescription: "ArgoCD anonymous user access is enabled, which poses a security risk as it allows unauthenticated access to the system.",
+		PassDescription: "Argo CD anonymous user access is disabled for security.",
+		FailDescription: "Argo CD anonymous user access is enabled, which poses a security risk as it lets unauthenticated users access the system.",
 		Severity:        SeverityHigh,
 	}
 }

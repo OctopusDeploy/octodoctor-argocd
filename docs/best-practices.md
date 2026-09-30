@@ -1,7 +1,7 @@
 # Best practices articles for Argo CD
 
 We have published several best practices articles for Argo CD over the years.
-Octodoctor is an implementation of the knowledge (and opinions) expressed in the articles. Here is the full list
+OctoDoctor puts the knowledge (and opinions) from these articles into practice. Here's the full list:
 
 1.  **[Top 30 Argo CD anti-patterns to avoid when adopting GitOps](https://octopus.com/blog/30-argo-cd-antipatterns-for-gitops)**
 
@@ -11,35 +11,34 @@ Octodoctor is an implementation of the knowledge (and opinions) expressed in the
 
 2.  **[How to model your GitOps environments](https://octopus.com/blog/how-to-model-your-gitops-environments)**
 
-    A worked example of modelling five environments as folders on a single Git branch, covering initial
-    deployment, diffing environments, and promotion.    
+    A worked example of modeling 5 environments as folders on a single Git branch, covering initial
+    deployment, diffing environments, and promotion.
 
 3.  **[Structuring Argo CD repositories](https://octopus.com/blog/how-to-structure-your-argo-cd-repositories-using-application-sets)**
 
-    How to lay out the Git repositories behind Argo CD: four anti-patterns to avoid, then a recommended
-    three-level structure with one repository per team.
+    How to lay out the Git repositories behind Argo CD: 4 anti-patterns to avoid, then a recommended
+    3-level structure with one repository per team.
 
 4.  **[Distribute your Argo CD applications to different Kubernetes clusters using ApplicationSets](https://octopus.com/blog/argocd-clusters-labels-with-apps)**
 
-    Labelling clusters by role, cloud, region and environment so ApplicationSets can select cluster
+    Labeling clusters by role, cloud, region, and environment so ApplicationSets can select cluster
     groups instead of individual snowflakes. Nine worked scenarios cover selectors, exclusions, and
     per-environment Kustomize overlays and Helm values.
 
 5.  **[Stop using branches for deploying to different GitOps environments](https://octopus.com/blog/stop-using-branches-deploying-different-gitops-environments)**
 
-    Why a config repository with `staging`, `qa` and `production` branches is a trap. Promotion is
+    Why a config repository with `staging`, `qa`, and `production` branches is a trap. Promotion is
     never a simple merge, drift accumulates, and the model fights Helm and Kustomize.
 
 6.  **[Using Helm hierarchies in multi-source Argo CD applications for promoting to different GitOps environments](https://octopus.com/blog/helm-values-argocd)**
 
-    Building a hierarchy of Helm values files with shared defaults, environment overrides and how to use it
+    Building a hierarchy of Helm values files with shared defaults and environment overrides, and how to use it
     with multi-source Applications and ApplicationSets.
 
 7.  **[Securing Argo CD in a multi-tenant environment with Application Projects](https://octopus.com/blog/multi-tenant-argocd-with-application-projects)**
 
-    Isolating teams that share one Argo CD installation with AppProjects, RBAC policies and roles, ending
-    in a complete configuration for two developer teams.
-
+    Isolating teams that share one Argo CD installation with AppProjects, RBAC policies, and roles, ending
+    in a complete configuration for 2 developer teams.
 
 8.  **[How to handle secrets like a pro using GitOps](https://octopus.com/blog/handle-secrets-like-pro-using-gitops)**
 
@@ -48,18 +47,18 @@ Octodoctor is an implementation of the knowledge (and opinions) expressed in the
 
 9.  **[GitOps secrets with Argo CD, HashiCorp Vault, and External Secrets Operator](https://octopus.com/blog/gitops-secrets-hashicorp-vault-argo-cd)**
 
-    The other approach that keeps secrets out of Git entirely and pull them from Vault at runtime, refreshing
+    The other approach, which keeps secrets out of Git entirely and pulls them from Vault at runtime, refreshing
     them without restarting pods.
 
 10. **[Securing your GitOps secrets with the Secret Store CSI driver](https://octopus.com/blog/gitops-secrets-csi-driver)**
 
-    The narrowest of the three secrets posts: mounting Vault secrets onto pods as files with the CSI
+    The narrowest of the 3 secrets posts: mounting Vault secrets onto pods as files with the CSI
     driver, avoiding Kubernetes Secret objects and Argo CD syncs altogether.
 
 11. **[Unlimited preview environments with Kubernetes namespaces](https://octopus.com/blog/unlimited-preview-environments)**
 
-    The general namespace-per-pull-request pattern, independent of Argo CD that shows naming, ingress routing, PR
-    comments, smoke tests and teardown.
+    The general namespace-per-pull-request pattern, independent of Argo CD, covering naming, ingress routing, pull request
+    comments, smoke tests, and teardown.
 
 12. **[Create temporary Argo CD preview environments based on pull requests](https://octopus.com/blog/creating-temporary-preview-environments-based-pull-requests-argo-cd)**
 
@@ -78,8 +77,8 @@ Octodoctor is an implementation of the knowledge (and opinions) expressed in the
 
 15. **[How to preview and diff your Argo CD deployments](https://octopus.com/blog/argo-cd-preview-diff)**
 
-    Four ways to see what a sync will change before it happens.  GUI diff, CLI local diff, pre-rendered
-    manifests, and rendering on the fly (also attaching the diff to a Pull Request).
+    Four ways to see what a sync will change before it happens: GUI diff, CLI local diff, pre-rendered
+    manifests, and rendering on the fly (including attaching the diff to a pull request).
 
 16. **[Argo CD application dependencies](https://octopus.com/blog/argo-cd-application-dependencies)**
 
@@ -113,7 +112,7 @@ Octodoctor is an implementation of the knowledge (and opinions) expressed in the
 
 22. **[Kubernetes deployment anti-patterns – Part 2](https://octopus.com/blog/kubernetes-antipatterns-2)**
 
-    Anti-patterns 6 to 10, mostly about operations:  `kubectl` as a debugger, misunderstood networking,
+    Anti-patterns 6 to 10, mostly about operations: `kubectl` as a debugger, misunderstood networking,
     permanent staging instead of dynamic environments, production and non-production on one cluster, and
     workloads with no memory or CPU limits.
 
@@ -126,14 +125,14 @@ Octodoctor is an implementation of the knowledge (and opinions) expressed in the
 
     Ten container-image bad practices with a fix for each, including treating containers as virtual
     machines, opaque images, a different image per environment, tracking Git hashes instead of image
-    tags, and hardcoded secrets. This is the layer beneath everything else here and several Argo CD
+    tags, and hardcoded secrets. This is the layer beneath everything else here, and several Argo CD
     problems start as an image built the wrong way.
 
 25. **[Enterprise CI/CD best practices – Part 1](https://octopus.com/blog/enterprise-ci-cd-best-practices-1)**
 
     Practices 1 to 7 of 23: everything in source control, one artifact promoted unchanged to every
     environment, artifacts rather than Git commits travelling the pipeline, short-lived branches,
-    single-step and fast builds, and cached dependencies. Not Argo CD specific, but the layer your
+    single-step and fast builds, and cached dependencies. Not Argo CD-specific, but the layer your
     GitOps setup sits on top of.
 
 26. **[Enterprise CI/CD best practices – Part 2](https://octopus.com/blog/enterprise-ci-cd-best-practices-part-2)**

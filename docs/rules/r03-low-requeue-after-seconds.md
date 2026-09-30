@@ -2,18 +2,18 @@
 
 !!! warning "Severity: Medium"
 
-ApplicationSets have requeueAfterSeconds set to less than 180 seconds (3 minutes). This can cause excessive API calls and rate limiting issues
+ApplicationSets have requeueAfterSeconds set to less than 180 seconds (3 minutes). This can cause excessive API calls and rate limiting issues,
 especially for GitHub.
 
 ## Why this matters
 
 The Pull Request and SCM Provider generators find their inputs by asking your Git provider, over
 its API, on a timer. `requeueAfterSeconds` is that timer. Set it to 20 and every ApplicationSet
-using the generator hits GitHub, GitLab, or Bitbucket three times a minute, forever, whether or not
+using the generator hits GitHub, GitLab, or Bitbucket 3 times a minute, forever, whether or not
 anything changed.
 
 Git providers meter those calls. GitHub's REST API gives an authenticated token a fixed budget per
-hour across your whole organization, and Argo CD is rarely the only thing spending it. Once the
+hour across your whole organization, and Argo CD is rarely the only thing spending it. When the
 budget runs out, the generator's calls start failing, the ApplicationSet stops producing children,
 and preview environments quietly fail to appear or fail to be cleaned up. The failure looks like an
 Argo CD bug and is really a quota problem, which makes it slow to diagnose.
@@ -52,7 +52,7 @@ spec:
 ```
 
 ApplicationSets that never set `requeueAfterSeconds` are inactive for this rule. They fall back to
-the controller-wide default, which is already well above three minutes.
+the controller-wide default, which is already well above 3 minutes.
 
 ## Exceptions
 

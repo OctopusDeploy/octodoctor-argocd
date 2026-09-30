@@ -3,26 +3,26 @@
 ![OctoDoctor for Argo CD logo](octodoctor-logo.png)
 
 OctoDoctor for Argo CD is a static analysis tool for Argo CD configuration. Point it at a directory of
-YAML manifests and it inspects your Applications, ApplicationSets, AppProjects and Argo CD
+YAML manifests and it inspects your Applications, ApplicationSets, AppProjects, and Argo CD
 ConfigMaps/Secrets, then reports misconfigurations and anti-patterns in your GitOps setup.
 
-Every finding comes from a [rule](rules/index.md), and the results are written out as an HTML report
+Every finding comes from a [rule](rules/index.md), and OctoDoctor writes the results as an HTML report
 alongside machine-readable YAML and JSON.
 
-You can use the tool in two modes:
+You can use the tool in 2 modes:
 
-- Read local Argo CD manifests (-d argument)
-- Export from Live Argo CD cluster (-k argument)
+- Read local Argo CD manifests (`--directory`)
+- Export from a live Argo CD cluster (`--export`)
 
-In the latter case the Argo CD cluster will be reached via your current kubeconfig.
+In export mode, OctoDoctor reaches the Argo CD cluster through your current kubeconfig.
 
 [![Flow](octodoctor-flow.svg)](octodoctor-flow.svg)
 
-OctoDoctor will analyze your files or cluster and create a report in HTML/json/yaml format
+OctoDoctor analyzes your files or cluster and creates a report in HTML, JSON, and YAML.
 
 ## Example report
 
-Here is an example for the HTML report.
+Here's an example of the HTML report.
 
 [![OctoDoctor for Argo CD report](example-report.png)](example-report.png)
 

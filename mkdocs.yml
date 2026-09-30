@@ -39,7 +39,7 @@ nav:
   - R19 – Pinned targetRevision: rules/r19-pinned-target-revision.md
   - R20 – No cluster generator: rules/r20-no-cluster-generator.md
   - R22 – No webhooks configured: rules/r22-no-webhooks-configured.md
-  - R25 – More than two sources: rules/r25-more-than-two-sources.md
+  - R25 – More than 2 sources: rules/r25-more-than-two-sources.md
   - R26 – Multiple Helm chart sources: rules/r26-multiple-helm-chart-sources.md
   - R30 – Image Updater without Git writeback: rules/r30-image-updater-without-git-writeback.md
   - R50 – Invalid resourceTrackingMethod: rules/r50-invalid-resource-tracking-method.md

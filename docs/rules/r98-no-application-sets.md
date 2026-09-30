@@ -2,24 +2,24 @@
 
 !!! warning "Severity: Medium"
 
-You are not using application sets. Application Sets are a powerful feature of Argo CD that allows you to deploy applications to multiple clusters and namespaces.
+You aren't using ApplicationSets. ApplicationSets are a powerful feature of Argo CD that lets you deploy applications to multiple clusters and namespaces.
 
 ## Why this matters
 
 Hand-written Application manifests are fine while you're learning, and they stop scaling almost
 immediately after. Every new service, environment, or cluster means another near-identical file,
-copied from the last one and edited in three places. The copies drift. One of them keeps a
+copied from the last one and edited in 3 places. The copies drift. One of them keeps a
 `targetRevision` someone pinned during an incident, another never got the sync policy change that
 the rest received, and nobody notices until the difference matters.
 
-ApplicationSets replace the copying with generation. A generator discovers the inputs — directories
-in a repository, labelled clusters, open pull requests, or a literal list — and one template turns
+ApplicationSets replace the copying with generation. A generator discovers the inputs (directories
+in a repository, labeled clusters, open pull requests, or a literal list), and one template turns
 each input into an Application. A single manifest can produce a dozen Applications, and adding the
-thirteenth means adding a directory or labelling a cluster, not writing more YAML. Consistency stops
+thirteenth means adding a directory or labeling a cluster, not writing more YAML. Consistency stops
 being something you maintain by hand.
 
 The other benefit is that the ApplicationSet becomes the readable description of your topology. One
-file tells you which applications run where, instead of that fact being distributed across fifty
+file tells you which applications run where, instead of that fact being distributed across 50
 Application manifests.
 
 ## How to fix it

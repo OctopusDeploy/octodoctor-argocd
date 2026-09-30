@@ -11,18 +11,18 @@ Git generator crossed with a cluster generator: the Git side discovers which app
 cluster side discovers where they should go, and the matrix produces every sensible combination.
 Each child answers a different question, so the result is easy to describe in one sentence.
 
-Two children of the same type break that. A matrix of two Git generators produces the cross product
-of two directory listings, which is rarely what anyone wants and almost never what the next person
+Two children of the same type break that. A matrix of 2 Git generators produces the cross product
+of 2 directory listings, which is rarely what anyone wants and almost never what the next person
 to read the file expects. Discovering 6 directories on one side and 4 on the other silently
 generates 24 Applications. Nobody can tell from the YAML which combinations are meaningful, so the
 ApplicationSet becomes something you change by trial and error.
 
-There's usually a simpler shape hiding behind it. Two Git generators normally means "these are two
-different groups of applications", which is two ApplicationSets, not one matrix.
+There's usually a simpler shape hiding behind it. Two Git generators normally means "these are 2
+different groups of applications", which is 2 ApplicationSets, not one matrix.
 
 ## How to fix it
 
-Give each child of a `matrix` or `merge` a distinct generator type. If you genuinely have two
+Give each child of a `matrix` or `merge` a distinct generator type. If you genuinely have 2
 independent sets of the same type, split them into separate ApplicationSets.
 
 **Flagged by this rule**
@@ -64,7 +64,7 @@ of generators has nothing to duplicate.
 
 ## Exceptions
 
-A `merge` over two generators of the same type can be deliberate when you're layering defaults, for
+A `merge` over 2 generators of the same type can be deliberate when you're layering defaults, for
 example a broad `list` of every application merged with a narrower `list` that overrides a few
 values by `mergeKeys`. If that's what you're doing, the finding is a false positive, but check that
 a values hierarchy in Git wouldn't express it more clearly.

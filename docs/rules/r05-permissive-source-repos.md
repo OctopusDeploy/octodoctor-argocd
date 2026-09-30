@@ -2,7 +2,7 @@
 
 !!! danger "Severity: High"
 
-AppProjects have overly permissive sourceRepos settings (using wildcard '*'). This allows applications to deploy from any Git repository, which poses a security risk.
+AppProjects have overly permissive sourceRepos settings (using wildcard '*'). This lets applications deploy from any Git repository, which poses a security risk.
 
 ## Why this matters
 

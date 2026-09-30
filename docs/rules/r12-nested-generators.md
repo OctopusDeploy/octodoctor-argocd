@@ -7,9 +7,9 @@ ApplicationSets have 3 or more levels of generators by nesting matrix/merge comb
 ## Why this matters
 
 Argo CD lets you put a `matrix` inside a `merge`, or a `merge` inside a `matrix`, as deep as you
-like. That doesn't mean you should. There are only about three levels of abstraction in a real
-deployment topology — the application, the environment, and the cluster — and teams that build four
-or five levels of generators end up with a mental model nobody can hold.
+like. That doesn't mean you should. There are only about 3 levels of abstraction in a real
+deployment topology (the application, the environment, and the cluster), and teams that build 4
+or 5 levels of generators end up with a mental model nobody can hold.
 
 The cost shows up when something goes wrong. A deeply nested ApplicationSet generates a set of
 Applications you can't predict by reading it, so you find out what it does by applying it. A change
@@ -23,7 +23,7 @@ legibly than another nesting level does.
 
 ## How to fix it
 
-Keep to a single `matrix` or `merge` with plain generators as its children — that's the two-level
+Keep to a single `matrix` or `merge` with plain generators as its children. That's the two-level
 shape this rule considers healthy. If you need a third dimension, express it as directory structure
 for the Git generator or as labels on your cluster secrets, or split the ApplicationSet in two.
 

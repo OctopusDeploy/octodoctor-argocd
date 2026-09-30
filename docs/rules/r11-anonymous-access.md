@@ -2,7 +2,7 @@
 
 !!! danger "Severity: High"
 
-ArgoCD anonymous user access is enabled, which poses a security risk as it allows unauthenticated access to the system.
+Argo CD anonymous user access is enabled, which poses a security risk as it lets unauthenticated users access the system.
 
 ## Why this matters
 
@@ -12,7 +12,7 @@ access to the Argo CD instance allows users to assume the default role permissio
 
 Two things make that riskier than it sounds. The first is that anonymous users inherit whatever
 `policy.default` grants, and that setting is usually chosen with authenticated users in mind. If
-`policy.default` is `role:readonly` — a common and otherwise sensible choice — then turning on
+`policy.default` is `role:readonly` (a common and otherwise sensible choice), then turning on
 anonymous access hands every unauthenticated visitor a read-only tour of your deployments: every
 Application, every repository URL, every cluster and namespace you deploy to, and the live manifests
 of everything running. That's a detailed map of your infrastructure available without a login.
@@ -26,7 +26,7 @@ can do anything beyond read, you lose the record of who did it.
 
 ## How to fix it
 
-Set the key to `false`, or remove it — Argo CD disables anonymous access by default.
+Set the key to `false`, or remove it. Argo CD turns off anonymous access by default.
 
 **Flagged by this rule**
 
@@ -54,7 +54,7 @@ Omitting the key passes too. The rule is inactive when `argocd-cm` isn't among t
 
 ## Exceptions
 
-If you want an unauthenticated read-only dashboard — a status wall in the office, say — the Argo CD
+If you want an unauthenticated read-only dashboard (a status wall in the office, say), the Argo CD
 documentation recommends not reusing the default role for it. Create a dedicated
 `role:unauthenticated` in `argocd-rbac-cm` granting the narrowest set of permissions that view
 needs, and point `policy.default` at that instead of at `role:readonly`. Combine it with network

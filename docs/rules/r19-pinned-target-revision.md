@@ -7,7 +7,7 @@ Applications have targetRevision set to a specific value (not `HEAD`) for Git re
 ## Why this matters
 
 `targetRevision: HEAD` means "deploy whatever is on the default branch of this repository". It's a
-dull setting that quietly does three valuable things.
+dull setting that quietly does 3 valuable things.
 
 Developers get self-service. Merging a change to the manifests repository deploys it, everywhere
 that repository is referenced, without anyone editing an Argo CD manifest first. Auditing gets
@@ -18,7 +18,7 @@ knows, rather than a coordinated edit of Application YAML.
 Every other value gives one of those up:
 
 - **Branch names** (`dev`, `staging`, `prod`) look like promotion but break auditing. Reconstructing
-  what production ran last Tuesday means correlating two repositories' histories by timestamp.
+  what production ran last Tuesday means correlating 2 repositories' histories by timestamp.
 - **Semantic version ranges** (`3.4.x`) remove rollback entirely. Argo CD only moves forward to newer
   matching versions, so during an incident you can't go back to the release that worked.
 - **Git hashes** turn every deployment into a manual edit of the Application manifest by someone
@@ -29,7 +29,7 @@ Every other value gives one of those up:
 
 ## How to fix it
 
-Use `HEAD` and promote changes by promoting *content* — Helm value files or Kustomize overlays —
+Use `HEAD` and promote changes by promoting *content* (Helm value files or Kustomize overlays)
 between directories or repositories, rather than by moving a pointer.
 
 **Flagged by this rule**
@@ -68,7 +68,7 @@ spec:
     targetRevision: 1.16.1
 ```
 
-That's the legitimate case — third-party infrastructure software you upgrade deliberately and never
+That's the legitimate case: third-party infrastructure software you upgrade deliberately and never
 promote between environments. Your own applications should track `HEAD`.
 
 ## Further reading

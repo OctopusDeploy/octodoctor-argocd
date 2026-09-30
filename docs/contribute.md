@@ -1,12 +1,12 @@
 # Contribute
 
-## Prerequisites for Development
+## Prerequisites for development
 
-- Go 1.23.0 or later
+- Go 1.24.0 or later
 - Make (for using the Makefile)
 - `golangci-lint` (for code linting)
 
-## Build Commands
+## Build commands
 
 ```bash
 # Build for current platform
@@ -21,6 +21,7 @@ make snapshot
 
 `make snapshot` runs GoReleaser exactly as CI does, and writes archives plus a `checksums.txt` into
 `dist/` without publishing anything. It covers:
+
 - macOS (AMD64 and ARM64)
 - Linux (AMD64 and ARM64)
 - Windows (AMD64)
@@ -28,7 +29,7 @@ make snapshot
 Install GoReleaser with `go install github.com/goreleaser/goreleaser/v2@latest`, and run
 `make release-check` to validate `.goreleaser.yaml` without building.
 
-## Running Unit Tests
+## Running unit tests
 
 ```bash
 # Run all tests
@@ -38,7 +39,7 @@ make test
 go test -v ./...
 ```
 
-## Code Quality and Linting
+## Code quality and linting
 
 ```bash
 # Run linter with auto-fix
@@ -48,19 +49,22 @@ make lint
 golangci-lint run --fix
 ```
 
-## Adding New Rules
+## Adding new rules
 
 To add a new validation rule:
 
-1. Create a new file `pkg/rules/rXX.go` (where XX is the rule number)
-2. Implement the `Rule` interface with an `Execute` method
-3. Add the rule to the registry in `pkg/rules/registry.go`
-4. Create test data in `testdata/rXX/`
-5. Update documentation as needed
+1. Create a new file `pkg/rules/rXX.go` (where XX is the rule number) that implements the `Rule`
+   interface. `Metadata()` returns the ID, the `DocSlug`, the pass and fail descriptions, and the
+   severity, and `Execute` runs the check.
+2. Add the rule to the registry in `pkg/rules/registry.go`.
+3. Create test fixtures in `testdata/rXX/`, covering the pass, fail, and inactive cases.
+4. Write a table-driven test in `pkg/rules/rXX_test.go`.
+5. Add a `docs/rules/rXX-<slug>.md` page, a row in the table in `docs/rules/index.md`, and a `nav`
+   entry in `mkdocs.yml`.
 
-## Releasing a New Version
+## Releasing a new version
 
-Releases are triggered by pushing a Git tag matching `v*` (e.g. `v1.2.3`):
+To release a new version, push a Git tag matching `v*` (for example, `v1.2.3`):
 
 ```bash
 git tag v1.2.3
@@ -70,20 +74,20 @@ git push origin v1.2.3
 This triggers the [`release.yml`](https://github.com/OctopusDeploy/octodoctor-argocd/blob/main/.github/workflows/release.yml)
 GitHub Actions workflow, which:
 
-1. Verifies the tagged commit is an ancestor of `main` — the workflow fails if the tag points to a
+1. Verifies the tagged commit is an ancestor of `main`. The workflow fails if the tag points to a
    commit that hasn't been merged into `main`.
-2. Runs [GoReleaser](https://goreleaser.com), which cross-compiles all five targets and packages each
+2. Runs [GoReleaser](https://goreleaser.com), which cross-compiles all 5 targets and packages each
    one as a `.tar.gz` (`.zip` on Windows) archive, alongside a `checksums.txt`.
-3. Publishes a GitHub Release named `Release <tag>` with those six assets attached.
+3. Publishes a GitHub Release named `Release <tag>` with those 6 assets attached.
 
-The release body is assembled by GoReleaser from the commit and pull request history since the previous
-tag, followed by the static footer defined in `.goreleaser.yaml` — that file is where you change either
-of them, not the workflow.
+GoReleaser assembles the release body from the commit and pull request history since the previous
+tag, followed by the static footer defined in `.goreleaser.yaml`. To change either of them, edit that
+file, not the workflow.
 
-The workflow can also be triggered manually via `workflow_dispatch` (the "Run workflow" button in the
+You can also trigger the workflow manually with `workflow_dispatch` (the **Run workflow** button in the
 Actions tab). A manual run has no tag to release, so it builds a snapshot and publishes nothing, which
 makes it a safe dry run.
 
-The build matrix, archive layout, version stamping and release notes all live in `.goreleaser.yaml`.
-Note that `main.version` is injected at build time and is deliberately `v`-prefixed, because it is
-embedded in every `report.json` and `report.yaml`; changing its format changes that output.
+The build matrix, archive layout, version stamping, and release notes all live in `.goreleaser.yaml`.
+The build injects `main.version` and deliberately gives it a `v` prefix, because it's embedded in
+every `report.json` and `report.yaml`. Changing its format changes that output.

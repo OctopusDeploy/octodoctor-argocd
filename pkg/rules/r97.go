@@ -14,8 +14,8 @@ func (r *Rule97) Metadata() RuleMetadata {
 		ID:              "R97",
 		Name:            "Check for exactly one application set",
 		DocSlug:         "r97-exactly-one-application-set",
-		PassDescription: "You have not crammed all your applications in a single application set",
-		FailDescription: "You have exactly one application set. This usually results in a very complex YAML file.Consider using multiple application sets",
+		PassDescription: "You haven't crammed all your applications into a single ApplicationSet.",
+		FailDescription: "You have exactly one ApplicationSet. This usually results in a very complex YAML file. Consider using multiple ApplicationSets.",
 		Severity:        SeverityMedium,
 	}
 }

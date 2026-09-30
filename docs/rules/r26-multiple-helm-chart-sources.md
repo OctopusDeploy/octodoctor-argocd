@@ -7,14 +7,14 @@ Applications have 2 or more sources with Helm charts. Multiple Helm charts shoul
 ## Why this matters
 
 A source with a `chart` property pulls a packaged Helm chart from a Helm repository or an OCI
-registry. Two of them in one Application means you're installing two separate pieces of software
+registry. Two of them in one Application means you're installing 2 separate pieces of software
 under a single Argo CD Application, which is the multi-source feature being used as a folder rather
 than as intended.
 
 Multi-source exists so one chart can be combined with the value files that configure it. Two charts
 have nothing to combine. What you get instead is one sync status covering both, so an unhealthy
 Prometheus makes CoreDNS look broken too; one rollback that reverts both; one project, one
-destination, and one sync policy for two things that will need different ones eventually; and
+destination, and one sync policy for 2 things that will need different ones eventually; and
 version upgrades that have to be coordinated because the Application syncs as a unit.
 
 Each chart is its own deployable thing with its own release cadence, so each should be its own
@@ -54,14 +54,14 @@ spec:
       ref: values
 ```
 
-The rule counts sources that have a `chart` property, and fails at two or more. A multi-source
+The rule counts sources that have a `chart` property, and fails at 2 or more. A multi-source
 Application with one chart and one Git source passes, as does one with no charts at all.
 Applications using the single `spec.source` field are inactive.
 
 ## Exceptions
 
-There isn't a strong case for two charts in one Application. If you're doing it to keep two
-components in lockstep, express that with sync waves across two Applications, or with an
+There isn't a strong case for 2 charts in one Application. If you're doing it to keep 2
+components in lockstep, express that with sync waves across 2 Applications, or with an
 app-of-apps parent, both of which keep the components independently observable.
 
 ## Further reading

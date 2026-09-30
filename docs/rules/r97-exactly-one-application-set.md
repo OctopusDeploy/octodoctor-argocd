@@ -2,7 +2,7 @@
 
 !!! warning "Severity: Medium"
 
-You have exactly one application set. This usually results in a very complex YAML file. Consider using multiple application sets.
+You have exactly one ApplicationSet. This usually results in a very complex YAML file. Consider using multiple ApplicationSets.
 
 ## Why this matters
 
@@ -52,7 +52,7 @@ scanned directory contains exactly one ApplicationSet, and is inactive when it c
 ## Exceptions
 
 A small installation with a handful of applications on one cluster may genuinely need only one
-ApplicationSet, and splitting it would be ceremony. The finding is worth acting on once that file
+ApplicationSet, and splitting it would be ceremony. The finding is worth acting on when that file
 starts growing generators to accommodate special cases.
 
 ## Further reading
