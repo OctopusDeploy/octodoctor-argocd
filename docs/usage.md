@@ -1,29 +1,77 @@
-# Exporting from a live cluster
+# Usage
 
-Normally you keep your Argo CD manifests in Git, so you can check them out and point OctoDoctor at the
-directory that holds them.
+OctoDoctor for Argo CD analyzes Argo CD manifests in one of two ways:
 
-Sometimes you only have the cluster. Instead of first exporting the manifests yourself with
-`argocd admin export` or `kubexporter` and then running OctoDoctor on the result, use `--export` to do
+- **Manifests on disk**: point it at a directory that holds your Argo CD YAML files, for example a Git
+  checkout, with `--directory`.
+- **A live cluster**: let it export the manifests from a running Argo CD installation first, with
+  `--export`, and then analyze them.
+
+In both modes the tool is read-only (doesn't change anything in your files or cluster) and produces the same result.
+
+## Command-line options
+
+| Option | Default | What it does |
+|---|---|---|
+| `-d`, `--directory` | current directory | Directory to scan for Argo CD files |
+| `-e`, `--export` | off | [Export the manifests of a live cluster](#analyzing-a-live-cluster) and analyze them |
+| `-c`, `--context` | the current kubeconfig context | Kubeconfig context to export from, only used with `--export` |
+| `-n`, `--namespace` | `argocd` | Namespace to export from, only used with `--export` |
+| `-l`, `--limit` | `5` | How many files to list under each rule in the HTML report |
+| `-v`, `--version` | | Print the version and exit |
+
+!!! note "`--export` and `--directory` are mutually exclusive"
+    `--export` analyzes a cluster and `--directory` analyzes a local folder, so passing both is an
+    error. If you pass neither, OctoDoctor analyzes the current directory. Without `--export`,
+    OctoDoctor ignores `--context` and `--namespace` and logs a line saying so.
+
+OctoDoctor exits with `1` when at least one rule failed, and `0` otherwise, so you can use it to fail a CI
+pipeline.
+
+## Mode 1 - Analyzing manifests on disk
+
+Pass the directory that holds your Argo CD manifests. OctoDoctor searches it and all of its
+subdirectories for `.yaml` and `.yml` files:
+
+```bash
+./octodoctor --directory /path/to/argocd/manifests
+./octodoctor -d /path/to/argocd/manifests
+
+# Analyze the current directory
+./octodoctor
+```
+
+OctoDoctor only looks at the files that describe Argo CD: Applications, ApplicationSets, AppProjects, the
+Argo CD ConfigMaps and Secrets listed under [what gets exported](#what-gets-exported), and cluster
+Secrets. It ignores every other file, so you can point it at a repository that also contains other
+Kubernetes manifests.
+
+The report is written to an `octodoctor-output` directory inside the directory you scanned:
+
+```
+/path/to/argocd/manifests/
+└── octodoctor-output/
+    ├── index.html     # open this in a browser
+    ├── report.json
+    └── report.yaml
+```
+
+`index.html` lists at most `--limit` files under each rule. `report.json` and `report.yaml` always contain
+every file, which makes them the better choice for scripts.
+
+```bash
+./octodoctor -d /path/to/argocd/manifests --limit 20
+```
+
+## Mode 2 - Analyzing a live cluster
+
+Sometimes you only have access to an Argo CD cluster. Instead of first exporting the manifests yourself with
+[argocd admin export](https://argo-cd.readthedocs.io/en/latest/user-guide/commands/argocd_admin_export/) or [kubexporter](https://github.com/bakito/kubexporter) and then running OctoDoctor on the result, use `--export` to do
 both in one step:
 
 ```bash
 ./octodoctor --export
 ./octodoctor -e
-```
-
-OctoDoctor connects to your cluster with the standard kubeconfig, saves the Argo CD manifests it cares
-about into a local directory, and then analyzes that directory exactly as if you had passed it with
-`--directory`. The report ends up inside the exported directory.
-
-## Choosing the context and the namespace
-
-Without any further arguments, OctoDoctor uses the current context of your kubeconfig and reads the
-`argocd` namespace, which matches a default Argo CD installation.
-
-```bash
-# The current kubeconfig context, namespace argocd
-./octodoctor --export
 
 # A specific context
 ./octodoctor --export --context production
@@ -33,14 +81,13 @@ Without any further arguments, OctoDoctor uses the current context of your kubec
 ./octodoctor --export --namespace my-argocd
 ./octodoctor --export -n my-argocd
 ```
+OctoDoctor connects to your cluster with the standard kubeconfig, saves the Argo CD manifests it cares
+about into a local directory, and then analyzes that directory exactly as if you had passed it with
+`--directory`. The report ends up inside the exported directory
 
 If your kubeconfig has no current context, OctoDoctor stops and asks you to choose one with `--context`.
 
-!!! note "`--export` and `--directory` are mutually exclusive"
-    `--export` analyzes a cluster and `--directory` analyzes a local folder, so passing both is an
-    error. If you pass neither, OctoDoctor analyzes the current directory.
-
-## Where the files go
+### Where the files go
 
 OctoDoctor writes the manifests to `argocd-manifests-export-<context>` in your current directory, with one
 subfolder per resource type and one file per resource:
@@ -74,7 +121,7 @@ them, commit them, or analyze them again later with `--directory`. If the direct
 an earlier export, OctoDoctor deletes it and creates it again, so that manifests of resources that no
 longer exist in the cluster are never analyzed. A log line tells you when this happens.
 
-## What gets exported
+### What gets exported
 
 Only the resources OctoDoctor already knows how to analyze:
 
@@ -104,7 +151,7 @@ configured, for example, your RBAC policy and your single sign-on settings. That
 exported directory and the report inside it. Copy the report somewhere else if you
 want to share it.
 
-## Permissions
+### Permissions
 
 OctoDoctor only reads from your cluster and never writes to it. It needs `list` permission on Applications,
 ApplicationSets, AppProjects, ConfigMaps and Secrets in the namespace you point it at.

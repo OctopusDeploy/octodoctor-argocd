@@ -2,7 +2,7 @@
 
 OctoDoctor for Argo CD is a single self-contained binary with no runtime dependencies. It analyzes YAML
 files from a directory you give it, and can also
-[export those files from a live cluster](export.md) for you first.
+[export those files from a live cluster](usage.md#analyzing-a-live-cluster) for you first.
 
 ## Download a prebuilt binary
 
@@ -45,18 +45,7 @@ and writes the archives to `dist/` exactly as the release workflow does.
 ./octodoctor --directory /path/to/argocd/manifests
 ```
 
-OctoDoctor writes the report to an `octodoctor-output` directory inside the directory you scanned. See the
-[rules reference](rules/index.md) for what gets checked.
+OctoDoctor writes the report to an `octodoctor-output` directory inside the directory you scanned. See
+[Usage](usage.md) for every command-line option, and the [rules reference](rules/index.md) for what gets
+checked.
 
-## Command-line options
-
-| Option | Default | What it does |
-|---|---|---|
-| `-d`, `--directory` | current directory | Directory to scan for Argo CD files |
-| `-e`, `--export` | off | [Export the manifests of a live cluster](export.md) and analyze them |
-| `-c`, `--context` | the current kubeconfig context | Kubeconfig context to export from, only used with `--export` |
-| `-n`, `--namespace` | `argocd` | Namespace to export from, only used with `--export` |
-| `-l`, `--limit` | `5` | How many files to list under each rule in the HTML report |
-| `-v`, `--version` | | Print the version and exit |
-
-OctoDoctor exits with `1` when at least one rule failed, and `0` otherwise.

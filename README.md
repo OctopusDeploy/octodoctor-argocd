@@ -53,7 +53,7 @@ the same step:
 
 The manifests are saved into `argocd-manifests-export-<context>` and kept there after the analysis.
 Secret values are replaced with a placeholder, so no credentials are written to disk. See the
-[export documentation](docs/export.md) for the details.
+[export documentation](docs/usage.md#analyzing-a-live-cluster) for the details.
 
 ### Command line options
 

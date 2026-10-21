@@ -29,4 +29,5 @@ Here's an example of the HTML report.
 ## Next steps
 
 - [Install OctoDoctor](installation.md)
+- [Use OctoDoctor](usage.md)
 - [Browse the detection rules](rules/index.md)

@@ -17,7 +17,7 @@ strict: true
 nav:
 - Introduction: index.md
 - Installation: installation.md
-- Exporting from a live cluster: export.md
+- Usage: usage.md
 - Rules:
   - Overview: rules/index.md
   - R01 – Dangerous sync policy: rules/r01-dangerous-sync-policy.md
