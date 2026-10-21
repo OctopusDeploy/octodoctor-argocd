@@ -106,8 +106,10 @@ The `--allow-hidden-dirs` flag is required because the skill lives under `.claud
 
 ### Using the skill
 
-The skill needs the `octodoctor` binary on your `PATH`. Inside a clone of this repository it builds the
-binary itself with `make octodoctor-build`.
+The skill uses `octodoctor` from your `PATH` if it's there. If not, it downloads the latest
+[release](https://github.com/OctopusDeploy/octodoctor-argocd/releases) for your operating system
+(Linux, macOS or Windows) into a temporary directory and verifies its checksum. The download needs
+`curl` and `tar` (PowerShell on Windows) and access to github.com. Nothing else needs to be installed.
 
 Ask your agent in plain language. You don't have to mention the skill or OctoDoctor by name:
 

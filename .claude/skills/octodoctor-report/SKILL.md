@@ -1,6 +1,7 @@
 ---
 name: octodoctor-report
-description: Build/locate the `octodoctor` binary, run it against a directory of Argo CD manifests or export live resources from a Kubernetes cluster's Argo CD install and analyze those, then summarize the resulting best-practices report (pass/fail/inactive rules, severities, doc links) and point to the generated HTML report. Use this whenever the user asks to analyze, audit, review, or health-check an Argo CD installation, cluster, namespace or manifest directory against best practices — including phrases like "check my Argo CD setup", "run octodoctor", "audit my Argo CD cluster", "is my Argo CD config following best practices", "scan these Argo CD manifests", or "export Argo CD from context X and analyze it" — even when the user never says "octodoctor" by name.
+description: Locate or download the `octodoctor` binary, run it against a directory of Argo CD manifests or export live resources from a Kubernetes cluster's Argo CD install and analyze those, then summarize the resulting best-practices report (pass/fail/inactive rules, severities, doc links) and point to the generated HTML report. Use this whenever the user asks to analyze, audit, review, or health-check an Argo CD installation, cluster, namespace or manifest directory against best practices — including phrases like "check my Argo CD setup", "run octodoctor", "audit my Argo CD cluster", "is my Argo CD config following best practices", "scan these Argo CD manifests", or "export Argo CD from context X and analyze it" — even when the user never says "octodoctor" by name.
+compatibility: Requires curl and tar (PowerShell on Windows) and network access to github.com, unless octodoctor is already on PATH.
 ---
 
 # octodoctor best-practices report
@@ -18,28 +19,71 @@ This skill has two entry points. Pick based on what the user actually has:
 Don't ask the user to pick a mode explicitly if their request already implies one ("check this folder"
 vs. "check my cluster") — infer it and confirm briefly if genuinely ambiguous.
 
-## Step 1: locate or build the binary
+## Step 1: locate or download the binary
 
-Try `octodoctor --version` first. If that resolves, use it as-is — don't rebuild it.
+1. **Already installed.** Run `octodoctor --version`. If it works, use `octodoctor` as is.
 
-If it's not on PATH, check whether the current working directory is the `octodoctor-argocd` source
-checkout (a `Makefile` with an `octodoctor-build` target, or a `main.go` importing `pkg/analysis`).
-If so, run `make octodoctor-build` and use the resulting `./octodoctor` binary at the repo root.
+2. **Download the latest release.** Otherwise run the block below as a single shell command. It
+   resolves the latest tag from https://github.com/OctopusDeploy/octodoctor-argocd/releases (by
+   following the `releases/latest` redirect, so there's no GitHub API rate limit), downloads the
+   archive for this OS and CPU, verifies it against the release's `checksums.txt`, and extracts the
+   binary into the temp directory. A second run reuses the binary it already extracted. On a checksum
+   mismatch it exits non-zero without extracting anything — never run a binary that failed the check.
+   Downloading from the official releases page is expected, so don't ask for permission first.
 
-Just try `make octodoctor-build` first — on a normal developer machine it works fine and none of this
-applies. It only fails in a *sandboxed* Claude Code session where Go's default build cache
-(`~/.cache/go-build`) and/or module cache (`~/go/pkg/mod`) have been made read-only by the sandbox. If
-you hit that specific failure, don't give up on building — redirect the caches to somewhere writable
-and build directly with the same flags the Makefile uses:
+   ```sh
+   set -eu
+   repo=OctopusDeploy/octodoctor-argocd
+   tag=$(basename "$(curl -fsSLI -o /dev/null -w '%{url_effective}' "https://github.com/$repo/releases/latest")")
+   case "$(uname -s)" in Linux) os=linux ;; Darwin) os=darwin ;; *) echo "unsupported OS: $(uname -s)" >&2; exit 1 ;; esac
+   case "$(uname -m)" in x86_64|amd64) arch=amd64 ;; aarch64|arm64) arch=arm64 ;; *) echo "unsupported arch: $(uname -m)" >&2; exit 1 ;; esac
+   dest="${TMPDIR:-/tmp}/octodoctor-$tag"
+   if [ ! -x "$dest/octodoctor" ]; then
+     asset="octodoctor_${tag#v}_${os}_${arch}.tar.gz"
+     work=$(mktemp -d)
+     if command -v sha256sum >/dev/null; then sum=sha256sum; else sum="shasum -a 256"; fi
+     curl -fsSL -o "$work/$asset" "https://github.com/$repo/releases/download/$tag/$asset"
+     curl -fsSL -o "$work/checksums.txt" "https://github.com/$repo/releases/download/$tag/checksums.txt"
+     (cd "$work" && grep " $asset\$" checksums.txt | $sum -c -)
+     mkdir -p "$dest" && tar -xzf "$work/$asset" -C "$dest" octodoctor && rm -rf "$work"
+   fi
+   "$dest/octodoctor" --version && echo "$dest/octodoctor"
+   ```
 
-```
-GOCACHE="$TMPDIR/gocache" GOMODCACHE="$TMPDIR/gomodcache" CGO_ENABLED=0 go build -buildvcs=false \
-  -ldflags "-X main.version=$(git describe --tags --always 2>/dev/null || echo dev)" -o octodoctor .
-```
+   On Windows, run this in PowerShell instead. Only an amd64 build is published; Windows on ARM runs it
+   under emulation.
 
-If neither PATH nor a source checkout is available, stop and tell the user plainly: you need either
-`octodoctor` on PATH or a checkout of its source to build from — don't try to fetch or install it
-another way without asking.
+   ```powershell
+   $ErrorActionPreference = 'Stop'
+   $repo = 'OctopusDeploy/octodoctor-argocd'
+   $tag = Split-Path -Leaf ([System.Net.HttpWebRequest]::Create("https://github.com/$repo/releases/latest").GetResponse().ResponseUri.AbsolutePath)
+   $dest = Join-Path $env:TEMP "octodoctor-$tag"
+   $exe = Join-Path $dest 'octodoctor.exe'
+   if (-not (Test-Path $exe)) {
+     $asset = "octodoctor_$($tag.TrimStart('v'))_windows_amd64.zip"
+     $work = Join-Path $env:TEMP ([guid]::NewGuid())
+     New-Item -ItemType Directory $work | Out-Null
+     Invoke-WebRequest -UseBasicParsing "https://github.com/$repo/releases/download/$tag/$asset" -OutFile "$work\$asset"
+     Invoke-WebRequest -UseBasicParsing "https://github.com/$repo/releases/download/$tag/checksums.txt" -OutFile "$work\checksums.txt"
+     $expected = (Select-String -Path "$work\checksums.txt" -Pattern " $asset$").Line.Split(' ')[0]
+     if ((Get-FileHash "$work\$asset" -Algorithm SHA256).Hash -ne $expected) { throw "checksum mismatch for $asset" }
+     Expand-Archive "$work\$asset" $work
+     New-Item -ItemType Directory -Force $dest | Out-Null
+     Move-Item "$work\octodoctor.exe" $exe
+     Remove-Item -Recurse $work
+   }
+   & $exe --version
+   $exe
+   ```
+
+   The last line printed is the absolute path of the binary. Use that full path for every later
+   command, and tell the user which version you used and where it is.
+
+3. If the download fails (no network, the sandbox blocks github.com, or an unsupported platform), stop.
+   Tell the user what went wrong and that they can download a binary themselves from the releases page
+   and put it on `PATH`.
+
+In the steps below, `octodoctor` means whichever binary you resolved here.
 
 ## Step 2: directory mode
 
@@ -88,11 +132,24 @@ in export mode.)
 
 ## Step 5: summarize the report
 
-Run `python3 scripts/summarize_report.py <target-directory>/octodoctor-output/report.json` (paths are
-relative to this skill's own directory) and use its output
-to write a short summary in chat: total rules failed/passed/inactive, and the failed rules ordered by
-severity with what they mean and which files triggered them (the script already sorts and truncates
-this for you — don't re-derive it by hand-parsing the JSON).
+Read `<target-directory>/octodoctor-output/report.json`. If `jq` is available, this prints only the
+parts you need, with failed rules sorted by severity and affected files capped at five per rule:
+
+```sh
+jq '{version: .metadata.version, rules: .summary.rules, resources: .summary.resources,
+  failed: [.results.failed | sort_by({"high":0,"medium":1,"low":2}[.severity]) | .[]
+    | {severity, id, name, description, documentationUrl, files: .affectedFiles[:5],
+       moreFiles: ([(.affectedFiles | length) - 5, 0] | max)}]}' <target-directory>/octodoctor-output/report.json
+```
+
+Without `jq`, read the file directly and use the same fields: `metadata.version`,
+`summary.rules.{total,failed,passed,inactive}`, `summary.resources`, and for each entry in
+`results.failed` its `severity`, `id`, `name`, `description`, `affectedFiles` and `documentationUrl`.
+Ignore `results.passed` and `results.inactive` beyond their counts.
+
+Write a short summary in chat: total rules failed/passed/inactive, then the failed rules ordered by
+severity (high, medium, low) with what they mean, which files triggered them (at most five per rule,
+plus how many more) and the doc link.
 
 Then tell the user where `index.html` is so they can open it themselves — this skill doesn't need a
 browser to do its job, so don't try to open one unless the user separately asks you to. If they ask

@@ -4,7 +4,7 @@
     {
       "id": 1,
       "prompt": "Run a best-practices check on the Argo CD manifests in ./testdata and summarize the issues.",
-      "expected_output": "Builds/locates octodoctor, runs it in directory mode against ./testdata, creates testdata/octodoctor-output/{index.html,report.json,report.yaml}, and gives a chat summary of failed/passed/inactive rule counts plus the failed rules ordered by severity with doc links and affected files. Points the user to index.html.",
+      "expected_output": "Locates or downloads octodoctor, runs it in directory mode against ./testdata, creates testdata/octodoctor-output/{index.html,report.json,report.yaml}, and gives a chat summary of failed/passed/inactive rule counts plus the failed rules ordered by severity with doc links and affected files. Points the user to index.html.",
       "files": [],
       "expectations": [
         "Ran octodoctor in directory mode (-d/--directory) against ./testdata, not export mode",
