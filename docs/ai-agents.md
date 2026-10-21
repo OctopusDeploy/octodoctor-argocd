@@ -1,15 +1,13 @@
 # AI agents
 
 OctoDoctor ships an [agent skill](https://agentskills.io/specification) called `octodoctor-report`
-in the `.claude/skills/octodoctor-report/` directory of its
+in the `skills/octodoctor-report/` directory of its
 [GitHub repository](https://github.com/OctopusDeploy/octodoctor-argocd). With the skill installed, your coding agent (Claude Code, GitHub
 Copilot, Cursor, Codex and others) can run OctoDoctor for you and summarize the report in chat.
 
 ## Installing the skill
 
-If you work inside a clone of this repository, Claude Code picks up the skill automatically and you
-don't need to install anything. To use the skill in other projects, install it with one of the
-following commands.
+To use the skill, install it with one of the following commands.
 
 With `npx` (uses the [skills](https://github.com/vercel-labs/skills) CLI):
 
@@ -25,14 +23,13 @@ With the GitHub CLI (`gh skill` is in preview):
 
 ```bash
 # Install into the current project
-gh skill install OctopusDeploy/octodoctor-argocd octodoctor-report --allow-hidden-dirs --agent claude-code
+gh skill install OctopusDeploy/octodoctor-argocd octodoctor-report --agent claude-code
 
 # Install for your user, available in every project
-gh skill install OctopusDeploy/octodoctor-argocd octodoctor-report --allow-hidden-dirs --agent claude-code --scope user
+gh skill install OctopusDeploy/octodoctor-argocd octodoctor-report --agent claude-code --scope user
 ```
 
-The `--allow-hidden-dirs` flag is required because the skill lives under `.claude/`. Replace
-`claude-code` with your agent, for example `github-copilot`, `cursor` or `codex`. Run
+Replace `claude-code` with your agent, for example `github-copilot`, `cursor` or `codex`. Run
 `gh skill update --all` later to get newer versions of the skill.
 
 ## Using the skill
