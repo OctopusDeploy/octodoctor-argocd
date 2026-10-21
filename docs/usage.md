@@ -14,7 +14,7 @@ In both modes the tool is read-only (doesn't change anything in your files or cl
 | Option | Default | What it does |
 |---|---|---|
 | `-d`, `--directory` | current directory | Directory to scan for Argo CD files |
-| `-e`, `--export` | off | [Export the manifests of a live cluster](#analyzing-a-live-cluster) and analyze them |
+| `-e`, `--export` | off | [Export the manifests of a live cluster](#mode-2-analyzing-a-live-cluster) and analyze them |
 | `-c`, `--context` | the current kubeconfig context | Kubeconfig context to export from, only used with `--export` |
 | `-n`, `--namespace` | `argocd` | Namespace to export from, only used with `--export` |
 | `-l`, `--limit` | `5` | How many files to list under each rule in the HTML report |

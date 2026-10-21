@@ -2,7 +2,7 @@
 
 OctoDoctor for Argo CD is a single self-contained binary with no runtime dependencies. It analyzes YAML
 files from a directory you give it, and can also
-[export those files from a live cluster](usage.md#analyzing-a-live-cluster) for you first.
+[export those files from a live cluster](usage.md#mode-2-analyzing-a-live-cluster) for you first.
 
 ## Download a prebuilt binary
 
