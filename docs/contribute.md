@@ -2,7 +2,7 @@
 
 ## Prerequisites for development
 
-- Go 1.24.0 or later
+- Go 1.26.10 or later
 - Make (for using the Makefile)
 - `golangci-lint` (for code linting)
 
