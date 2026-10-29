@@ -65,7 +65,7 @@
           {{range .Analysis.RulesFailed}}
           <tr class="severity-{{.Severity}}">
             <td>{{if eq .Severity "high"}}<span class="badge badge-danger">High</span>{{else if eq .Severity "medium"}}<span class="badge badge-warning">Medium</span>{{else}}<span class="badge badge-info">Low</span>{{end}}</td>
-            <td><a class="rule-id" href="{{.DocumentationURL}}" target="_blank" rel="noopener" title="{{.Name}}">{{.ID}}</a></td>
+            <td><a class="rule-id" href="{{.DocumentationURL}}" target="_blank" rel="noopener" title="{{.Name}}">{{.ID}}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a></td>
             <td class="rule-description">{{.Description}}</td>
             <td><div class="affected-files">
               {{range head $.Limit .FilesTriggered}}<code class="file-item">{{.}}</code>
@@ -93,7 +93,7 @@
           {{range .Analysis.RulesPassed}}
           <tr>
             <td><span class="badge badge-success">Passed</span></td>
-            <td><a class="rule-id" href="{{.DocumentationURL}}" target="_blank" rel="noopener" title="{{.Name}}">{{.ID}}</a></td>
+            <td><a class="rule-id" href="{{.DocumentationURL}}" target="_blank" rel="noopener" title="{{.Name}}">{{.ID}}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a></td>
             <td class="rule-description">{{.Description}}</td>
           </tr>
           {{else}}
@@ -117,7 +117,7 @@
           {{range .Analysis.RulesInactive}}
           <tr>
             <td><span class="badge">Inactive</span></td>
-            <td><a class="rule-id" href="{{.DocumentationURL}}" target="_blank" rel="noopener" title="{{.Name}}">{{.ID}}</a></td>
+            <td><a class="rule-id" href="{{.DocumentationURL}}" target="_blank" rel="noopener" title="{{.Name}}">{{.ID}}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a></td>
             <td class="rule-description">{{.Description}}</td>
           </tr>
           {{else}}
