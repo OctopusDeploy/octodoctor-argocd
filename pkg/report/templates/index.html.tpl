@@ -17,7 +17,7 @@
         <p class="report-info">Generated {{.Now.Format "Monday, January 2, 2006 at 3:04pm MST"}}</p>
       </div>
       <nav class="header-actions" aria-label="Project links">
-        <a class="btn btn-quiet" href="https://github.com/OctopusDeploy/deploystudio" target="_blank" rel="noopener">
+        <a class="btn btn-quiet" href="https://octodoctor-argocd.readthedocs.io/" target="_blank" rel="noopener">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
           Documentation
         </a>
@@ -159,7 +159,7 @@
       </div>
       <nav class="footer-links" aria-label="More from Octopus">
         <a class="external-link" href="https://github.com/OctopusDeploy/octodoctor-argocd" target="_blank" rel="noopener noreferrer">OctoDoctor on GitHub<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
-        <a class="external-link" href="https://github.com/OctopusDeploy/deploystudio" target="_blank" rel="noopener noreferrer">Documentation<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+        <a class="external-link" href="https://octodoctor-argocd.readthedocs.io/" target="_blank" rel="noopener noreferrer">Documentation<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
         <a class="external-link" href="https://github.com/OctopusDeploy/OpenSource" target="_blank" rel="noopener noreferrer">Learn about Octopus Deploy open source<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
       </nav>
     </footer>
