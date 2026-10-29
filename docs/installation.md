@@ -27,7 +27,7 @@ shasum -a 256 --ignore-missing -c checksums.txt   # macOS
 
 ## Build from source
 
-You need Go 1.24.0 or later.
+You need Go 1.26.10 or later.
 
 ```bash
 git clone https://github.com/OctopusDeploy/octodoctor-argocd.git

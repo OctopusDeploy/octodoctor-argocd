@@ -1,0 +1,27 @@
+# Routine updates come monthly, as one pull request per ecosystem. Security updates are separate
+# and arrive immediately, whatever this file says.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 2
+    commit-message:
+      prefix: ci
+    groups:
+      actions:
+        patterns: ["*"]
+  - package-ecosystem: gomod
+    directory: /
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: deps
+    groups:
+      # Kubernetes libraries have to move together.
+      kubernetes:
+        patterns: ["k8s.io/*", "sigs.k8s.io/*"]
+      go-minor-and-patch:
+        update-types: ["minor", "patch"]
