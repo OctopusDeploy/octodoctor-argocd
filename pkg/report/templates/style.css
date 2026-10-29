@@ -11,7 +11,6 @@
   --octo-blue-400: #449be1;
   --octo-blue-500: #1a77ca;
   --octo-blue-600: #155ea0;
-  --octo-blue-800: #093051;
   --octo-green-100: #eefaf5;
   --octo-green-200: #b8e7d3;
   --octo-green-500: #00874d;
@@ -29,7 +28,6 @@
   --octo-slate-300: #b2b9c5;
   --octo-slate-600: #515d70;
   --octo-slate-800: #282f38;
-  --octo-grey-800: #2e2e2e;
 
   /* Semantic */
   --color-bg-primary: var(--octo-white);
@@ -64,12 +62,6 @@
   --color-badge-subtle-bg-danger: var(--octo-red-100);
   --color-badge-subtle-border-danger: var(--octo-red-200);
   --color-badge-subtle-fg-danger: var(--octo-red-600);
-
-  /* Callout (information) */
-  --color-callout-bg-information: rgba(205, 228, 247, 0.5); /* blue-200 @ 50% */
-  --color-callout-icon-information: var(--octo-blue-600);
-  --color-callout-text-information: var(--octo-blue-800);
-  --color-callout-text-body: var(--octo-grey-800);
 
   /* Radii, shadows, focus */
   --radius-small: 4px;
@@ -202,22 +194,6 @@ main.container { display: flex; flex-direction: column; gap: 32px; }
 .badge-warning { background: var(--color-badge-subtle-bg-warning); border-color: var(--color-badge-subtle-border-warning); color: var(--color-badge-subtle-fg-warning); }
 .badge-info    { background: var(--color-badge-subtle-bg-info);    border-color: var(--color-badge-subtle-border-info);    color: var(--color-badge-subtle-fg-info); }
 .badge-success { background: var(--color-badge-subtle-bg-success); border-color: var(--color-badge-subtle-border-success); color: var(--color-badge-subtle-fg-success); }
-
-/* Callout — standard, information (matches the design system's Callout component) */
-.callout {
-  display: flex; align-items: flex-start;
-  padding: 8px 8px 16px 16px;
-  border-radius: var(--radius-medium);
-  background: var(--color-callout-bg-information);
-}
-.callout-icon { padding: 6px 8px 0 0; color: var(--color-callout-icon-information); display: flex; }
-.callout-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 12px; padding: 8px 8px 2px 0; }
-.callout-title { font-weight: 600; font-size: 14px; line-height: 20px; color: var(--color-callout-text-information); }
-.callout-body { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 32px; color: var(--color-callout-text-body); }
-.callout-copy { flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
-.callout-copy .emphasis { font-weight: 600; }
-.callout-image { flex: 0 1 320px; width: 320px; max-width: 100%; height: auto; }
-.callout-actions a { color: var(--color-text-primary); text-decoration: underline; }
 
 /* ---- Footer -------------------------------------------------------------- */
 .site-footer {

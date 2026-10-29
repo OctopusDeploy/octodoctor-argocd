@@ -128,27 +128,6 @@
       </div>
     </section>
 
-    <section class="section">
-      <div class="callout">
-        <div class="callout-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8h.01M11 12h1v4h1 M12 21a9 9 0 100-18 9 9 0 000 18z"/></svg>
-        </div>
-        <div class="callout-main">
-          <div class="callout-title">Become a GitOps with Argo CD expert</div>
-          <div class="callout-body">
-            <div class="callout-copy">
-              <p>Go deeper on the practices behind this report and earn your certification with Octopus Learning.</p>
-              <p class="emphasis">Includes dozens of hands-on labs so you can practice as you learn.</p>
-            </div>
-            <img class="callout-image" src="gitops-cert-badges.png" alt="GitOps Certified badges: Fundamentals, Enterprise, and Scale" width="320" height="161">
-          </div>
-          <div class="callout-actions">
-            <a href="https://learning.octopus.com/" target="_blank" rel="noopener">Explore the certification</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <footer class="site-footer">
       <div class="maintainer">
         <img src="argo-cd-maintainer-badge.png" alt="Argo CD Maintainer badge" width="72" height="77">

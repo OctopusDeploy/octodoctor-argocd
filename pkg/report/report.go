@@ -86,7 +86,6 @@ func GenerateHTMLReport(analysis *analysis.ArgoCDAnalysis, outputDirectory strin
 	copyEmbeddedFile("templates/favicon.png", outputDirectory+"/favicon.png")
 	copyEmbeddedFile("templates/octodoctor.png", outputDirectory+"/octodoctor.png")
 	copyEmbeddedFile("templates/argo-cd-maintainer-badge.png", outputDirectory+"/argo-cd-maintainer-badge.png")
-	copyEmbeddedFile("templates/gitops-cert-badges.png", outputDirectory+"/gitops-cert-badges.png")
 	copyEmbeddedFile("templates/octopus-mark.svg", outputDirectory+"/octopus-mark.svg")
 
 	log.Println("Rendering HTML report at ./" + outputDirectory + "/index.html")
