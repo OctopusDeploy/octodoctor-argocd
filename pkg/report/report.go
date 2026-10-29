@@ -83,7 +83,7 @@ func CreateOutputDirectory(outputDirectory string) {
 func GenerateHTMLReport(analysis *analysis.ArgoCDAnalysis, outputDirectory string, limit int) {
 	// Copy static assets from embedded files
 	copyEmbeddedFile("templates/style.css", outputDirectory+"/style.css")
-	copyEmbeddedFile("templates/favicon.png", outputDirectory+"/favicon.png")
+	copyEmbeddedFile("templates/favicon.ico", outputDirectory+"/favicon.ico")
 	copyEmbeddedFile("templates/octodoctor.png", outputDirectory+"/octodoctor.png")
 	copyEmbeddedFile("templates/argo-cd-maintainer-badge.png", outputDirectory+"/argo-cd-maintainer-badge.png")
 	copyEmbeddedFile("templates/octopus-mark.svg", outputDirectory+"/octopus-mark.svg")

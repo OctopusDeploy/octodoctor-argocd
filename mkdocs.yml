@@ -53,7 +53,7 @@ nav:
 theme:
   name: material
   logo: octodoctor-logo.png
-  favicon: favicon.png
+  favicon: favicon.ico
   font:
     text: Work Sans
   palette:
