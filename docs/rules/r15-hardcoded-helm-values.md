@@ -2,7 +2,7 @@
 
 !!! warning "Severity: Medium"
 
-Applications use hardcoded values in helm configuration. Consider using valueFiles instead of hardcoded values for better maintainability.
+Applications use hardcoded values in their Helm configuration. Consider using `valueFiles` instead of hardcoded values for better maintainability.
 
 ## Why this matters
 

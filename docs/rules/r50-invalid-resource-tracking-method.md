@@ -2,7 +2,7 @@
 
 !!! danger "Severity: High"
 
-Argo CD resourceTrackingMethod is set to an invalid value. It must be exactly one of: label, annotation, or annotation+label.
+Argo CD `resourceTrackingMethod` is set to an invalid value. It must be exactly one of: `label`, `annotation`, or `annotation+label`.
 
 ## Why this matters
 
@@ -20,7 +20,7 @@ owns, or claims resources it doesn't.
 - `annotation+label`: writes both, for compatibility with tools that read the instance label while
   Argo CD relies on the annotation.
 
-Anything else is not a fourth mode; it's a typo. Argo CD falls back to its default rather than
+Anything else isn't a fourth mode; it's a typo. Argo CD falls back to its default rather than
 failing loudly, so the installation keeps running with tracking behavior nobody chose. That surfaces
 later, at the worst time (during a migration between Argo CD instances, or when adopting resources
 an older tool created), as resources Argo CD refuses to take ownership of, or duplicates it tries to

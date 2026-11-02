@@ -2,12 +2,12 @@
 
 !!! warning "Severity: Medium"
 
-No webhooks are configured in argocd-secret. Webhooks improve Argo CD performance by triggering immediate syncs instead of polling.
+No webhooks are configured in `argocd-secret`. Webhooks improve Argo CD performance by triggering syncs immediately instead of polling.
 
 ## Why this matters
 
-With the default configuration, Argo CD will poll Git/OCI/Helm repositories every three minutes to detect changes to
-the manifests. That's the only way it learns a commit happened, and it has 2 costs.
+With the default configuration, Argo CD polls Git, OCI, and Helm repositories every 3 minutes to
+detect changes to the manifests. That's the only way it learns a commit happened, and it has 2 costs.
 
 The obvious one is latency. A developer merges a change and then waits up to 3 minutes before
 Argo CD even notices, plus however long the sync takes. It's not a long wait in absolute terms, but
@@ -17,7 +17,7 @@ that caused it.
 The less obvious one is load. That polling happens per repository, continuously, whether or not
 anything changed. Multiply it across every repository in a large installation and it's a steady
 stream of Git provider API calls and repo-server work that produces nothing most of the time. It
-also competes for rate limit budget with the ApplicationSet generators that need those same APIs.
+also competes for rate-limit budget with the ApplicationSet generators that need those same APIs.
 
 A webhook inverts it: your Git provider tells Argo CD the moment a push lands, the affected
 Applications refresh immediately, and the polling interval becomes a backstop rather than the

@@ -73,7 +73,7 @@ spec:
 ```
 
 This rule looks at the installation as a whole rather than at individual files. It fails when the
-scanned directory contains one or more Application resources but no ApplicationSet resources. It is
+scanned directory contains one or more Application resources but no ApplicationSet resources. It's
 inactive when the directory contains neither, for example an export that holds only AppProjects or
 configuration, because there are no Applications to generate.
 

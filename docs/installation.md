@@ -18,7 +18,7 @@ chmod +x octodoctor
 ./octodoctor --version
 ```
 
-Every release also ships a `checksums.txt`. To verify a download before you trust it:
+Every release also ships a `checksums.txt`. To verify a download before you trust it, run:
 
 ```bash
 sha256sum --ignore-missing -c checksums.txt   # Linux

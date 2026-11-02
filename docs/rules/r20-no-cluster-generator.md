@@ -2,7 +2,7 @@
 
 !!! warning "Severity: Medium"
 
-ApplicationSets do not use cluster generators despite having multiple connected clusters. This can lead to performance issues and configuration complexity.
+ApplicationSets don't use the cluster generator, even though multiple clusters are connected. This can lead to performance issues and configuration complexity.
 
 ## Why this matters
 

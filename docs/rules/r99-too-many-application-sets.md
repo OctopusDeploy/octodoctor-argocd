@@ -9,7 +9,7 @@ You have too many ApplicationSets. This can cause performance issues and make th
 ApplicationSets are cheap individually and not free in aggregate. Every one of them is reconciled on
 its own schedule by the ApplicationSet controller, and generators that call out to a Git provider
 (Git, SCM Provider, and Pull Request) turn that schedule into API traffic. Dozens of ApplicationSets
-polling the same organization share one rate limit budget, and when it runs out, generation starts
+polling the same organization share one rate-limit budget, and when it runs out, generation starts
 failing across all of them at once.
 
 The management cost grows too. Past a certain count you can no longer answer "where does this

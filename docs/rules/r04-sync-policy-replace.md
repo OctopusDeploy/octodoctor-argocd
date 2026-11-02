@@ -2,7 +2,7 @@
 
 !!! warning "Severity: Medium"
 
-Applications have a sync policy with `replace=true`. This can lead to unintended resource deletion.
+Applications have a sync policy with `Replace=true`. This can lead to unintended resource deletion.
 
 ## Why this matters
 
