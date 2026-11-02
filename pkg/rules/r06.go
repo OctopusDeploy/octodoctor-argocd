@@ -17,7 +17,7 @@ func (r *Rule06) Metadata() RuleMetadata {
 		Name:            "Check if manifest-generate-paths annotation exists",
 		DocSlug:         "r06-missing-manifest-generate-paths",
 		PassDescription: "Applications have the argocd.argoproj.io/manifest-generate-paths annotation configured.",
-		FailDescription: "Applications do not have the argocd.argoproj.io/manifest-generate-paths annotation configured.",
+		FailDescription: "Applications don't have the argocd.argoproj.io/manifest-generate-paths annotation configured.",
 		Severity:        SeverityMedium,
 	}
 }

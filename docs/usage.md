@@ -7,7 +7,8 @@ OctoDoctor for Argo CD analyzes Argo CD manifests in one of two ways:
 - **A live cluster**: let it export the manifests from a running Argo CD installation first, with
   `--export`, and then analyze them.
 
-In both modes the tool is read-only (doesn't change anything in your files or cluster) and produces the same result.
+In both modes, the tool is read-only (it doesn't change anything in your files or cluster) and
+produces the same result.
 
 ## Command-line options
 
@@ -65,9 +66,11 @@ every file, which makes them the better choice for scripts.
 
 ## Mode 2 - Analyzing a live cluster
 
-Sometimes you only have access to an Argo CD cluster. Instead of first exporting the manifests yourself with
-[argocd admin export](https://argo-cd.readthedocs.io/en/latest/user-guide/commands/argocd_admin_export/) or [kubexporter](https://github.com/bakito/kubexporter) and then running OctoDoctor on the result, use `--export` to do
-both in one step:
+Sometimes you only have access to an Argo CD cluster. Instead of first exporting the manifests
+yourself with
+[argocd admin export](https://argo-cd.readthedocs.io/en/latest/user-guide/commands/argocd_admin_export/)
+or [kubexporter](https://github.com/bakito/kubexporter) and then running OctoDoctor on the result,
+use `--export` to do both in one step:
 
 ```bash
 ./octodoctor --export
@@ -81,9 +84,10 @@ both in one step:
 ./octodoctor --export --namespace my-argocd
 ./octodoctor --export -n my-argocd
 ```
+
 OctoDoctor connects to your cluster with the standard kubeconfig, saves the Argo CD manifests it cares
 about into a local directory, and then analyzes that directory exactly as if you had passed it with
-`--directory`. The report ends up inside the exported directory
+`--directory`. The report ends up inside the exported directory.
 
 If your kubeconfig has no current context, OctoDoctor stops and asks you to choose one with `--context`.
 
@@ -116,8 +120,8 @@ OctoDoctor replaces characters that aren't safe in a directory name with a dash,
 `arn:aws:eks:eu-west-1:123456789:cluster/prod` becomes
 `argocd-manifests-export-arn-aws-eks-eu-west-1-123456789-cluster-prod`.
 
-OctoDoctor does **not** delete the exported files when the analysis finishes. They stay on disk so you can read
-them, commit them, or analyze them again later with `--directory`. If the directory already exists from
+OctoDoctor does **not** delete the exported files when the analysis finishes. They stay on disk so
+you can read them, commit them, or analyze them again later with `--directory`. If the directory already exists from
 an earlier export, OctoDoctor deletes it and creates it again, so that manifests of resources that no
 longer exist in the cluster are never analyzed. A log line tells you when this happens.
 
@@ -131,12 +135,12 @@ Only the resources OctoDoctor already knows how to analyze:
 | `ApplicationSet` | all of them |
 | `AppProject` | all of them |
 | `ConfigMap` | only the Argo CD settings: `argocd-cm`, `argocd-cmd-params-cm`, `argocd-rbac-cm`, `argocd-tls-certs-cm`, and `argocd-ssh-known-hosts-cm` |
-| `Secret` | only `argocd-secret` and the external cluster secrets labelled `argocd.argoproj.io/secret-type: cluster` |
+| `Secret` | only `argocd-secret` and the external cluster secrets labeled `argocd.argoproj.io/secret-type: cluster` |
 
 OctoDoctor ignores every other ConfigMap and Secret in the namespace.
 
-OctoDoctor saves the files in the simplest form possible. It removes everything that only describes the live object in the
-cluster, so what is left looks like a manifest somebody would commit to Git: `status`, the
+OctoDoctor saves the files in the simplest form possible. It removes everything that only describes
+the live object in the cluster, so what's left looks like a manifest somebody would commit to Git: `status`, the
 `metadata` fields `uid`, `resourceVersion`, `generation`, `creationTimestamp`, `selfLink`,
 `managedFields`, `deletionTimestamp`, `deletionGracePeriodSeconds`, `ownerReferences`, and `finalizers`,
 and the `kubectl.kubernetes.io/last-applied-configuration` annotation.
@@ -147,15 +151,15 @@ and the `kubectl.kubernetes.io/last-applied-configuration` annotation.
     rules only ever look at the key names of a Secret, so this doesn't change any result.
 
 Even with the Secret values redacted, the exported manifests still describe how your Argo CD is
-configured, for example, your RBAC policy and your single sign-on settings. That's why only you can read the
-exported directory and the report inside it. Copy the report somewhere else if you
+configured, for example, your RBAC policy and your single sign-on settings. That's why only
+you can read the exported directory and the report inside it. Copy the report somewhere else if you
 want to share it.
 
 ### Permissions
 
 OctoDoctor only reads from your cluster and never writes to it. It needs `list` permission on Applications,
-ApplicationSets, AppProjects, ConfigMaps and Secrets in the namespace you point it at.
+ApplicationSets, AppProjects, ConfigMaps, and Secrets in the namespace you point it at.
 
 If you aren't allowed to list one of these, or the Argo CD CRDs aren't installed on the cluster at
-all, OctoDoctor logs a warning, skips that resource type and carries on with the rest. Only a cluster it
+all, OctoDoctor logs a warning, skips that resource type, and carries on with the rest. Only a cluster it
 can't reach, or credentials it can't authenticate with, stop the run.

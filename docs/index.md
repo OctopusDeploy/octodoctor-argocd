@@ -4,7 +4,7 @@
 
 OctoDoctor for Argo CD is a static analysis tool for Argo CD configuration. Point it at a directory of
 YAML manifests and it inspects your Applications, ApplicationSets, AppProjects, and Argo CD
-ConfigMaps/Secrets, then reports misconfigurations and anti-patterns in your GitOps setup.
+ConfigMaps and Secrets, then reports misconfigurations and anti-patterns in your GitOps setup.
 
 Every finding comes from a [rule](rules/index.md), and OctoDoctor writes the results as an HTML report
 alongside machine-readable YAML and JSON.

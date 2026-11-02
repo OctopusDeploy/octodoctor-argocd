@@ -2,19 +2,19 @@
 
 !!! warning "Severity: Medium"
 
-Applications have targetRevision set to a specific value (not `HEAD`) for Git repositories. This can lead to stale deployments.
+Applications have `targetRevision` set to a specific value (not `HEAD`) for Git repositories. This can lead to stale deployments.
 
 ## Why this matters
 
-`targetRevision: HEAD` means "deploy whatever is on the default branch of this repository". It's the default setting that quietly does 3 valuable things.
+`targetRevision: HEAD` means "deploy whatever is on the default branch of this repository". It's
+the default setting, and it quietly does 3 valuable things:
 
 1. Developers get self-service. Merging a change to the manifests repository deploys it, everywhere
-that repository is referenced, without anyone editing an Argo CD manifest first. 
-2. Auditing gets
-easy, because deployment history and Git history become the same history: `git log` answers what
-changed, when, and who approved it. 
-3. A Rollback is just `git revert`, a command every engineer already
-knows, rather than a coordinated edit of Application YAML.
+   that repository is referenced, without anyone editing an Argo CD manifest first.
+2. Auditing gets easy, because deployment history and Git history become the same history:
+   `git log` answers what changed, when, and who approved it.
+3. A rollback is just `git revert`, a command every engineer already knows, rather than a
+   coordinated edit of Application YAML.
 
 Every other value gives one of those up:
 
@@ -28,8 +28,9 @@ Every other value gives one of those up:
   need a human to move them, and tags are mutable unless you've configured your Git provider to
   protect them.
 
-It is ok to have Git tags in `targetRevision` for your Helm charts that defined infrastructure (certmanager, coredns, sealed-secrets etc.). But
-your application workloads, using `HEAD` is always the sensible choice.
+It's OK to use Git tags in `targetRevision` for Helm charts that define infrastructure
+(cert-manager, CoreDNS, Sealed Secrets, etc.). For your application workloads, `HEAD` is always
+the sensible choice.
 
 ## How to fix it
 

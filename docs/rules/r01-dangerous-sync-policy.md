@@ -16,8 +16,8 @@ is even more evident when your Git repository is down.
 With `allowEmpty: false` (the default), Argo CD refuses to sync an empty result. It reports the
 Application as out of sync instead, which is a loud signal that something upstream is broken.
 
-The blast radius can be catastrophic if you have transient errors in your Git repository access. Argo CD deletes child resources in a cascading
-manner, so one accidental empty render can take out Deployments, Services, PersistentVolumeClaims,
+The blast radius can be catastrophic if you have transient errors in your Git repository access.
+Argo CD deletes child resources in a cascading manner, so one accidental empty render can take out Deployments, Services, PersistentVolumeClaims,
 and everything else the Application tracks.
 
 ## How to fix it

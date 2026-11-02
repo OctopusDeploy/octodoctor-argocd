@@ -18,7 +18,7 @@ func (r *Rule18) Metadata() RuleMetadata {
 		Name:            "Check for ApplicationSets combining SCM and Pull Request generators",
 		DocSlug:         "r18-scm-and-pull-request-generators",
 		PassDescription: "ApplicationSets use Pull Request generators safely without combining with SCM Provider generators.",
-		FailDescription: "ApplicationSets combine SCM Provider and Pull Request generators in matrix/merge configurations. This can cause exponential API calls and exhaust rate limits.",
+		FailDescription: "ApplicationSets combine the SCM Provider and Pull Request generators in matrix or merge configurations. This can cause exponential API calls and exhaust rate limits.",
 		Severity:        SeverityMedium,
 	}
 }

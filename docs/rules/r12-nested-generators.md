@@ -2,7 +2,7 @@
 
 !!! warning "Severity: Medium"
 
-ApplicationSets have 3 or more levels of generators by nesting matrix/merge combinations. This creates overly complex and hard-to-maintain configurations.
+ApplicationSets have 3 or more levels of generators from nested `matrix` or `merge` combinations. This creates overly complex, hard-to-maintain configurations.
 
 ## Why this matters
 
@@ -68,8 +68,8 @@ children are all plain generators passes.
 
 ## Exceptions
 
-You might have an exotic directory structure that really needs nesting generators. It is better to
-restructure your Git folders using best practices instead of trying to make Argo CD workarounds.
+You might have an exotic directory structure that really needs nested generators. It's better to
+restructure your Git folders to follow best practices than to work around them in Argo CD.
 
 ## Further reading
 

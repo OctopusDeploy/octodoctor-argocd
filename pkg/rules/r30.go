@@ -25,7 +25,7 @@ func (r *Rule30) Metadata() RuleMetadata {
 		Name:            "Check if Image Updater uses Git writeback",
 		DocSlug:         "r30-image-updater-without-git-writeback",
 		PassDescription: "Applications using Image Updater have Git writeback configured.",
-		FailDescription: "Applications using Image Updater without Git writeback. This is against GitOps principles.",
+		FailDescription: "Applications use Image Updater without Git writeback. This is against GitOps principles.",
 		Severity:        SeverityHigh,
 	}
 }

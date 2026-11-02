@@ -2,7 +2,7 @@
 
 !!! warning "Severity: Medium"
 
-ApplicationSets combine SCM Provider and Pull Request generators in matrix/merge configurations. This can cause exponential API calls and exhaust rate limits.
+ApplicationSets combine the SCM Provider and Pull Request generators in `matrix` or `merge` configurations. This can cause exponential API calls and exhaust rate limits.
 
 ## Why this matters
 

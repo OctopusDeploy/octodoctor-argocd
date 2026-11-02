@@ -2,7 +2,7 @@
 
 !!! danger "Severity: High"
 
-Applications use parameter overrides in helm configuration. Consider using valueFiles instead of hardcoded parameters for better maintainability.
+Applications use parameter overrides in their Helm configuration. Consider using `valueFiles` instead of hardcoded parameters for better maintainability.
 
 ## Why this matters
 

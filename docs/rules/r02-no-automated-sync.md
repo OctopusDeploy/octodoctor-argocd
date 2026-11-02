@@ -2,7 +2,7 @@
 
 !!! warning "Severity: Medium"
 
-Applications do not have automated sync policy configured. Configuration drift is not eliminated.
+Applications don't have an automated sync policy configured. Configuration drift isn't eliminated.
 
 ## Why this matters
 
@@ -11,7 +11,7 @@ self-heal are on, the cluster converges on what Git says, and it keeps convergin
 edits a live Deployment with `kubectl` sees their change reverted, and Git stays the source of
 truth.
 
-By turning autosync off (and losing self-heal) you don't have the basic GitOps guarantee that what
+By turning auto-sync off (and losing self-heal) you don't have the basic GitOps guarantee that what
 is in Git is also in your cluster.
 
 Teams usually turn it off to gate deployments, so nothing reaches production without a human
@@ -21,8 +21,8 @@ controls who can change what. Both survive a restart of Argo CD and both leave a
 sync button doesn't.
 
 Manual sync also means the cluster can sit out of sync for hours without anyone noticing, so
-"deployed" and "merged" drift apart, and incident response starts with the question of which one you
-are actually looking at.
+"deployed" and "merged" drift apart, and incident response starts with the question of which one you're
+actually looking at.
 
 ## How to fix it
 

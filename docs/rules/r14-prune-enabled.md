@@ -2,7 +2,7 @@
 
 !!! warning "Severity: Medium"
 
-Applications have prune=true in sync policy. This can lead to unintended resource deletion.
+Applications have `prune=true` in their sync policy. This can lead to unintended resource deletion.
 
 ## Why this matters
 
@@ -13,7 +13,7 @@ mature installations want this on.
 It's on this list because the same setting makes a class of ordinary mistakes destructive. Renaming
 an Application, moving a directory, changing the `path` a source points at, or splitting one
 Application into two all look to Argo CD like "these resources are no longer declared", and it acts
-on that. Refactoring your repository layout on a Friday afternoon with prune enabled everywhere is
+on that. Refactoring your repository layout on a Friday afternoon with prune turned on everywhere is
 how people lose PersistentVolumeClaims.
 
 This rule is a lower-severity companion to [R01](r01-dangerous-sync-policy.md). R01 catches the
@@ -56,8 +56,8 @@ Omitting `prune` entirely also passes, because the default is `false`. Applicati
 Pruning is a legitimate and common choice, so treat this finding as a prompt rather than a defect.
 Ignore it after you've checked that the Application's resources are all declared in Git, that the
 `argocd.argoproj.io/sync-options: Prune=false` annotation protects any individual resource you
-can't afford to lose, and that resource tracking is set up so Argo CD knows exactly which resources it owns
-(see [R50](r50-invalid-resource-tracking-method.md)).
+can't afford to lose, and that resource tracking is set up so Argo CD knows exactly
+which resources it owns (see [R50](r50-invalid-resource-tracking-method.md)).
 
 ## Further reading
 

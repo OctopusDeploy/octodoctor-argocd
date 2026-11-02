@@ -2,7 +2,7 @@
 
 !!! warning "Severity: Medium"
 
-Argo CD controller sync timeout is set to 0 seconds, which means no timeout and can cause inefficient synchronization.
+The Argo CD controller sync timeout is set to 0 seconds, which means there's no timeout. This can cause inefficient synchronization.
 
 ## Why this matters
 
@@ -10,7 +10,7 @@ Argo CD controller sync timeout is set to 0 seconds, which means no timeout and 
 gives up on it. The Argo CD documentation describes it plainly: "Specifies a sync timeout for
 applications. `0` means no timeout (default `0`)."
 
-Worth being clear about what this rule is flagging: `0` is Argo CD's own default, and the
+It's worth being clear about what this rule is flagging: `0` is Argo CD's own default, and the
 documentation doesn't call it a mistake. The finding says you've written that default into
 `argocd-cmd-params-cm` explicitly, which is a good moment to decide whether you meant to.
 

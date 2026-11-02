@@ -18,7 +18,7 @@ func (r *Rule09) Metadata() RuleMetadata {
 		Name:            "Check for duplicate generators in matrix/merge configurations",
 		DocSlug:         "r09-duplicate-generators",
 		PassDescription: "ApplicationSets should use matrix/merge generators with different generator types.",
-		FailDescription: "ApplicationSets have duplicate generators in matrix/merge configurations. This creates complex and confusing configurations that are hard to maintain.",
+		FailDescription: "ApplicationSets have duplicate generators in matrix or merge configurations. This creates complex, confusing configurations that are hard to maintain.",
 		Severity:        SeverityMedium,
 	}
 }

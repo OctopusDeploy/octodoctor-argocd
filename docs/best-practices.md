@@ -32,8 +32,8 @@ OctoDoctor puts the knowledge (and opinions) from these articles into practice. 
 
 6.  **[Using Helm hierarchies in multi-source Argo CD applications for promoting to different GitOps environments](https://octopus.com/blog/helm-values-argocd)**
 
-    Building a hierarchy of Helm values files with shared defaults and environment overrides, and how to use it
-    with multi-source Applications and ApplicationSets.
+    Building a hierarchy of Helm values files with shared defaults and environment overrides, and how to
+    use it with multi-source Applications and ApplicationSets.
 
 7.  **[Securing Argo CD in a multi-tenant environment with Application Projects](https://octopus.com/blog/multi-tenant-argocd-with-application-projects)**
 
@@ -47,8 +47,8 @@ OctoDoctor puts the knowledge (and opinions) from these articles into practice. 
 
 9.  **[GitOps secrets with Argo CD, HashiCorp Vault, and External Secrets Operator](https://octopus.com/blog/gitops-secrets-hashicorp-vault-argo-cd)**
 
-    The other approach, which keeps secrets out of Git entirely and pulls them from Vault at runtime, refreshing
-    them without restarting pods.
+    The other approach, which keeps secrets out of Git entirely and pulls them from Vault at runtime,
+    refreshing them without restarting pods.
 
 10. **[Securing your GitOps secrets with the Secret Store CSI driver](https://octopus.com/blog/gitops-secrets-csi-driver)**
 
@@ -57,8 +57,8 @@ OctoDoctor puts the knowledge (and opinions) from these articles into practice. 
 
 11. **[Unlimited preview environments with Kubernetes namespaces](https://octopus.com/blog/unlimited-preview-environments)**
 
-    The general namespace-per-pull-request pattern, independent of Argo CD, covering naming, ingress routing, pull request
-    comments, smoke tests, and teardown.
+    The general namespace-per-pull-request pattern, independent of Argo CD, covering naming, ingress routing,
+    pull request comments, smoke tests, and teardown.
 
 12. **[Create temporary Argo CD preview environments based on pull requests](https://octopus.com/blog/creating-temporary-preview-environments-based-pull-requests-argo-cd)**
 
@@ -113,8 +113,8 @@ OctoDoctor puts the knowledge (and opinions) from these articles into practice. 
 22. **[Kubernetes deployment anti-patterns – Part 2](https://octopus.com/blog/kubernetes-antipatterns-2)**
 
     Anti-patterns 6 to 10, mostly about operations: `kubectl` as a debugger, misunderstood networking,
-    permanent staging instead of dynamic environments, production and non-production on one cluster, and
-    workloads with no memory or CPU limits.
+    permanent staging instead of dynamic environments, production and non-production on one cluster,
+    and workloads with no memory or CPU limits.
 
 23. **[Kubernetes deployment anti-patterns – Part 3](https://octopus.com/blog/kubernetes-antipatterns-3)**
 
@@ -131,7 +131,7 @@ OctoDoctor puts the knowledge (and opinions) from these articles into practice. 
 25. **[Enterprise CI/CD best practices – Part 1](https://octopus.com/blog/enterprise-ci-cd-best-practices-1)**
 
     Practices 1 to 7 of 23: everything in source control, one artifact promoted unchanged to every
-    environment, artifacts rather than Git commits travelling the pipeline, short-lived branches,
+    environment, artifacts rather than Git commits traveling the pipeline, short-lived branches,
     single-step and fast builds, and cached dependencies. Not Argo CD-specific, but the layer your
     GitOps setup sits on top of.
 

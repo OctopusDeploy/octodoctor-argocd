@@ -2,7 +2,7 @@
 
 !!! danger "Severity: High"
 
-Argo CD anonymous user access is enabled, which poses a security risk as it lets unauthenticated users access the system.
+Argo CD anonymous user access is turned on, which poses a security risk because it lets unauthenticated users access the system.
 
 ## Why this matters
 

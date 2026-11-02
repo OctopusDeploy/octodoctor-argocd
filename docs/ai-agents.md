@@ -2,8 +2,8 @@
 
 OctoDoctor ships an [agent skill](https://agentskills.io/specification) called `octodoctor-report`
 in the `skills/octodoctor-report/` directory of its
-[GitHub repository](https://github.com/OctopusDeploy/octodoctor-argocd). With the skill installed, your coding agent (Claude Code, GitHub
-Copilot, Cursor, Codex and others) can run OctoDoctor for you and summarize the report in chat.
+[GitHub repository](https://github.com/OctopusDeploy/octodoctor-argocd). With the skill installed,
+your coding agent (Claude Code, GitHub Copilot, Cursor, Codex, and others) can run OctoDoctor for you and summarize the report in chat.
 
 ## Installing the skill
 
@@ -29,15 +29,15 @@ gh skill install OctopusDeploy/octodoctor-argocd octodoctor-report --agent claud
 gh skill install OctopusDeploy/octodoctor-argocd octodoctor-report --agent claude-code --scope user
 ```
 
-Replace `claude-code` with your agent, for example `github-copilot`, `cursor` or `codex`. Run
+Replace `claude-code` with your agent, for example `github-copilot`, `cursor`, or `codex`. Run
 `gh skill update --all` later to get newer versions of the skill.
 
 ## Using the skill
 
 The skill uses `octodoctor` from your `PATH` if it's there. If not, it downloads the latest
 [release](https://github.com/OctopusDeploy/octodoctor-argocd/releases) for your operating system
-(Linux, macOS or Windows) into a temporary directory and verifies its checksum. The download needs
-`curl` and `tar` (PowerShell on Windows) and access to github.com. Nothing else needs to be installed.
+(Linux, macOS, or Windows) into a temporary directory and verifies its checksum. The download needs
+`curl` and `tar` (PowerShell on Windows), and access to github.com. Nothing else needs to be installed.
 
 Ask your agent in plain language. You don't have to mention the skill or OctoDoctor by name:
 
@@ -48,7 +48,7 @@ Ask your agent in plain language. You don't have to mention the skill or OctoDoc
 The agent picks directory mode (`-d`) or cluster export mode (`-e`) based on your request, runs the
 tool, and replies with:
 
-- The number of failed, passed and inactive rules
+- The number of failed, passed, and inactive rules
 - The failed rules ordered by severity, with the files that triggered them
 - The path to the generated `index.html` report
 

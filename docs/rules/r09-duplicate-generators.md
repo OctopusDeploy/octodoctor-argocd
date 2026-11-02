@@ -2,7 +2,7 @@
 
 !!! warning "Severity: Medium"
 
-ApplicationSets have duplicate generators in matrix/merge configurations. This creates complex and confusing configurations that are hard to maintain.
+ApplicationSets have duplicate generators in `matrix` or `merge` configurations. This creates complex, confusing configurations that are hard to maintain.
 
 ## Why this matters
 
@@ -64,8 +64,8 @@ of generators has nothing to duplicate.
 
 ## Exceptions
 
-You might have an exotic directory structure that really needs 2 generators of the same kind. It is better to
-restructure your Git folders using best practices instead of trying to make Argo CD workarounds.
+You might have an exotic directory structure that really needs 2 generators of the same kind. It's
+better to restructure your Git folders to follow best practices than to work around them in Argo CD.
 
 ## Further reading
 

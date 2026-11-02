@@ -2,7 +2,7 @@
 
 !!! warning "Severity: Medium"
 
-Applications use hardcoded values in kustomize configuration. Consider using kustomize overlays instead of hardcoded values for better maintainability.
+Applications use hardcoded values in their Kustomize configuration. Consider using Kustomize overlays instead of hardcoded values for better maintainability.
 
 ## Why this matters
 

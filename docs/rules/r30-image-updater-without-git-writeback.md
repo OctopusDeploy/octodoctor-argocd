@@ -2,7 +2,7 @@
 
 !!! danger "Severity: High"
 
-Applications using Image Updater without Git writeback. This is against GitOps principles.
+Applications use Image Updater without Git writeback. This is against GitOps principles.
 
 ## Why this matters
 
@@ -14,7 +14,7 @@ live Application through the Argo CD API and writes nothing down.
 The default breaks the single thing GitOps guarantees. Your repository now says one image tag and
 your cluster runs another, with no commit explaining the difference and no history of the tags that
 came before. Roll the Application back from Git and you don't get the version you were running an
-hour ago, you get whatever the manifest says. Recreate the Argo CD installation from scratch, which
+hour ago; you get whatever the manifest says. Recreate the Argo CD installation from scratch, which
 is meant to be a routine disaster-recovery step, and every image silently reverts. Auditing which
 image was live during an incident stops being a `git log` and becomes an archaeology exercise.
 
