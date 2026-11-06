@@ -172,3 +172,42 @@ ApplicationSets, AppProjects, ConfigMaps, and Secrets in the namespace you point
 If you aren't allowed to list one of these, or the Argo CD CRDs aren't installed on the cluster at
 all, OctoDoctor logs a warning, skips that resource type, and carries on with the rest. Only a cluster it
 can't reach, or credentials it can't authenticate with, stop the run.
+
+## Running in GitHub Actions
+
+Use the OctoDoctor action to check the Argo CD manifests in your repository on every push or pull
+request. The action downloads the OctoDoctor release that matches the action version, and it only
+runs on Linux runners.
+
+```yaml
+name: OctoDoctor
+
+on:
+  pull_request:
+
+jobs:
+  octodoctor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: OctopusDeploy/octodoctor-argocd@v0.5.0
+        with:
+          directory: argocd
+          fail-on: high
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: octodoctor-report
+          path: argocd/octodoctor-output/
+```
+
+| Input | Default | What it does |
+|---|---|---|
+| `directory` | `.` | Directory to scan for Argo CD files |
+| `fail-on` | `medium` | Lowest severity of a failed rule that fails the step: `high`, `medium` or `none` |
+| `version` | the action version | OctoDoctor release to download, for example `v0.5.0` |
+
+The `if: always()` line uploads the report even when the OctoDoctor step fails, so you can see which
+rules failed.

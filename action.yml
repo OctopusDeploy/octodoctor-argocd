@@ -1,0 +1,50 @@
+name: OctoDoctor for Argo CD
+description: Check Argo CD manifests against best-practice rules and fail the build on failed rules
+branding:
+  icon: check-circle
+  color: blue
+
+inputs:
+  directory:
+    description: Directory to scan for Argo CD files
+    default: "."
+  fail-on:
+    description: "Lowest severity of a failed rule that fails the step: high, medium or none"
+    default: medium
+  version:
+    description: octodoctor release to download, for example v0.5.0
+    default: v0.5.0
+
+runs:
+  using: composite
+  steps:
+    - name: Download octodoctor
+      shell: bash
+      env:
+        VERSION: ${{ inputs.version }}
+      run: |
+        set -euo pipefail
+        if [ "$RUNNER_OS" != "Linux" ]; then
+          echo "::error::The octodoctor action only supports Linux runners"
+          exit 1
+        fi
+        case "$RUNNER_ARCH" in
+          X64) arch=amd64 ;;
+          ARM64) arch=arm64 ;;
+          *) echo "::error::Unsupported runner architecture: $RUNNER_ARCH"; exit 1 ;;
+        esac
+        archive="octodoctor_${VERSION#v}_linux_${arch}.tar.gz"
+        base="https://github.com/OctopusDeploy/octodoctor-argocd/releases/download/${VERSION}"
+        mkdir -p "$RUNNER_TEMP/octodoctor"
+        cd "$RUNNER_TEMP/octodoctor"
+        curl -fsSLO "$base/$archive"
+        curl -fsSLO "$base/checksums.txt"
+        sha256sum --check --ignore-missing checksums.txt
+        tar xzf "$archive" octodoctor
+
+    - name: Run octodoctor
+      shell: bash
+      env:
+        DIRECTORY: ${{ inputs.directory }}
+        FAIL_ON: ${{ inputs.fail-on }}
+      run: '"$RUNNER_TEMP/octodoctor/octodoctor" -d "$DIRECTORY" --fail-on "$FAIL_ON"'

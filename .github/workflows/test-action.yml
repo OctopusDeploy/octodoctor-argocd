@@ -1,0 +1,87 @@
+# Runs the composite action in action.yml against the testdata fixtures and checks that
+# --fail-on decides the step outcome. The action downloads the release named by its default
+# version input, so this workflow fails until that release exists.
+name: Test action
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test-action:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # testdata/r02 only has failing medium rules, testdata/r01 also has a failing high rule
+      - name: Medium failures fail with fail-on medium
+        id: medium-medium
+        continue-on-error: true
+        uses: ./
+        with:
+          directory: testdata/r02
+          fail-on: medium
+
+      - name: Medium failures pass with fail-on high
+        id: medium-high
+        continue-on-error: true
+        uses: ./
+        with:
+          directory: testdata/r02
+          fail-on: high
+
+      - name: High failure fails with fail-on high
+        id: high-high
+        continue-on-error: true
+        uses: ./
+        with:
+          directory: testdata/r01
+          fail-on: high
+
+      - name: High failure passes with fail-on none
+        id: high-none
+        continue-on-error: true
+        uses: ./
+        with:
+          directory: testdata/r01
+          fail-on: none
+
+      - name: Invalid fail-on value fails
+        id: invalid
+        continue-on-error: true
+        uses: ./
+        with:
+          directory: testdata/r01
+          fail-on: low
+
+      - name: Check outcomes
+        env:
+          MEDIUM_MEDIUM: ${{ steps.medium-medium.outcome }}
+          MEDIUM_HIGH: ${{ steps.medium-high.outcome }}
+          HIGH_HIGH: ${{ steps.high-high.outcome }}
+          HIGH_NONE: ${{ steps.high-none.outcome }}
+          INVALID: ${{ steps.invalid.outcome }}
+        run: |
+          status=0
+          check() {
+            if [ "$2" != "$3" ]; then
+              echo "::error::$1: expected $3, got $2"
+              status=1
+            fi
+          }
+          check "Medium failures with fail-on medium" "$MEDIUM_MEDIUM" failure
+          check "Medium failures with fail-on high" "$MEDIUM_HIGH" success
+          check "High failure with fail-on high" "$HIGH_HIGH" failure
+          check "High failure with fail-on none" "$HIGH_NONE" success
+          check "Invalid fail-on value" "$INVALID" failure
+          if [ ! -f testdata/r01/octodoctor-output/report.json ]; then
+            echo "::error::testdata/r01/octodoctor-output/report.json was not written"
+            status=1
+          fi
+          exit $status
