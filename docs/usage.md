@@ -19,6 +19,7 @@ produces the same result.
 | `-c`, `--context` | the current kubeconfig context | Kubeconfig context to export from, only used with `--export` |
 | `-n`, `--namespace` | `argocd` | Namespace to export from, only used with `--export` |
 | `-l`, `--limit` | `5` | How many files to list under each rule in the HTML report |
+| `--fail-on` | `medium` | Lowest severity of a failed rule that makes OctoDoctor exit with `1`: `high`, `medium` or `none` |
 | `-v`, `--version` | | Print the version and exit |
 
 !!! note "`--export` and `--directory` are mutually exclusive"
@@ -27,7 +28,15 @@ produces the same result.
     OctoDoctor ignores `--context` and `--namespace` and logs a line saying so.
 
 OctoDoctor exits with `1` when at least one rule failed, and `0` otherwise, so you can use it to fail a CI
-pipeline.
+pipeline. Use `--fail-on` to choose which failures count:
+
+- `medium` (default): any failed rule exits with `1`.
+- `high`: only failed high severity rules exit with `1`. Medium failures still appear in the reports.
+- `none`: always exits with `0`. Use this to try OctoDoctor in a pipeline before you make it blocking.
+
+```bash
+./octodoctor -d /path/to/argocd/manifests --fail-on high
+```
 
 ## Mode 1 - Analyzing manifests on disk
 

@@ -19,6 +19,34 @@ const (
 	SeverityLow    = "low"
 )
 
+// FailOnNone is the --fail-on value that never fails the build
+const FailOnNone = "none"
+
+// severityRank orders the severities that --fail-on accepts as a threshold
+var severityRank = map[string]int{
+	SeverityMedium: 1,
+	SeverityHigh:   2,
+}
+
+// ValidFailOn reports whether v is an accepted --fail-on value
+func ValidFailOn(v string) bool {
+	_, ok := severityRank[v]
+	return ok || v == FailOnNone
+}
+
+// FailsBuild reports whether any failed rule has a severity at or above the failOn threshold
+func FailsBuild(failed []analysis.RuleExecution, failOn string) bool {
+	if failOn == FailOnNone {
+		return false
+	}
+	for _, rule := range failed {
+		if severityRank[rule.Severity] >= severityRank[failOn] {
+			return true
+		}
+	}
+	return false
+}
+
 // documentationBaseURL is where the mkdocs site is published. The rule pages live under
 // rules/<DocSlug>/ because mkdocs uses directory URLs by default.
 const documentationBaseURL = "https://octodoctor-argocd.readthedocs.io/en/latest/"

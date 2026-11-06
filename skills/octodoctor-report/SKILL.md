@@ -118,7 +118,9 @@ octodoctor -e -c <kube-context> -n <namespace>
 
 ## Step 4: run it and read the exit code
 
-`octodoctor` exits **1** if any rule failed, **0** otherwise. This is expected, normal output for a
+`octodoctor` exits **1** if any rule failed, **0** otherwise (with the default `--fail-on medium`;
+`--fail-on high` only counts high severity failures and `--fail-on none` always exits 0 — you don't
+need to pass it, since the report lists every failure regardless). A nonzero exit is expected, normal output for a
 real installation — it is not a tool failure and you should not treat a nonzero exit code as an error
 to work around. Just proceed to reading the report either way.
 

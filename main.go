@@ -31,6 +31,7 @@ func main() {
 		exportFromCluster bool
 		kubeContext       string
 		namespace         string
+		failOn            string
 	)
 	pflag.BoolVarP(&showVersion, "version", "v", false, "Print version information")
 	pflag.StringVarP(&directory, "directory", "d", ".", "Directory to scan for ArgoCD files")
@@ -38,12 +39,17 @@ func main() {
 	pflag.BoolVarP(&exportFromCluster, "export", "e", false, "Export Argo CD manifests from a live cluster and analyze them")
 	pflag.StringVarP(&kubeContext, "context", "c", "", "Kubeconfig context to export from (default: the current context)")
 	pflag.StringVarP(&namespace, "namespace", "n", "argocd", "Namespace to export Argo CD manifests from")
+	pflag.StringVar(&failOn, "fail-on", rules.SeverityMedium, "Lowest severity of a failed rule that makes octodoctor exit with 1: high, medium or none")
 	pflag.Parse()
 
 	// Handle version flag
 	if showVersion {
 		fmt.Println(version)
 		os.Exit(0)
+	}
+
+	if !rules.ValidFailOn(failOn) {
+		log.Fatalf("Invalid --fail-on value %q, use high, medium or none", failOn)
 	}
 
 	// Get target directory, either by exporting a live cluster or by using a local directory
@@ -72,9 +78,12 @@ func main() {
 	report.GenerateStructuredReport(&file_analysis, outputPath, "json", version)
 	report.GenerateHTMLReport(&file_analysis, outputPath, limit)
 
-	// Step 4 - Exit with code 1 if any rules failed, otherwise 0
-	if len(file_analysis.RulesFailed) > 0 {
+	// Step 4 - Exit with code 1 if any rule at or above the --fail-on severity failed, otherwise 0
+	if rules.FailsBuild(file_analysis.RulesFailed, failOn) {
 		os.Exit(1)
+	}
+	if len(file_analysis.RulesFailed) > 0 {
+		log.Printf("%d rule(s) failed, but none at or above --fail-on %s, exiting with 0", len(file_analysis.RulesFailed), failOn)
 	}
 	os.Exit(0)
 }
