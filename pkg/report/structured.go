@@ -36,10 +36,11 @@ func GenerateStructuredReport(analysis *analysis.ArgoCDAnalysis, outputDirectory
 			Secrets:         len(analysis.Secrets),
 		},
 		Rules: Rules{
-			Total:    len(analysis.RulesFailed) + len(analysis.RulesPassed) + len(analysis.RulesInactive),
+			Total:    len(analysis.RulesFailed) + len(analysis.RulesPassed) + len(analysis.RulesInactive) + analysis.RulesFullyIgnored,
 			Failed:   len(analysis.RulesFailed),
 			Passed:   len(analysis.RulesPassed),
 			Inactive: len(analysis.RulesInactive),
+			Ignored:  analysis.RulesFullyIgnored,
 		},
 	}
 
@@ -82,6 +83,20 @@ func GenerateStructuredReport(analysis *analysis.ArgoCDAnalysis, outputDirectory
 			AffectedFiles:    r.FilesTriggered,
 		}
 		results.Inactive[i] = rule
+	}
+
+	results.Ignored = make([]Rule, len(analysis.RulesIgnored))
+	for i, r := range analysis.RulesIgnored {
+		rule := Rule{
+			Id:               r.ID,
+			Name:             r.Name,
+			Description:      r.Description,
+			Severity:         r.Severity,
+			DocumentationURL: r.DocumentationURL,
+			AffectedFiles:    r.FilesTriggered,
+			Reason:           r.Reason,
+		}
+		results.Ignored[i] = rule
 	}
 
 	// build final report
