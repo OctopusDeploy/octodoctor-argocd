@@ -71,7 +71,8 @@ type Rule interface {
 }
 
 type Registry struct {
-	Rules []Rule
+	Rules   []Rule
+	Ignores []IgnoreEntry
 }
 
 func NewRegistry() *Registry {
@@ -126,7 +127,14 @@ func (r *Registry) ExecuteAll(file_analysis *analysis.ArgoCDAnalysis) {
 		} else if result.Passed {
 			file_analysis.RulesPassed = append(file_analysis.RulesPassed, result.Execution)
 		} else {
-			file_analysis.RulesFailed = append(file_analysis.RulesFailed, result.Execution)
+			ignored, allIgnored := applyIgnores(r.Ignores, &result.Execution)
+			file_analysis.RulesIgnored = append(file_analysis.RulesIgnored, ignored...)
+			if allIgnored {
+				file_analysis.RulesFullyIgnored++
+			} else {
+				file_analysis.RulesFailed = append(file_analysis.RulesFailed, result.Execution)
+			}
 		}
 	}
+	warnUnusedIgnores(r.Ignores)
 }

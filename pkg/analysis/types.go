@@ -9,6 +9,12 @@ type RuleExecution struct {
 	FilesTriggered   []string
 }
 
+// IgnoredExecution is a failed rule, or the part of it, that an ignore entry accepted
+type IgnoredExecution struct {
+	RuleExecution
+	Reason string
+}
+
 type ArgoCDFile struct {
 	FullPath string
 	Name     string
@@ -29,4 +35,7 @@ type ArgoCDAnalysis struct {
 	RulesFailed   []RuleExecution
 	RulesPassed   []RuleExecution
 	RulesInactive []RuleExecution
+
+	RulesIgnored      []IgnoredExecution
+	RulesFullyIgnored int // rules whose failures were all ignored
 }

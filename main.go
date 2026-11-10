@@ -32,6 +32,7 @@ func main() {
 		kubeContext       string
 		namespace         string
 		failOn            string
+		configPath        string
 	)
 	pflag.BoolVarP(&showVersion, "version", "v", false, "Print version information")
 	pflag.StringVarP(&directory, "directory", "d", ".", "Directory to scan for ArgoCD files")
@@ -40,6 +41,7 @@ func main() {
 	pflag.StringVarP(&kubeContext, "context", "c", "", "Kubeconfig context to export from (default: the current context)")
 	pflag.StringVarP(&namespace, "namespace", "n", "argocd", "Namespace to export Argo CD manifests from")
 	pflag.StringVar(&failOn, "fail-on", rules.SeverityMedium, "Lowest severity of a failed rule that makes octodoctor exit with 1: high, medium or none")
+	pflag.StringVar(&configPath, "config", "", "Configuration file with the failures to ignore (default: .octodoctor.yaml in the current directory, if it exists)")
 	pflag.Parse()
 
 	// Handle version flag
@@ -50,6 +52,12 @@ func main() {
 
 	if !rules.ValidFailOn(failOn) {
 		log.Fatalf("Invalid --fail-on value %q, use high, medium or none", failOn)
+	}
+
+	// Load the configuration before the export, so a broken file fails without connecting to a cluster
+	ignores, err := rules.LoadIgnores(configPath)
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	// Get target directory, either by exporting a live cluster or by using a local directory
@@ -65,10 +73,11 @@ func main() {
 
 	//Step 2 - Execute all rules and get the results
 	registry := rules.NewRegistry()
+	registry.Ignores = ignores
 	log.Println("Checking all Argo CD files for best practices...")
 	registry.ExecuteAll(&file_analysis)
 
-	log.Printf("Analysis complete. %d rule(s) failed, %d rule(s) passed", len(file_analysis.RulesFailed), len(file_analysis.RulesPassed))
+	log.Printf("Analysis complete. %d rule(s) failed, %d rule(s) passed, %d rule(s) ignored", len(file_analysis.RulesFailed), len(file_analysis.RulesPassed), file_analysis.RulesFullyIgnored)
 
 	// Step 3 - Generate all reports (HTML, YAML, and JSON)
 	// Create output directory path relative to the target directory

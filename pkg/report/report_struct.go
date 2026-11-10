@@ -20,6 +20,7 @@ type Rules struct {
 	Failed   int `json:"failed" yaml:"failed"`
 	Passed   int `json:"passed" yaml:"passed"`
 	Inactive int `json:"inactive" yaml:"inactive"`
+	Ignored  int `json:"ignored" yaml:"ignored"`
 }
 type Summary struct {
 	TotalYAMLFiles     int       `json:"totalYamlFiles" yaml:"totalYamlFiles"`
@@ -35,12 +36,14 @@ type Rule struct {
 	Severity         string   `json:"severity" yaml:"severity"`
 	DocumentationURL string   `json:"documentationUrl" yaml:"documentationUrl"`
 	AffectedFiles    []string `json:"affectedFiles" yaml:"affectedFiles"`
+	Reason           string   `json:"reason,omitempty" yaml:"reason,omitempty"`
 }
 
 type Results struct {
 	Failed   []Rule `json:"failed" yaml:"failed"`
 	Passed   []Rule `json:"passed" yaml:"passed"`
 	Inactive []Rule `json:"inactive" yaml:"inactive"`
+	Ignored  []Rule `json:"ignored" yaml:"ignored"`
 }
 type JSONReport struct {
 	Metadata Metadata `json:"metadata" yaml:"metadata"`
