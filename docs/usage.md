@@ -20,6 +20,7 @@ produces the same result.
 | `-n`, `--namespace` | `argocd` | Namespace to export from, only used with `--export` |
 | `-l`, `--limit` | `5` | How many files to list under each rule in the HTML report |
 | `--fail-on` | `medium` | Lowest severity of a failed rule that makes OctoDoctor exit with `1`: `high`, `medium` or `none` |
+| `--config` | `.octodoctor.yaml` in the current directory, if it exists | [Configuration file with the failures to ignore](#ignoring-rules) |
 | `-v`, `--version` | | Print the version and exit |
 
 !!! note "`--export` and `--directory` are mutually exclusive"
@@ -172,6 +173,56 @@ ApplicationSets, AppProjects, ConfigMaps, and Secrets in the namespace you point
 If you aren't allowed to list one of these, or the Argo CD CRDs aren't installed on the cluster at
 all, OctoDoctor logs a warning, skips that resource type, and carries on with the rest. Only a cluster it
 can't reach, or credentials it can't authenticate with, stop the run.
+
+## Ignoring rules
+
+Some failures are deliberate decisions, for example a component pinned to a Git commit on purpose. To
+stop reporting them as issues, list them in a `.octodoctor.yaml` file:
+
+```yaml
+ignore:
+  # Ignore a whole rule
+  - rule: R99
+    reason: One ApplicationSet per application is our convention
+
+  # Ignore a rule only for some files
+  - rule: R19
+    resources:
+      - "applications/*mesh-*"
+    reason: Pinned on purpose, upgraded one cluster at a time
+```
+
+| Field | Required | What it does |
+|---|---|---|
+| `rule` | yes | ID of the rule, for example `R19` |
+| `resources` | no | Paths of the files to ignore, exactly as the report lists them under the rule. Leave it out to ignore the whole rule |
+| `reason` | no | Text shown next to the ignored failure in the reports |
+
+In `resources`, `*` matches any characters, including `/`, and a pattern must match the whole path.
+Paths differ between the two modes: `--directory` lists them relative to the scanned directory, and
+`--export` lists them as `applications/<name>.yaml`. A pattern such as `*mesh-*` matches in both.
+
+OctoDoctor reads `.octodoctor.yaml` from the current directory, or the file you pass with `--config`.
+It never looks inside the scanned directory, because `--export` creates that directory again on every
+run. With `--export`, run OctoDoctor outside your Git checkout, so the exported manifests don't end up
+in it, and point `--config` at the file in the checkout:
+
+```bash
+./octodoctor --export --config ~/repos/argocd-config/.octodoctor.yaml
+```
+
+Ignored failures:
+
+- appear in an **Ignored failures** section of `index.html`, and under `results.ignored` in
+  `report.json` and `report.yaml`, so nothing is hidden;
+- don't count towards `--fail-on`;
+- only apply to failures. A rule that passes is still reported as passed.
+
+If a rule fails on more files than you ignored, it stays failed with the remaining files.
+
+OctoDoctor stops with an error when the file has an unknown key, an unknown rule ID, an empty
+`resources` list, or ignores a rule both as a whole and by resources. It logs a warning for every
+entry or pattern that ignored nothing, so you notice ignores that are no longer needed.
 
 ## Running in GitHub Actions
 
