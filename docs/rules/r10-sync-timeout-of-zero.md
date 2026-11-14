@@ -14,14 +14,7 @@ It's worth being clear about what this rule is flagging: `0` is Argo CD's own de
 documentation doesn't call it a mistake. The finding says you've written that default into
 `argocd-cmd-params-cm` explicitly, which is a good moment to decide whether you meant to.
 
-The case for a bounded timeout is that a sync with no timeout has no way to end on its own. A PreSync
-hook Job that never completes, a resource waiting on a health check that will never pass, or a
-cluster that stopped responding mid-sync all leave the operation running indefinitely. While it
-runs, the Application holds its operation slot: you can't start a new sync, self-heal won't correct
-drift, and the Application sits in `Progressing` rather than surfacing as failed. Nothing in your
-alerting fires, because nothing has technically gone wrong yet.
-
-With a timeout, the same situation ends in a failed sync you can see, retry, and alert on.
+So if you really want this value to be 0 make sure to understand why you want it that way.
 
 ## How to fix it
 

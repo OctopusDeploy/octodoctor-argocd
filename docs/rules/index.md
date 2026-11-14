@@ -13,6 +13,7 @@ OctoDoctor reads your Argo CD manifests as YAML files and checks them against th
 | [R05](r05-permissive-source-repos.md) | AppProjects with an overly permissive `sourceRepos` (using the wildcard `*`) | High ⚠️ | ✅ |
 | [R06](r06-missing-manifest-generate-paths.md) | Applications without the `argocd.argoproj.io/manifest-generate-paths` annotation | Medium | ✅ |
 | [R07](r07-reconciliation-timeout-without-cache-expiration.md) | `ARGOCD_RECONCILIATION_TIMEOUT=0` without `ARGOCD_DEFAULT_CACHE_EXPIRATION` | Medium | ✅ |
+| [R08](r08-self-heal-disabled.md) | Applications with an automated sync policy but without `selfHeal=true` | Medium | ✅ |
 | [R09](r09-duplicate-generators.md) | ApplicationSets with duplicate generators | Medium | ✅ |
 | [R10](r10-sync-timeout-of-zero.md) | Argo CD controller sync timeout set to 0 seconds | Medium | ✅ |
 | [R11](r11-anonymous-access.md) | Argo CD anonymous user access turned on | High ⚠️ | ✅ |

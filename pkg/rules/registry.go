@@ -84,6 +84,7 @@ func NewRegistry() *Registry {
 			&Rule05{},
 			&Rule06{},
 			&Rule07{},
+			&Rule08{},
 			&Rule09{},
 			&Rule10{},
 			&Rule11{},
