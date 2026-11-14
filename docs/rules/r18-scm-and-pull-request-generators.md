@@ -6,8 +6,8 @@ ApplicationSets combine the SCM Provider and Pull Request generators in `matrix`
 
 ## Why this matters
 
-The Argo CD documentation doesn't name this pairing as a problem. The argument below is assembled
-from things it does state about the pieces.
+Using these two generators together is not always a problem on its own. However coupled with other factors (monorepo usage, many teams/developers) it can quickly
+cause problems with rate limits.
 
 Both of these generators work by calling your Git provider's API. The SCM Provider generator scans
 an organization to discover repositories, and with `allBranches: true` it scans every branch of
@@ -22,11 +22,8 @@ inside one, and the API cost multiplies rather than adds: the SCM side enumerate
 the pull request side is evaluated across that enumeration. An organization with 50 repositories
 turns one refresh into a large burst of calls, repeated on every requeue, forever.
 
-When the budget runs out the failure is indirect. Generation starts erroring, the ApplicationSet
-stops producing children, and preview environments quietly fail to appear or fail to be cleaned up.
-It looks like an Argo CD fault and is actually a quota you exhausted, which makes it slow to
-diagnose. Worse, the exhausted budget is shared, so unrelated ApplicationSets and CI jobs using the
-same token start failing too.
+Depending on the size of your organization you will soon trigger GitHub rate limits
+and start causing problems in normal sync operations.
 
 ## How to fix it
 

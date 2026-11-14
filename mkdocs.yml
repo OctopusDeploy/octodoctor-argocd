@@ -28,6 +28,7 @@ nav:
   - R05 – Permissive sourceRepos: rules/r05-permissive-source-repos.md
   - R06 – Missing manifest-generate-paths: rules/r06-missing-manifest-generate-paths.md
   - R07 – Reconciliation timeout without cache expiration: rules/r07-reconciliation-timeout-without-cache-expiration.md
+  - R08 – Self-heal disabled: rules/r08-self-heal-disabled.md
   - R09 – Duplicate generators: rules/r09-duplicate-generators.md
   - R10 – Sync timeout of zero: rules/r10-sync-timeout-of-zero.md
   - R11 – Anonymous access enabled: rules/r11-anonymous-access.md

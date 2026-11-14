@@ -1,0 +1,18 @@
+## R08 - Example where self-heal is explicitly disabled
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: demo
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/example-org/not-important.git
+    targetRevision: HEAD
+    path: ./not-important
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      selfHeal: false
