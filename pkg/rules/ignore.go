@@ -7,9 +7,9 @@ import (
 	"io"
 	"log"
 	"os"
-	"regexp"
 	"strings"
 
+	"github.com/gobwas/glob"
 	"gopkg.in/yaml.v3"
 
 	"github.com/OctopusDeploy/octodoctor-argocd/pkg/analysis"
@@ -20,13 +20,13 @@ const defaultConfigFile = ".octodoctor.yaml"
 
 // IgnoreEntry accepts the failures of a rule, either all of them or only those of some files
 type IgnoreEntry struct {
-	Rule      string    `yaml:"rule"`
-	Resources yaml.Node `yaml:"resources"` // a node, so that an empty or null list is told apart from a missing one
-	Reason    string    `yaml:"reason"`
+	Rule   string    `yaml:"rule"`
+	Files  yaml.Node `yaml:"files"` // a node, so that an empty or null list is told apart from a missing one
+	Reason string    `yaml:"reason"`
 
 	whole    bool
 	patterns []string
-	regexps  []*regexp.Regexp
+	globs    []*glob.Pattern
 	hits     []int // matches per pattern, or a single counter for a whole-rule entry
 }
 
@@ -45,12 +45,16 @@ func LoadIgnores(path string) ([]IgnoreEntry, error) {
 	}
 
 	var config struct {
-		Ignore []IgnoreEntry `yaml:"ignore"`
+		Version string        `yaml:"version"` // the format of the file, so it can change later
+		Ignore  []IgnoreEntry `yaml:"ignore"`
 	}
 	decoder := yaml.NewDecoder(bytes.NewReader(data))
 	decoder.KnownFields(true)
 	if err := decoder.Decode(&config); err != nil && !errors.Is(err, io.EOF) {
 		return nil, fmt.Errorf("invalid configuration file %s: %w", path, err)
+	}
+	if config.Version != "1" {
+		return nil, fmt.Errorf("invalid configuration file %s: unsupported version %q, set version: 1", path, config.Version)
 	}
 
 	known := map[string]bool{}
@@ -63,18 +67,23 @@ func LoadIgnores(path string) ([]IgnoreEntry, error) {
 		if !known[e.Rule] {
 			return nil, fmt.Errorf("invalid configuration file %s: ignore entry %d: unknown or missing rule %q", path, i+1, e.Rule)
 		}
-		e.whole = e.Resources.Kind == 0
+		e.whole = e.Files.Kind == 0
 		if !e.whole {
-			if err := e.Resources.Decode(&e.patterns); err != nil || len(e.patterns) == 0 {
-				return nil, fmt.Errorf("invalid configuration file %s: ignore entry %d: resources is empty, leave it out to ignore the whole rule", path, i+1)
+			if err := e.Files.Decode(&e.patterns); err != nil || len(e.patterns) == 0 {
+				return nil, fmt.Errorf("invalid configuration file %s: ignore entry %d: files is empty, leave it out to ignore the whole rule", path, i+1)
 			}
 		}
 		if whole, seen := wholeByRule[e.Rule]; seen && (whole || e.whole) {
-			return nil, fmt.Errorf("invalid configuration file %s: %s is ignored as a whole more than once, or both as a whole and by resources", path, e.Rule)
+			return nil, fmt.Errorf("invalid configuration file %s: %s is ignored as a whole more than once, or both as a whole and by files", path, e.Rule)
 		}
 		wholeByRule[e.Rule] = e.whole
 		for _, p := range e.patterns {
-			e.regexps = append(e.regexps, regexp.MustCompile("^"+strings.ReplaceAll(regexp.QuoteMeta(toSlash(p)), `\*`, ".*")+"$"))
+			// Same library and separator as Argo CD uses for the sourceRepos of an AppProject
+			g, err := glob.Compile(toSlash(p), '/')
+			if err != nil {
+				return nil, fmt.Errorf("invalid configuration file %s: ignore entry %d: invalid pattern %q: %w", path, i+1, p, err)
+			}
+			e.globs = append(e.globs, g)
 		}
 		e.hits = make([]int, max(len(e.patterns), 1))
 	}
@@ -105,8 +114,8 @@ func applyIgnores(entries []IgnoreEntry, exec *analysis.RuleExecution) (ignored 
 			if entries[i].Rule != exec.ID {
 				continue
 			}
-			for j, re := range entries[i].regexps {
-				if re.MatchString(toSlash(file)) {
+			for j, g := range entries[i].globs {
+				if g.Match(toSlash(file)) {
 					entries[i].hits[j]++
 					if claimedBy < 0 {
 						claimedBy = i
