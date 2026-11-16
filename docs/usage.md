@@ -235,7 +235,7 @@ Ignored failures:
 If a rule fails on more files than you ignored, it stays failed with the remaining files.
 
 OctoDoctor stops with an error when the file has a missing or unsupported `version`, an unknown key,
-an unknown rule ID, an empty `files` list, or ignores a rule both as a whole and by files. It logs a warning for every
+an unknown rule ID, a `files` that is empty or not a list, or ignores a rule both as a whole and by files. It logs a warning for every
 entry or pattern that ignored nothing, so you notice ignores that are no longer needed.
 
 ## Running in GitHub Actions

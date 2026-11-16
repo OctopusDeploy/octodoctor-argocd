@@ -70,7 +70,7 @@ func LoadIgnores(path string) ([]IgnoreEntry, error) {
 		e.whole = e.Files.Kind == 0
 		if !e.whole {
 			if err := e.Files.Decode(&e.patterns); err != nil || len(e.patterns) == 0 {
-				return nil, fmt.Errorf("invalid configuration file %s: ignore entry %d: files is empty, leave it out to ignore the whole rule", path, i+1)
+				return nil, fmt.Errorf("invalid configuration file %s: ignore entry %d: files must be a list with at least one pattern, leave it out to ignore the whole rule", path, i+1)
 			}
 		}
 		if whole, seen := wholeByRule[e.Rule]; seen && (whole || e.whole) {
