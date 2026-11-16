@@ -180,6 +180,7 @@ Some failures are deliberate decisions, for example a component pinned to a Git 
 stop reporting them as issues, list them in a `.octodoctor.yaml` file:
 
 ```yaml
+version: 1
 ignore:
   # Ignore a whole rule
   - rule: R99
@@ -187,20 +188,33 @@ ignore:
 
   # Ignore a rule only for some files
   - rule: R19
-    resources:
+    files:
       - "applications/*mesh-*"
     reason: Pinned on purpose, upgraded one cluster at a time
 ```
 
+`version` is required and must be `1`. It identifies the format of the file, so the format can change in
+a later release. Each entry under `ignore` has these fields:
+
 | Field | Required | What it does |
 |---|---|---|
 | `rule` | yes | ID of the rule, for example `R19` |
-| `resources` | no | Paths of the files to ignore, exactly as the report lists them under the rule. Leave it out to ignore the whole rule |
+| `files` | no | Paths of the files to ignore, exactly as the report lists them under the rule. Leave it out to ignore the whole rule |
 | `reason` | no | Text shown next to the ignored failure in the reports |
 
-In `resources`, `*` matches any characters, including `/`, and a pattern must match the whole path.
+Patterns in `files` use the same glob syntax as the `sourceRepos` of an Argo CD AppProject, and must
+match the whole path:
+
+| Pattern | Matches |
+|---|---|
+| `*` | any characters except `/` |
+| `**` | any characters, including `/` |
+| `?` | one character except `/` |
+| `[abc]`, `[a-z]` | one of the characters |
+| `{mesh,web}` | one of the alternatives |
+
 Paths differ between the two modes: `--directory` lists them relative to the scanned directory, and
-`--export` lists them as `applications/<name>.yaml`. A pattern such as `*mesh-*` matches in both.
+`--export` lists them as `applications/<name>.yaml`. A pattern such as `**mesh-*` matches in both.
 
 OctoDoctor reads `.octodoctor.yaml` from the current directory, or the file you pass with `--config`.
 It never looks inside the scanned directory, because `--export` creates that directory again on every
@@ -220,8 +234,8 @@ Ignored failures:
 
 If a rule fails on more files than you ignored, it stays failed with the remaining files.
 
-OctoDoctor stops with an error when the file has an unknown key, an unknown rule ID, an empty
-`resources` list, or ignores a rule both as a whole and by resources. It logs a warning for every
+OctoDoctor stops with an error when the file has a missing or unsupported `version`, an unknown key,
+an unknown rule ID, an empty `files` list, or ignores a rule both as a whole and by files. It logs a warning for every
 entry or pattern that ignored nothing, so you notice ignores that are no longer needed.
 
 ## Running in GitHub Actions
