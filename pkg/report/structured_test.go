@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/OctopusDeploy/octodoctor-argocd/pkg/analysis"
@@ -42,5 +43,17 @@ func TestStructuredReportIgnored(t *testing.T) {
 		data := string(renderJSON(t, &analysis.ArgoCDAnalysis{}))
 		assert.Contains(t, data, `"ignored": []`)
 		assert.NotContains(t, data, `"reason"`)
+	})
+
+	t.Run("Lists are never null", func(t *testing.T) {
+		noFiles := analysis.RuleExecution{ID: "R99"}
+		data := string(renderJSON(t, &analysis.ArgoCDAnalysis{
+			RulesFailed:   []analysis.RuleExecution{noFiles},
+			RulesPassed:   []analysis.RuleExecution{noFiles},
+			RulesInactive: []analysis.RuleExecution{noFiles},
+			RulesIgnored:  []analysis.IgnoredExecution{{RuleExecution: noFiles}},
+		}))
+		assert.NotContains(t, data, "null")
+		assert.Equal(t, 4, strings.Count(data, `"affectedFiles": []`))
 	})
 }

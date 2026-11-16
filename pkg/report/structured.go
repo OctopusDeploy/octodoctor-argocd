@@ -54,7 +54,7 @@ func GenerateStructuredReport(analysis *analysis.ArgoCDAnalysis, outputDirectory
 			Description:      r.Description,
 			Severity:         r.Severity,
 			DocumentationURL: r.DocumentationURL,
-			AffectedFiles:    r.FilesTriggered,
+			AffectedFiles:    emptyIfNil(r.FilesTriggered),
 		}
 		results.Failed[i] = rule
 	}
@@ -67,7 +67,7 @@ func GenerateStructuredReport(analysis *analysis.ArgoCDAnalysis, outputDirectory
 			Description:      r.Description,
 			Severity:         r.Severity,
 			DocumentationURL: r.DocumentationURL,
-			AffectedFiles:    r.FilesTriggered,
+			AffectedFiles:    emptyIfNil(r.FilesTriggered),
 		}
 		results.Passed[i] = rule
 	}
@@ -80,7 +80,7 @@ func GenerateStructuredReport(analysis *analysis.ArgoCDAnalysis, outputDirectory
 			Description:      r.Description,
 			Severity:         r.Severity,
 			DocumentationURL: r.DocumentationURL,
-			AffectedFiles:    r.FilesTriggered,
+			AffectedFiles:    emptyIfNil(r.FilesTriggered),
 		}
 		results.Inactive[i] = rule
 	}
@@ -93,7 +93,7 @@ func GenerateStructuredReport(analysis *analysis.ArgoCDAnalysis, outputDirectory
 			Description:      r.Description,
 			Severity:         r.Severity,
 			DocumentationURL: r.DocumentationURL,
-			AffectedFiles:    r.FilesTriggered,
+			AffectedFiles:    emptyIfNil(r.FilesTriggered),
 			Reason:           r.Reason,
 		}
 		results.Ignored[i] = rule
@@ -129,4 +129,12 @@ func GenerateStructuredReport(analysis *analysis.ArgoCDAnalysis, outputDirectory
 		f.WriteString(string(yaml))
 	}
 	f.Sync()
+}
+
+// emptyIfNil returns an empty list instead of nil, so the reports never contain null
+func emptyIfNil(files []string) []string {
+	if files == nil {
+		return []string{}
+	}
+	return files
 }
