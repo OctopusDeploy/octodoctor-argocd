@@ -46,6 +46,11 @@
         <span class="stat-value">{{len .Analysis.RulesInactive}}</span>
         <span class="stat-note">Rules with nothing to check</span>
       </div>
+      {{if .Analysis.RulesIgnored}}<div class="card stat">
+        <span class="stat-label">Ignored</span>
+        <span class="stat-value">{{.Analysis.RulesFullyIgnored}}</span>
+        <span class="stat-note">Rules whose failures were all ignored</span>
+      </div>{{end}}
     </div>
 
     <section class="section scan-results">
@@ -79,6 +84,38 @@
         </table>
       </div>
     </section>
+
+    {{if .Analysis.RulesIgnored}}
+    <section class="section">
+      <div class="section-heading">
+        <h2>Ignored failures</h2>
+        <p class="section-description">Failures accepted in the configuration file. They don't count towards --fail-on.</p>
+      </div>
+      <div class="card table-wrap">
+        <table class="rules-table issues">
+          <thead><tr>
+            <th class="col-status" scope="col">Severity</th>
+            <th class="col-rule" scope="col">Rule</th>
+            <th scope="col">Reason</th>
+            <th class="col-files" scope="col">Ignored files</th>
+          </tr></thead>
+          <tbody>
+          {{range .Analysis.RulesIgnored}}
+          <tr>
+            <td>{{if eq .Severity "high"}}<span class="badge badge-danger">High</span>{{else if eq .Severity "medium"}}<span class="badge badge-warning">Medium</span>{{else}}<span class="badge badge-info">Low</span>{{end}}</td>
+            <td><a class="rule-id" href="{{.DocumentationURL}}" target="_blank" rel="noopener" title="{{.Name}}">{{.ID}}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a></td>
+            <td class="rule-description">{{or .Reason "No reason given"}}</td>
+            <td><div class="affected-files">
+              {{range head $.Limit .FilesTriggered}}<code class="file-item">{{.}}</code>
+              {{end}}{{with more $.Limit .FilesTriggered}}<span class="more-files">+{{.}} more files</span>{{end}}
+            </div></td>
+          </tr>
+          {{end}}
+          </tbody>
+        </table>
+      </div>
+    </section>
+    {{end}}
 
     <section class="section">
       <h2>Best practices followed</h2>
